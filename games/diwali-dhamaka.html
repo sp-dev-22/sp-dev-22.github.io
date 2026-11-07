@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>दीपावली धमाका — Diwali Dhamaka Game</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { width:100%; height:100%; overflow:hidden; background:#0b0618;
+    font-family:'Segoe UI',system-ui,sans-serif; touch-action:none; user-select:none; -webkit-user-select:none; }
+  #game { display:block; width:100%; height:100%; }
+  .hud { position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:flex-start;
+    padding:38px 12px 0 12px; pointer-events:none; z-index:5; }
+  .hud .box { background:rgba(20,4,24,.55); border:1px solid rgba(255,201,60,.45); border-radius:12px;
+    color:#ffe9a8; font-weight:700; font-size:17px; padding:6px 12px; min-width:86px; text-align:center;
+    text-shadow:0 1px 3px #000; }
+  .hud .box small { display:block; font-size:11px; color:#ffd97a; font-weight:600; letter-spacing:.5px; }
+  #comboBox { color:#ff9d5c; opacity:0; transition:opacity .2s; }
+  .iconbtn { position:fixed; top:96px; right:10px; z-index:6; width:46px; height:46px; border-radius:50%;
+    border:1px solid rgba(255,201,60,.6); background:rgba(20,4,24,.6); color:#ffe9a8; font-size:21px;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  #muteBtn { top:150px; }
+  .overlay { position:fixed; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; text-align:center; padding:24px; background:radial-gradient(ellipse at 50% 38%, rgba(64,10,40,.88), rgba(8,2,14,.94)); }
+  .hidden { display:none !important; }
+  .title { font-size:52px; font-weight:900; color:#ffc93c; line-height:1.15;
+    text-shadow:0 0 8px #ff9d00, 0 0 22px #ff6a00, 0 0 46px #ff2d78, 0 3px 0 #7a2d00; letter-spacing:1px; }
+  .subtitle { color:#ffe9a8; font-size:19px; margin-top:6px; text-shadow:0 0 12px rgba(255,150,50,.8); }
+  .rules { margin:22px 0 6px; color:#f5e7c8; font-size:16.5px; line-height:1.85; background:rgba(255,180,60,.08);
+    border:1px solid rgba(255,201,60,.35); border-radius:14px; padding:14px 20px; max-width:430px; }
+  .bigbtn { margin-top:24px; font-size:23px; font-weight:800; color:#431a00; background:linear-gradient(180deg,#ffe066,#ffb020);
+    border:none; border-radius:999px; padding:15px 42px; cursor:pointer; box-shadow:0 0 22px rgba(255,160,30,.75), 0 5px 0 #a35b00; }
+  .bigbtn:active { transform:translateY(3px); box-shadow:0 0 22px rgba(255,160,30,.75), 0 2px 0 #a35b00; }
+  .best { margin-top:16px; color:#ffd97a; font-size:16px; }
+  .credit { position:absolute; bottom:16px; color:rgba(255,233,168,.65); font-size:13.5px; }
+  #overTitle { font-size:42px; }
+  #finalScore { font-size:64px; font-weight:900; color:#ffc93c; text-shadow:0 0 18px rgba(255,150,0,.85); margin-top:8px; }
+  #newBest { color:#7dff9a; font-size:19px; font-weight:800; margin-top:4px; text-shadow:0 0 12px rgba(60,255,120,.7); }
+  #pauseOverlay .title { font-size:40px; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div class="hud" id="hud" style="display:none">
+  <div class="box"><small>SCORE</small><span id="scoreVal">0</span></div>
+  <div class="box" id="comboBox"><small>COMBO</small><span id="comboVal">×1</span></div>
+  <div class="box"><small>TIME</small><span id="timeVal">60</span></div>
+  <div class="box"><small>दीये</small><span id="livesVal">❤️❤️❤️</span></div>
+</div>
+
+<div class="iconbtn hidden" id="pauseBtn">⏸</div>
+<div class="iconbtn hidden" id="muteBtn">🔊</div>
+
+<div class="overlay" id="menu">
+  <div class="title">🪔 दीपावली<br>धमाका 🎆</div>
+  <div class="subtitle">Thali Catch — गिरती चीज़ें पकड़ो!</div>
+  <div class="rules">
+    🪔 दीया = <b>+10</b> &nbsp; 🍬 मिठाई = <b>+15</b><br>
+    🪙 सिक्का = <b>+5</b> &nbsp; 🌸 फूल = <b>+5</b><br>
+    🧨 पटाखा पकड़ा तो <b>एक जान गई!</b><br>
+    🪔 दीया गिराया तो भी <b>एक जान जाएगी</b><br>
+    थाली को <b>उंगली घुमाकर</b> या <b>← → keys</b> से चलाओ<br>
+    समय: <b>60 second</b> — हर 15 second में रफ़्तार बढ़ेगी!
+  </div>
+  <button class="bigbtn" id="startBtn">▶ खेल शुरू करो</button>
+  <div class="best" id="menuBest"></div>
+  <div class="credit">— Somdatt के लिए ख़ास 🪔 —</div>
+</div>
+
+<div class="overlay hidden" id="over">
+  <div class="title" id="overTitle">⏰ समय ख़त्म!</div>
+  <div class="subtitle">तुम्हारा Score</div>
+  <div id="finalScore">0</div>
+  <div id="newBest" class="hidden">🏆 नया रिकॉर्ड!</div>
+  <div class="best" id="overBest"></div>
+  <button class="bigbtn" id="againBtn">🔁 फिर से खेलो</button>
+  <div class="credit">🪔 शुभ दीपावली 🪔</div>
+</div>
+
+<div class="overlay hidden" id="pauseOverlay">
+  <div class="title">⏸ रुका हुआ</div>
+  <button class="bigbtn" id="resumeBtn">▶ वापस खेलो</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+var cvs = document.getElementById('game'), ctx = cvs.getContext('2d');
+var W=0,H=0,DPR=1, bg=null;
+var $ = function(id){ return document.getElementById(id); };
+var scoreVal=$('scoreVal'), timeVal=$('timeVal'), livesVal=$('livesVal'),
+    comboBox=$('comboBox'), comboVal=$('comboVal'), hud=$('hud'),
+    menu=$('menu'), over=$('over'), pauseOverlay=$('pauseOverlay'),
+    pauseBtn=$('pauseBtn'), muteBtn=$('muteBtn');
+
+function U(){ return Math.min(W,520)/390; }
+function thaliW(){ return Math.max(94, Math.min(150, W*0.27)); }
+function thaliY(){ return H-88; }
+
+var PALETTE=['#ffbe3c','#ff7828','#ff5078','#50dcff','#8cff8c','#ffeb a0'.replace(' ','')];
+
+function makeBg(){
+  bg=document.createElement('canvas'); bg.width=W*DPR; bg.height=H*DPR;
+  var b=bg.getContext('2d'); b.setTransform(DPR,0,0,DPR,0,0);
+  var g=b.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#150830'); g.addColorStop(.55,'#2a0a20'); g.addColorStop(1,'#170512');
+  b.fillStyle=g; b.fillRect(0,0,W,H);
+  var i,x,y;
+  for(i=0;i<70;i++){ x=Math.random()*W; y=Math.random()*H*0.7;
+    b.globalAlpha=.25+Math.random()*.55; b.fillStyle='#fff';
+    b.beginPath(); b.arc(x,y,Math.random()*1.4+.4,0,7); b.fill(); }
+  b.globalAlpha=1;
+  b.font='20px serif'; b.textAlign='center';
+  for(x=22;x<W;x+=44){ b.fillText('🪔',x,H-8); }
+}
+function resize(){
+  W=window.innerWidth; H=window.innerHeight;
+  DPR=Math.min(window.devicePixelRatio||1,1.5);
+  cvs.width=W*DPR; cvs.height=H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  makeBg();
+  if(thali.x>W) thali.x=W/2;
+}
+window.addEventListener('resize',resize);
+
+/* ---------------- audio ---------------- */
+var AC=null, muted=false;
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  if(AC&&AC.state==='suspended')AC.resume(); return AC; }
+function tone(f0,f1,dur,type,vol,when){
+  var a=ac(); if(!a||muted)return; var t=a.currentTime+(when||0);
+  var o=a.createOscillator(), g=a.createGain();
+  o.type=type||'sine'; o.frequency.setValueAtTime(f0,t);
+  o.frequency.exponentialRampToValueAtTime(Math.max(f1,1),t+dur);
+  g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur+.02);
+}
+function noiseBurst(dur,vol){
+  var a=ac(); if(!a||muted)return; var n=Math.floor(a.sampleRate*dur);
+  var buf=a.createBuffer(1,n,a.sampleRate), d=buf.getChannelData(0), i;
+  for(i=0;i<n;i++) d[i]=(Math.random()*2-1)*(1-i/n);
+  var src=a.createBufferSource(); src.buffer=buf;
+  var f=a.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900;
+  var g=a.createGain(); g.gain.value=vol;
+  src.connect(f); f.connect(g); g.connect(a.destination); src.start();
+}
+var sndCoin =function(){ tone(1180,1560,.09,'triangle',.12); };
+var sndFlower=function(){ tone(880,1180,.1,'sine',.12); };
+var sndDiya =function(){ tone(659,659,.16,'sine',.14); tone(990,990,.22,'sine',.1,.05); };
+var sndMithai=function(){ tone(784,784,.09,'triangle',.13); tone(1046,1046,.09,'triangle',.13,.07); tone(1318,1318,.14,'triangle',.13,.14); };
+var sndBoom =function(){ noiseBurst(.35,.5); tone(120,40,.3,'sine',.4); };
+var sndMiss =function(){ tone(320,140,.25,'sawtooth',.08); };
+var sndMilestone=function(){ var n=[523,659,784,1046],i; for(i=0;i<4;i++) tone(n[i],n[i],.13,'triangle',.14,i*.08); };
+
+/* ---------------- game state ---------------- */
+var state='menu', paused=false;
+var thali={x:0,tx:0};
+var items=[], parts=[], popups=[];
+var score=0, lives=3, combo=0, timeLeft=60, level=1, lastMile=0;
+var spawnT=0, bgFwT=1.6, shakeT=0, flashT=0, elapsed=0;
+var best=parseInt(localStorage.getItem('diwali_dhamaka_best')||'0',10)||0;
+var keys={left:false,right:false};
+thali.x=thali.tx=window.innerWidth/2;
+
+var TYPES=[
+  {e:'🪙', pts:5,  w:.30, snd:'coin'},
+  {e:'🌸', pts:5,  w:.25, snd:'flower'},
+  {e:'🪔', pts:10, w:.22, snd:'diya', diya:true},
+  {e:'🍬', pts:15, w:.13, snd:'mithai'},
+  {e:'🧨', pts:0,  w:.10, snd:'boom', bad:true}
+];
+function pickType(){
+  var r=Math.random(), acc=0, i;
+  for(i=0;i<TYPES.length;i++){ acc+=TYPES[i].w; if(r<=acc) return TYPES[i]; }
+  return TYPES[0];
+}
+function mult(){ return Math.min(1+Math.floor(combo/8),4); }
+
+function spawnItem(){
+  var t=pickType(), u=U();
+  items.push({ e:t.e, pts:t.pts, snd:t.snd, diya:!!t.diya, bad:!!t.bad,
+    x:26+Math.random()*(W-52), y:-30,
+    vy:(150+level*38+Math.random()*70)*Math.max(.8,Math.min(1.15,H/760)),
+    rot:0, vr:(Math.random()-.5)*1.4, size:34*u+6 });
+}
+function burst(x,y,n,cols,spd,life,size){
+  var i; for(i=0;i<n;i++){
+    if(parts.length>380) break;
+    var a=Math.random()*Math.PI*2, s=(0.25+Math.random()*0.75)*spd;
+    parts.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-30,
+      life:0,max:life*(0.6+Math.random()*0.7),
+      col:cols[(Math.random()*cols.length)|0], size:size*(0.6+Math.random()*0.8)});
+  }
+}
+function firework(x,y,big){
+  burst(x,y, big?80:44, PALETTE, big?300:230, big?1.7:1.3, 2.6);
+}
+function popup(x,y,text,col){ popups.push({x:x,y:y,text:text,col:col||'#ffe9a8',life:0}); if(popups.length>12)popups.shift(); }
+
+function startGame(){
+  score=0; lives=3; combo=0; timeLeft=60; level=1; lastMile=0;
+  items=[]; parts=[]; popups=[]; spawnT=0.3; shakeT=0; flashT=0;
+  state='play'; paused=false;
+  menu.classList.add('hidden'); over.classList.add('hidden'); pauseOverlay.classList.add('hidden');
+  hud.style.display='flex'; pauseBtn.classList.remove('hidden'); muteBtn.classList.remove('hidden');
+  syncHud(true);
+}
+function endGame(reason){
+  state='over';
+  hud.style.display='none'; pauseBtn.classList.add('hidden'); muteBtn.classList.add('hidden');
+  $('overTitle').textContent = reason==='lives' ? '💔 दीये बुझ गए!' : '⏰ समय ख़त्म!';
+  $('finalScore').textContent = score;
+  var nb = score>best;
+  if(nb){ best=score; localStorage.setItem('diwali_dhamaka_best',String(best)); }
+  $('newBest').classList.toggle('hidden',!nb);
+  $('overBest').textContent='🏆 Best Score: '+best;
+  over.classList.remove('hidden');
+  firework(W*0.3,H*0.3,true); firework(W*0.7,H*0.22,true);
+}
+function syncHud(force){
+  scoreVal.textContent=score;
+  timeVal.textContent=Math.max(0,Math.ceil(timeLeft));
+  var s='',i; for(i=0;i<3;i++) s+= i<lives?'❤️':'🖤';
+  livesVal.textContent=s;
+  var m=mult();
+  comboVal.textContent='×'+m+(combo>1?' ('+combo+')':'');
+  comboBox.style.opacity = m>1 ? '1':'0';
+}
+function loseLife(){
+  lives--; combo=0; flashT=.45; shakeT=.35; syncHud();
+  if(lives<=0) endGame('lives');
+}
+function catchItem(it){
+  var ty=thaliY();
+  if(it.bad){
+    burst(it.x,ty,46,['#ff5a3c','#ffb03c','#ffe9a8'],260,0.9,3);
+    sndBoom(); popup(it.x,ty-34,'💥 धमाका!','#ff8a70'); loseLife(); return;
+  }
+  combo++;
+  var gain=it.pts*mult();
+  score+=gain;
+  popup(it.x,ty-34,'+'+gain, it.diya?'#ffd94d':'#ffe9a8');
+  if(it.snd==='coin')sndCoin(); else if(it.snd==='flower')sndFlower();
+  else if(it.snd==='diya'){ sndDiya(); burst(it.x,ty-6,14,['#ffd94d','#fff3c4'],130,0.6,2); }
+  else if(it.snd==='mithai'){ sndMithai(); burst(it.x,ty-6,16,PALETTE,150,0.7,2); }
+  var mile=Math.floor(score/100);
+  if(mile>lastMile){ lastMile=mile; firework(60+Math.random()*(W-120),90+Math.random()*130,true);
+    popup(W/2,120,'🎆 धमाका! '+mile*100,'#7dff9a'); sndMilestone(); }
+  syncHud();
+}
+
+/* ---------------- input ---------------- */
+function setTarget(clientX){ thali.tx=Math.max(thaliW()/2,Math.min(W-thaliW()/2,clientX)); }
+cvs.addEventListener('pointerdown',function(e){ setTarget(e.clientX); });
+cvs.addEventListener('pointermove',function(e){ if(e.buttons||e.pointerType==='touch') setTarget(e.clientX); });
+window.addEventListener('keydown',function(e){
+  if(e.key==='ArrowLeft')keys.left=true;
+  if(e.key==='ArrowRight')keys.right=true;
+  if(e.key===' '){ e.preventDefault(); if(state!=='play')startGame(); }
+  if(e.key==='p'||e.key==='P'){ if(state==='play')togglePause(); }
+});
+window.addEventListener('keyup',function(e){
+  if(e.key==='ArrowLeft')keys.left=false;
+  if(e.key==='ArrowRight')keys.right=false;
+});
+function togglePause(){
+  if(state!=='play')return;
+  paused=!paused;
+  pauseOverlay.classList.toggle('hidden',!paused);
+}
+$('startBtn').addEventListener('click',function(){ ac(); startGame(); });
+$('againBtn').addEventListener('click',function(){ ac(); startGame(); });
+$('resumeBtn').addEventListener('click',togglePause);
+pauseBtn.addEventListener('click',togglePause);
+muteBtn.addEventListener('click',function(){ muted=!muted; muteBtn.textContent=muted?'🔇':'🔊'; });
+document.addEventListener('visibilitychange',function(){ if(document.hidden&&state==='play'&&!paused)togglePause(); });
+$('menuBest').textContent = best>0 ? '🏆 तुम्हारा Best Score: '+best : '';
+
+/* ---------------- update & render ---------------- */
+function update(dt){
+  elapsed+=dt;
+  timeLeft-=dt;
+  level=1+Math.min(3,Math.floor((60-timeLeft)/15));
+  if(timeLeft<=0){ timeLeft=0; syncHud(); endGame('time'); return; }
+  var spd=430*U();
+  if(keys.left)thali.tx-=spd*dt;
+  if(keys.right)thali.tx+=spd*dt;
+  thali.tx=Math.max(thaliW()/2,Math.min(W-thaliW()/2,thali.tx));
+  thali.x+=(thali.tx-thali.x)*Math.min(1,dt*16);
+  spawnT-=dt;
+  if(spawnT<=0){ spawnItem(); spawnT=Math.max(.34,.72-level*.08)*(0.75+Math.random()*0.5); }
+  var ty=thaliY(), tw=thaliW(), i, it;
+  for(i=items.length-1;i>=0;i--){
+    it=items[i]; it.y+=it.vy*dt; it.rot+=it.vr*dt;
+    if(it.y>ty-14 && it.y<ty+30 && Math.abs(it.x-thali.x)<tw/2+6){
+      catchItem(it); items.splice(i,1); continue;
+    }
+    if(it.y>H+34){
+      if(it.diya){ popup(it.x,H-120,'🪔 गिर गया!','#ff8a70'); sndMiss(); loseLife(); if(state!=='play')return; }
+      items.splice(i,1);
+    }
+  }
+  bgFwT-=dt;
+  if(bgFwT<=0){ firework(50+Math.random()*(W-100),60+Math.random()*170,false); bgFwT=2.4+Math.random()*1.6; }
+  stepParts(dt);
+  if(shakeT>0)shakeT-=dt;
+  if(flashT>0)flashT-=dt;
+  syncHud();
+}
+function stepParts(dt){
+  var i,p;
+  for(i=parts.length-1;i>=0;i--){ p=parts[i]; p.life+=dt;
+    if(p.life>=p.max){ parts.splice(i,1); continue; }
+    p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=240*dt; p.vx*=0.985; p.vy*=0.985; }
+  for(i=popups.length-1;i>=0;i--){ popups[i].life+=dt; popups[i].y-=44*dt;
+    if(popups[i].life>0.95)popups.splice(i,1); }
+}
+function drawLights(t){
+  var cols=['#ff4d4d','#ffc93c','#4dff88','#4dd2ff','#ff4dd2'];
+  var rows=[10,30], r, x, i, phase;
+  ctx.save();
+  for(r=0;r<2;r++){
+    i=0;
+    for(x=14+r*17;x<W;x+=34){
+      phase=.55+.45*Math.sin(t*3.2+i*1.1+r*2);
+      ctx.globalAlpha=.28*phase; ctx.fillStyle=cols[(i+r)%5];
+      ctx.beginPath(); ctx.arc(x,rows[r],8,0,7); ctx.fill();
+      ctx.globalAlpha=phase; ctx.beginPath(); ctx.arc(x,rows[r],3.4,0,7); ctx.fill();
+      i++;
+    }
+  }
+  ctx.restore();
+}
+function drawThali(){
+  var tw=thaliW(), cx=thali.x, ty=thaliY(), u=U();
+  ctx.save();
+  ctx.globalAlpha=.35; ctx.fillStyle='#000';
+  ctx.beginPath(); ctx.ellipse(cx,ty+20,tw*0.46,10,0,0,7); ctx.fill();
+  ctx.globalAlpha=1;
+  var g=ctx.createLinearGradient(cx,ty-12,ty+16);
+  g.addColorStop(0,'#ffe9a8'); g.addColorStop(.5,'#e0aa3e'); g.addColorStop(1,'#8a5a14');
+  ctx.fillStyle=g;
+  ctx.beginPath(); ctx.ellipse(cx,ty,tw/2,tw*0.17,0,0,7); ctx.fill();
+  ctx.strokeStyle='#fff3c4'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.ellipse(cx,ty,tw/2-2,tw*0.17-1,0,0,7); ctx.stroke();
+  ctx.fillStyle='#b57f22';
+  ctx.beginPath(); ctx.ellipse(cx,ty-2,tw*0.34,tw*0.105,0,0,7); ctx.fill();
+  ctx.fillStyle='#fff3c4';
+  var i; for(i=0;i<8;i++){ var a=i/8*Math.PI*2;
+    ctx.beginPath(); ctx.arc(cx+Math.cos(a)*tw*0.42,ty+Math.sin(a)*tw*0.135,2.2,0,7); ctx.fill(); }
+  ctx.font=(30*u+6)+'px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('🪔',cx,ty-12*u);
+  ctx.restore();
+}
+function render(t){
+  ctx.save();
+  if(shakeT>0){ ctx.translate((Math.random()-.5)*10*shakeT*3,(Math.random()-.5)*8*shakeT*3); }
+  if(bg)ctx.drawImage(bg,0,0,W,H);
+  drawLights(t);
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  var i,p;
+  for(i=0;i<parts.length;i++){ p=parts[i];
+    ctx.globalAlpha=Math.max(0,1-p.life/p.max);
+    ctx.fillStyle=p.col;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,7); ctx.fill(); }
+  ctx.restore();
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  var it;
+  for(i=0;i<items.length;i++){ it=items[i];
+    ctx.save(); ctx.translate(it.x,it.y); ctx.rotate(Math.sin(it.rot)*0.28);
+    ctx.font=it.size+'px serif'; ctx.fillText(it.e,0,0); ctx.restore(); }
+  if(state!=='menu') drawThali();
+  ctx.font='800 '+(19*U()+3)+'px sans-serif';
+  for(i=0;i<popups.length;i++){ p=popups[i];
+    ctx.globalAlpha=Math.max(0,1-p.life/0.95);
+    ctx.fillStyle=p.col; ctx.strokeStyle='rgba(0,0,0,.6)'; ctx.lineWidth=3;
+    ctx.strokeText(p.text,p.x,p.y); ctx.fillText(p.text,p.x,p.y); }
+  ctx.globalAlpha=1;
+  if(flashT>0){ ctx.fillStyle='rgba(255,30,20,'+(flashT*0.35)+')'; ctx.fillRect(0,0,W,H); }
+  ctx.restore();
+}
+var lastTs=0;
+function loop(ts){
+  requestAnimationFrame(loop);
+  var dt=Math.min(0.05,(ts-lastTs)/1000||0.016); lastTs=ts;
+  var t=ts/1000;
+  if(state==='play'&&!paused) update(dt);
+  else { elapsed+=dt; bgFwT-=dt;
+    if(bgFwT<=0){ firework(50+Math.random()*(W-100),60+Math.random()*170,false); bgFwT=2.6+Math.random()*1.8; }
+    stepParts(dt); }
+  render(t);
+}
+resize();
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

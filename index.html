@@ -3,224 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🪔 शुभ दीपावली — SP Launcher</title>
-<meta name="description" content="SP Launcher की ओर से दीपावली की हार्दिक शुभकामनाएँ! अपने दोस्तों के लिए दीया जलाएँ।">
+<title>SP DEV 22 — Apps, Games & Web Projects</title>
+<meta name="description" content="SP DEV 22 ke saare projects ek jagah — Android Apps, Android Games, Web Games aur Web Apps. Sab free!">
+<script>
+// Purane Diwali links (?n=...) ko greeting page par bhejo, taaki share kiye hue links na tootein
+(function(){try{var p=new URLSearchParams(location.search);if(p.has('n')){location.replace('diwali.html'+location.search);}}catch(e){}})();
+</script>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  body { min-height:100vh; font-family:'Segoe UI',system-ui,sans-serif; color:#f5e7c8; text-align:center;
-    background:radial-gradient(ellipse at 50% -10%, #5a1408 0%, #2a0505 55%, #17030a 100%);
-    overflow-x:hidden; padding:26px 16px 40px; }
-  .bokeh { position:fixed; inset:0; pointer-events:none; z-index:0; }
-  #fx { position:fixed; inset:0; pointer-events:none; z-index:0; }
-  .bokeh span { position:absolute; border-radius:50%; background:radial-gradient(circle,#ffcf7a 0%,rgba(255,160,50,0) 70%);
-    animation:float 7s ease-in-out infinite; opacity:.5; }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-26px)} }
-  .wrap { position:relative; z-index:1; max-width:520px; margin:0 auto; }
-  .diya { font-size:110px; line-height:1.1; display:inline-block; filter:drop-shadow(0 0 26px rgba(255,160,40,.95));
-    animation:flick 1.6s ease-in-out infinite; }
-  @keyframes flick { 0%,100%{transform:scale(1)} 30%{transform:scale(1.045) rotate(-1deg)} 60%{transform:scale(.985)} }
-  h1 { font-size:34px; color:#ffc93c; margin-top:8px; line-height:1.3;
-    text-shadow:0 0 10px rgba(255,150,0,.9), 0 0 34px rgba(255,80,120,.65), 0 2px 0 #6b2400;
-    animation:glowPulse 3.2s ease-in-out infinite; }
-  @keyframes glowPulse { 0%,100%{ text-shadow:0 0 10px rgba(255,150,0,.9), 0 0 34px rgba(255,80,120,.65), 0 2px 0 #6b2400; }
-    50%{ text-shadow:0 0 16px rgba(255,170,0,1), 0 0 52px rgba(255,80,120,.9), 0 2px 0 #6b2400; } }
-  .from { font-size:20px; color:#ffe9a8; margin-top:14px; line-height:1.55; }
-  .from b { color:#ffd94d; }
-  .wish { margin:18px auto 4px; font-size:16.5px; line-height:1.7; color:#f8ecd2; max-width:420px; }
-  .card { margin:26px auto 0; background:rgba(255,180,60,.07); border:1px solid rgba(255,201,60,.4);
-    border-radius:18px; padding:20px 18px 22px; max-width:440px; }
-  .card h2 { font-size:21px; color:#ffc93c; margin-bottom:6px; }
-  .card p { font-size:14.5px; color:#eeddB0; color:#eeddb0; line-height:1.6; }
-  input { width:100%; margin-top:14px; padding:13px 15px; font-size:17px; border-radius:12px; text-align:center;
-    border:1px solid rgba(255,201,60,.55); background:rgba(20,4,10,.65); color:#fff; outline:none; }
-  input::placeholder { color:#b9a06a; }
-  .btn { display:inline-block; margin-top:14px; font-size:18px; font-weight:800; border:none; cursor:pointer;
-    border-radius:999px; padding:13px 30px; color:#431a00; background:linear-gradient(180deg,#ffe066,#ffb020);
-    box-shadow:0 0 18px rgba(255,160,30,.7), 0 4px 0 #a35b00; text-decoration:none; }
-  .btn:active { transform:translateY(2px); box-shadow:0 0 18px rgba(255,160,30,.7), 0 2px 0 #a35b00; }
-  .btn.wa { background:linear-gradient(180deg,#5fe08a,#22b358); color:#04330f; box-shadow:0 0 18px rgba(50,220,110,.55), 0 4px 0 #0d7031; }
-  .btn.ghost { background:rgba(255,201,60,.12); color:#ffd97a; box-shadow:none; border:1px solid rgba(255,201,60,.5); font-size:15.5px; padding:11px 22px; }
-  #myLink { word-break:break-all; margin-top:14px; font-size:13.5px; color:#ffd97a; background:rgba(0,0,0,.35);
-    border:1px dashed rgba(255,201,60,.45); border-radius:10px; padding:10px; display:none; }
-  .app { margin-top:30px; }
-  .app .btn { font-size:17px; }
-  .app p { font-size:14px; color:#d9c491; margin-top:8px; line-height:1.6; }
-  .diyarow { font-size:24px; letter-spacing:6px; margin-top:30px; opacity:.9; }
-  .diyarow span { display:inline-block; animation:flick 1.8s ease-in-out infinite; }
-  .diyarow span:nth-child(2) { animation-delay:.35s; }
-  .diyarow span:nth-child(3) { animation-delay:.7s; }
-  .diyarow span:nth-child(4) { animation-delay:1.05s; }
-  .diyarow span:nth-child(5) { animation-delay:1.4s; }
-  footer { margin-top:16px; font-size:12.5px; color:rgba(245,231,200,.55); }
-  .hidden { display:none !important; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#0b1020;--panel:#ffffff;--ink:#1e293b;--muted:#64748b}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#0b1020,#1e1b4b 55%,#0b1020);color:#e2e8f0;min-height:100vh}
+  a{text-decoration:none}
+  /* ---------- Header ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .bar{max-width:1020px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:12px 16px}
+  .logo{font-size:26px}
+  .brand{line-height:1.15}
+  .brand b{font-size:20px;letter-spacing:.5px;color:#fff}
+  .brand span{display:block;font-size:11.5px;color:#a5b4fc}
+  .spacer{flex:1}
+  .menu-btn{width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-size:22px;cursor:pointer;line-height:1}
+  .menu-btn:active{transform:scale(.95)}
+  .menu{position:absolute;top:60px;right:12px;width:250px;background:#fff;border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.5);padding:8px;display:none;z-index:60}
+  .menu.open{display:block}
+  .menu button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 12px;border:0;background:none;font-size:15.5px;color:var(--ink);border-radius:10px;cursor:pointer;text-align:left;font-family:inherit}
+  .menu button:hover{background:#eef2ff}
+  .menu button.active{background:#e0e7ff;font-weight:600}
+  .menu .mi{font-size:19px;width:24px;text-align:center}
+  .menu hr{border:0;border-top:1px solid #e2e8f0;margin:6px 4px}
+  /* ---------- Layout ---------- */
+  main{max-width:1020px;margin:0 auto;padding:22px 16px 40px}
+  .hero{text-align:center;padding:14px 6px 22px}
+  .hero h1{font-size:27px;color:#fff;margin-bottom:6px}
+  .hero p{color:#c7d2fe;font-size:14.5px}
+  .grid{display:grid;grid-template-columns:1fr;gap:18px}
+  @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+  /* ---------- Card ---------- */
+  .card{background:var(--panel);border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.35);display:flex;flex-direction:column}
+  .card-top{padding:18px;display:flex;align-items:center;gap:14px;color:#fff}
+  .card-top .ic{font-size:40px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.3))}
+  .card-top h2{font-size:20px;line-height:1.25}
+  .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .card-body p{color:var(--ink);font-size:14.5px;line-height:1.55;flex:1}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{flex:1;min-width:130px;text-align:center;padding:12px 10px;border-radius:12px;font-size:14.5px;font-weight:700;cursor:pointer;border:2px solid transparent}
+  .btn:active{transform:scale(.97)}
+  .btn-open{color:#fff}
+  .btn-dl{background:#fff}
+  .soon{border:2px dashed rgba(255,255,255,.35);border-radius:18px;padding:38px 20px;text-align:center;color:#c7d2fe;background:rgba(255,255,255,.04)}
+  .soon .big{font-size:40px;margin-bottom:8px}
+  /* ---------- Static views ---------- */
+  .sheet{background:#fff;color:var(--ink);border-radius:18px;padding:24px 20px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .sheet h2{font-size:21px;margin-bottom:12px}
+  .sheet p{font-size:15px;line-height:1.65;margin-bottom:10px}
+  .sheet ul{margin:0 0 12px 20px;font-size:15px;line-height:1.7}
+  .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .links a{padding:11px 16px;border-radius:12px;font-weight:700;font-size:14.5px;color:#fff}
+  .l-gh{background:#24292f}.l-ig{background:linear-gradient(45deg,#f59e0b,#ec4899,#8b5cf6)}.l-yt{background:#dc2626}
+  textarea,input[type=text]{width:100%;border:2px solid #e2e8f0;border-radius:12px;padding:12px;font-size:15px;font-family:inherit;margin-bottom:12px;background:#f8fafc}
+  textarea{min-height:120px;resize:vertical}
+  .fbtn{display:inline-block;padding:12px 18px;border-radius:12px;border:0;font-size:15px;font-weight:700;cursor:pointer;color:#fff;background:#4f46e5;margin-right:8px}
+  .fbtn.alt{background:#059669}
+  .note{font-size:13px;color:var(--muted)}
+  footer{text-align:center;color:#94a3b8;font-size:13px;padding:8px 16px 30px}
+  .hidden{display:none}
 </style>
 </head>
 <body>
-<div class="bokeh" id="bokeh"></div>
-<canvas id="fx"></canvas>
-<div class="wrap">
-  <div class="diya">🪔</div>
-  <h1>॥ शुभ दीपावली ॥</h1>
 
-  <div id="personal" class="hidden">
-    <div class="from">✨ <b id="senderName">किसी ख़ास</b> ने<br>आपके लिए यह दीया जलाया है ✨</div>
-    <div class="wish">यह दीया आपके जीवन में सुख, समृद्धि और<br>नई रोशनी लेकर आए। 🪔</div>
+<header>
+  <div class="bar">
+    <div class="logo">🚀</div>
+    <div class="brand"><b>SP DEV 22</b><span>Apps • Games • Web Projects — sab FREE!</span></div>
+    <div class="spacer"></div>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">⋮</button>
   </div>
-  <div id="generic">
-    <div class="from">✨ दीपों का त्योहार, खुशियों की बहार ✨</div>
-    <div class="wish">आपको व आपके परिवार को<br>दीपावली की हार्दिक शुभकामनाएँ!</div>
-  </div>
+  <nav class="menu" id="menu">
+    <button data-view="android-apps"><span class="mi">📱</span>Android Apps</button>
+    <button data-view="android-games"><span class="mi">🎮</span>Android Games</button>
+    <button data-view="web-games"><span class="mi">🕹️</span>Web Games</button>
+    <button data-view="web-apps"><span class="mi">🌐</span>Web Apps</button>
+    <hr>
+    <button data-view="about"><span class="mi">ℹ️</span>About</button>
+    <button data-view="support"><span class="mi">🛟</span>Support</button>
+    <button data-view="feedback"><span class="mi">💬</span>Feedback</button>
+  </nav>
+</header>
 
-  <div class="card">
-    <h2>🪔 आप भी दीया जलाएँ!</h2>
-    <p>अपना नाम लिखो, तुम्हारे नाम का ख़ास link बनेगा।<br>जिसे भेजोगे, उसे दिखेगा — <i>"तुमने उसके लिए दीया जलाया!"</i></p>
-    <input id="nameInput" type="text" maxlength="40" placeholder="अपना नाम लिखो (जैसे: Somdatt Prajapat)">
-    <br>
-    <button class="btn" id="makeBtn">✨ मेरा Link बनाओ</button>
-    <div id="myLink"></div>
-    <div id="shareBtns" class="hidden">
-      <a class="btn wa" id="waBtn" href="#" target="_blank" rel="noopener">📲 WhatsApp पर भेजो</a>
-      <br>
-      <button class="btn ghost" id="copyBtn">🔗 Link Copy करो</button>
+<main>
+  <!-- Category views yahin render hote hain -->
+  <section id="view-category">
+    <div class="hero"><h1 id="catTitle">🌐 Web Apps</h1><p id="catTag"></p></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- About -->
+  <section id="view-about" class="hidden">
+    <div class="sheet">
+      <h2>ℹ️ About — SP DEV 22</h2>
+      <p>Namaste! 🙏 <b>SP DEV 22</b> ek student developer ke projects ka ghar hai — Android apps, games aur web tools, khaas taur par <b>students</b> ke liye banaye gaye.</p>
+      <p>Hamara sabse bada project hai <b>SP Launcher</b> — padhai ke liye bana free Android launcher (Study Manager, Goals, Time Table, Study Popups aur bhi bahut kuch). Saare projects <b>bilkul free</b> hain aur kam RAM wale phones par bhi smooth chalte hain.</p>
+      <p>Ye website unhi projects ki official jagah hai — naye apps aur games yahin sabse pehle aayenge!</p>
+      <div class="links">
+        <a class="l-gh" href="https://github.com/sp-dev-22" target="_blank" rel="noopener">GitHub</a>
+        <a class="l-ig" href="https://www.instagram.com/sp_dev_22" target="_blank" rel="noopener">Instagram</a>
+        <a class="l-yt" href="https://www.youtube.com/@SPDev22" target="_blank" rel="noopener">YouTube</a>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="app">
-    <a class="btn" href="https://github.com/sp-dev-22/sp-launcher" target="_blank" rel="noopener">📥 SP Launcher — Free Download</a>
-    <p>Students के लिए बना free launcher — Study Manager, Goals,<br>Study Popups और बहुत कुछ। No ads, no internet, बिल्कुल free!</p>
-  </div>
+  <!-- Support -->
+  <section id="view-support" class="hidden">
+    <div class="sheet">
+      <h2>🛟 Support</h2>
+      <p>Kisi app ya game mein dikkat ho, ya koi sawaal ho? Madad ke liye:</p>
+      <ul>
+        <li><b>Instagram</b> par DM karo — <b>@sp_dev_22</b> (sabse tez jawab yahin milta hai)</li>
+        <li><b>YouTube</b> channel <b>SP DEV 22</b> ki videos par comment karo</li>
+        <li><b>SP Ai Agent</b> chalane ke liye apni <b>free Gemini API key</b> chahiye — app ki Settings mein daalni hoti hai</li>
+        <li>Web Apps/Games bina install kiye browser mein chalte hain; offline chalane ke liye <b>Download</b> button se file save kar lo</li>
+      </ul>
+      <div class="links">
+        <a class="l-ig" href="https://www.instagram.com/sp_dev_22" target="_blank" rel="noopener">Instagram DM करें</a>
+        <a class="l-yt" href="https://www.youtube.com/@SPDev22" target="_blank" rel="noopener">YouTube Channel</a>
+      </div>
+    </div>
+  </section>
 
-  <div class="diyarow"><span>🪔</span><span>🪔</span><span>🪔</span><span>🪔</span><span>🪔</span></div>
-  <footer>SP Launcher की ओर से शुभ दीपावली 🎆</footer>
-</div>
+  <!-- Feedback -->
+  <section id="view-feedback" class="hidden">
+    <div class="sheet">
+      <h2>💬 Feedback</h2>
+      <p>Tumhara feedback hi in projects ko behtar banata hai! Niche apna sujhav likho:</p>
+      <input type="text" id="fbName" placeholder="Tumhara naam (optional)">
+      <textarea id="fbText" placeholder="Apna feedback / sujhav yahan likho..."></textarea>
+      <button class="fbtn" id="fbCopy">📋 Feedback Copy करें</button>
+      <a class="fbtn alt" style="text-decoration:none" href="https://www.instagram.com/sp_dev_22" target="_blank" rel="noopener">📩 Instagram पर भेजें</a>
+      <p class="note" style="margin-top:12px"> तरीका: pehle feedback likhkar <b>Copy</b> karo, phir Instagram DM mein paste karke bhej do. Dhanyavaad! ❤️</p>
+      <p class="note" id="fbDone"></p>
+    </div>
+  </section>
+</main>
 
+<footer>© 2026 SP DEV 22 • Made in India 🇮🇳 • Saare projects FREE hain</footer>
+
+<script src="projects.js"></script>
 <script>
-(function(){
-  "use strict";
-  // floating bokeh lights
-  var bok=document.getElementById('bokeh'), i, s;
-  for(i=0;i<16;i++){ s=document.createElement('span');
-    var sz=18+Math.random()*46;
-    s.style.width=sz+'px'; s.style.height=sz+'px';
-    s.style.left=(Math.random()*96)+'vw'; s.style.top=(Math.random()*92)+'vh';
-    s.style.animationDelay=(Math.random()*6)+'s'; s.style.opacity=(0.25+Math.random()*0.4);
-    bok.appendChild(s); }
+  var CATS = {
+    'android-apps':  {title:'📱 Android Apps',  tag:'Phone mein install karke chalao — APK download karo'},
+    'android-games': {title:'🎮 Android Games', tag:'Install karke khelo — Android games'},
+    'web-games':     {title:'🕹️ Web Games',     tag:'Bina install kiye, browser mein hi khelo!'},
+    'web-apps':      {title:'🌐 Web Apps',       tag:'Browser mein chalao, ya download karke offline chalao'}
+  };
+  var grid = document.getElementById('grid');
 
-  function enc(name){ return btoa(unescape(encodeURIComponent(name))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
-  function dec(code){ try{ code=code.replace(/-/g,'+').replace(/_/g,'/');
-    while(code.length%4) code+='='; return decodeURIComponent(escape(atob(code))); }catch(e){ return ''; } }
-  function getParam(){
-    var q=new URLSearchParams(location.search).get('n');
-    if(q) return dec(q);
-    if(location.hash.length>3) return dec(location.hash.slice(1));
-    return '';
+  function isExt(u){ return /^https?:\/\//.test(u||''); }
+
+  function cardHTML(p){
+    var grad = 'linear-gradient(120deg,'+p.color+','+p.color2+')';
+    var tags = (p.tags||[]).map(function(t){return '<span class="tag">'+t+'</span>';}).join('');
+    var openBtn = p.open ? '<a class="btn btn-open" style="background:'+grad+'" href="'+p.open+'"'+(isExt(p.open)?' target="_blank" rel="noopener"':'')+'>▶ '+(p.openLabel||'Open (Run Online)')+'</a>' : '';
+    var dlBtn = p.download ? '<a class="btn btn-dl" style="border-color:'+p.color+';color:'+p.color+'" href="'+p.download+'"'+(isExt(p.download)?' target="_blank" rel="noopener"':' download')+'>⬇ '+(p.downloadLabel||'Download (Run Offline)')+'</a>' : '';
+    return '<article class="card">'
+      + '<div class="card-top" style="background:'+grad+'"><div class="ic">'+p.icon+'</div><h2>'+p.name+'</h2></div>'
+      + '<div class="card-body"><p>'+p.desc+'</p><div class="tags">'+tags+'</div>'
+      + '<div class="btns">'+openBtn+dlBtn+'</div></div></article>';
   }
-  var sender=getParam();
-  if(sender){
-    document.getElementById('senderName').textContent=sender;
-    document.getElementById('personal').classList.remove('hidden');
-    document.getElementById('generic').classList.add('hidden');
-    document.title='🪔 '+sender+' ने आपके लिए दीया जलाया!';
+
+  function showCategory(cat){
+    var meta = CATS[cat]; if(!meta) return;
+    document.getElementById('catTitle').textContent = meta.title;
+    document.getElementById('catTag').textContent = meta.tag;
+    var list = PROJECTS.filter(function(p){return p.category===cat;});
+    grid.innerHTML = list.length ? list.map(cardHTML).join('')
+      : '<div class="soon"><div class="big">🚧</div><b>Coming Soon!</b><br>Is section mein naye projects jald aa rahe hain. Tab tak Web Apps aur Web Games dekho! 👀</div>';
   }
-  var input=document.getElementById('nameInput'), myLink=document.getElementById('myLink'),
-      shareBtns=document.getElementById('shareBtns'), waBtn=document.getElementById('waBtn');
-  var currentLink='';
-  document.getElementById('makeBtn').addEventListener('click',function(){
-    var name=input.value.trim();
-    if(!name){ input.focus(); input.placeholder='पहले अपना नाम तो लिखो! 😄'; return; }
-    var base=location.origin+location.pathname;
-    currentLink=base+'?n='+enc(name);
-    myLink.textContent=currentLink; myLink.style.display='block';
-    var msg='🪔 '+name+' ने आपके लिए दीया जलाया है ✨\nशुभ दीपावली! 👇\n'+currentLink;
-    waBtn.href='https://wa.me/?text='+encodeURIComponent(msg);
-    shareBtns.classList.remove('hidden');
-    myLink.scrollIntoView({behavior:'smooth',block:'center'});
+
+  function showView(view){
+    var isCat = !!CATS[view];
+    document.getElementById('view-category').classList.toggle('hidden', !isCat);
+    ['about','support','feedback'].forEach(function(v){
+      document.getElementById('view-'+v).classList.toggle('hidden', view!==v);
+    });
+    if(isCat) showCategory(view);
+    document.querySelectorAll('#menu button').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-view')===view);
+    });
+    try{ history.replaceState(null,'','#'+view); }catch(e){}
+    window.scrollTo({top:0});
+  }
+
+  var menu = document.getElementById('menu');
+  document.getElementById('menuBtn').addEventListener('click', function(e){
+    e.stopPropagation(); menu.classList.toggle('open');
   });
-  document.getElementById('copyBtn').addEventListener('click',function(){
-    if(!currentLink) return;
-    var done=function(){ document.getElementById('copyBtn').textContent='✅ Copy हो गया!'; };
-    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(currentLink).then(done,done); }
-    else { var ta=document.createElement('textarea'); ta.value=currentLink; document.body.appendChild(ta);
-      ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
+  document.addEventListener('click', function(e){
+    if(!menu.contains(e.target)) menu.classList.remove('open');
   });
-})();
-</script>
-<script>
-(function(){
-  "use strict";
-  // ---- Festival sky: twinkling stars, falling embers and fireworks (canvas, no libraries) ----
-  var cv=document.getElementById('fx'); if(!cv) return;
-  var ctx=cv.getContext('2d');
-  var W=0,H=0, stars=[], embers=[], rockets=[], sparks=[];
-  var COLORS=['#ffc107','#ff5252','#00e5ff','#69f0ae','#ff4081','#b388ff','#fff59d'];
-  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function rnd(a,b){ return a+Math.random()*(b-a); }
-  function resize(){
-    var dpr=Math.min(window.devicePixelRatio||1,1.5);
-    W=window.innerWidth; H=window.innerHeight;
-    cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    stars=[]; for(var i=0;i<45;i++) stars.push({x:Math.random()*W,y:Math.random()*H*0.7,r:rnd(0.6,1.7),p:Math.random()*6.28,s:rnd(0.6,2.2)});
-    embers=[]; for(var j=0;j<14;j++) embers.push({x:Math.random()*W,y:Math.random()*H,r:rnd(1,2.4),v:rnd(0.25,0.7),ph:Math.random()*6.28});
-  }
-  window.addEventListener('resize',resize); resize();
-  function burst(x,y){
-    var n=30, base=COLORS[Math.floor(Math.random()*COLORS.length)];
-    for(var i=0;i<n;i++){
-      var a=(i/n)*6.283+Math.random()*0.35, sp=rnd(1.2,4.6);
-      sparks.push({x:x,y:y,px:x,py:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,decay:rnd(0.008,0.02),
-        c:(i%3===0?'#fff59d':base)});
-    }
-  }
-  function launch(){
-    rockets.push({x:rnd(W*0.15,W*0.85),y:H+4,vy:rnd(-11.5,-9),targetY:rnd(H*0.14,H*0.4),trail:0});
-  }
-  var lastLaunch=0, running=true, t0=Date.now();
-  function frame(now){
-    if(!running) return;
-    var t=(now-t0)/1000;
-    ctx.clearRect(0,0,W,H);
-    // twinkling stars
-    for(var i=0;i<stars.length;i++){ var s=stars[i];
-      ctx.globalAlpha=0.25+0.55*(0.5+0.5*Math.sin(t*s.s+s.p));
-      ctx.fillStyle='#ffeec2'; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill(); }
-    // falling golden embers
-    ctx.fillStyle='#ffb74d';
-    for(var j=0;j<embers.length;j++){ var e=embers[j];
-      e.y+=e.v; e.x+=Math.sin(t*0.9+e.ph)*0.3; if(e.y>H+4){ e.y=-4; e.x=Math.random()*W; }
-      ctx.globalAlpha=0.5; ctx.beginPath(); ctx.arc(e.x,e.y,e.r,0,6.283); ctx.fill(); }
-    ctx.globalAlpha=1;
-    if(!reduced){
-      if(now-lastLaunch>1500&&rockets.length<3){ launch(); lastLaunch=now; }
-      // rockets climbing
-      for(var k=rockets.length-1;k>=0;k--){ var r=rockets[k];
-        r.y+=r.vy; r.vy+=0.06; r.trail++;
-        ctx.fillStyle='#fff3c4'; ctx.beginPath(); ctx.arc(r.x,r.y,2.1,0,6.283); ctx.fill();
-        if(r.trail%2===0) sparks.push({x:r.x+rnd(-2,2),y:r.y+rnd(2,7),px:r.x,py:r.y,vx:rnd(-0.3,0.3),vy:rnd(0.4,1.1),life:0.7,decay:0.03,c:'#ffb300'});
-        if(r.y<=r.targetY||r.vy>=-1){ burst(r.x,r.y); rockets.splice(k,1); } }
-      // burst sparks with gravity + trails
-      for(var m=sparks.length-1;m>=0;m--){ var p=sparks[m];
-        p.px=p.x; p.py=p.y; p.x+=p.vx; p.y+=p.vy; p.vy+=0.045; p.vx*=0.985; p.vy*=0.99; p.life-=p.decay;
-        if(p.life<=0){ sparks.splice(m,1); continue; }
-        ctx.globalAlpha=Math.max(p.life,0); ctx.strokeStyle=p.c; ctx.lineWidth=1.8;
-        ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke(); }
-      ctx.globalAlpha=1;
-    }
-    requestAnimationFrame(frame);
-  }
-  // opening volley
-  if(!reduced){ setTimeout(function(){burst(W*0.3,H*0.3);},350); setTimeout(function(){burst(W*0.7,H*0.22);},800); setTimeout(function(){burst(W*0.5,H*0.38);},1250); }
-  requestAnimationFrame(frame);
-  document.addEventListener('visibilitychange',function(){
-    if(document.hidden){ running=false; } else if(!running){ running=true; requestAnimationFrame(frame); }
+  menu.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      menu.classList.remove('open'); showView(b.getAttribute('data-view'));
+    });
   });
-  document.addEventListener('pointerdown',function(ev){
-    if(reduced) return;
-    var tag=(ev.target&&ev.target.tagName)||'';
-    if(tag==='INPUT'||tag==='BUTTON'||tag==='A') return;
-    burst(ev.clientX,ev.clientY);
+
+  document.getElementById('fbCopy').addEventListener('click', function(){
+    var name = document.getElementById('fbName').value.trim();
+    var text = document.getElementById('fbText').value.trim();
+    var done = document.getElementById('fbDone');
+    if(!text){ done.textContent='⚠️ Pehle feedback likho!'; return; }
+    var msg = 'Feedback for SP DEV 22:\n' + text + (name ? '\n— '+name : '');
+    function ok(){ done.textContent='✅ Copy ho gaya! Ab Instagram DM mein paste karke bhej do.'; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(msg).then(ok, function(){ done.textContent='Copy nahi ho paya — text select karke manually copy kar lo.'; });
+    } else { done.textContent='Apne browser mein text select karke copy kar lo.'; }
   });
-})();
+
+  var start = (location.hash||'#web-apps').slice(1);
+  showView(CATS[start] || ['about','support','feedback'].indexOf(start)>=0 ? start : 'web-apps');
 </script>
 </body>
 </html>
