@@ -25,7 +25,7 @@ const PROJECTS = [
     category: "web-apps",
     icon: "🎯",
     name: "CBT PRO — Quiz & Test",
-    desc: "Exam practice का असली माहौल! Test mode: negative marking, subject sections, timer और question palette — बिल्कुल असली CBT जैसा। Quiz mode: हर सवाल पर तुरंत result + explanation, कोई negative नहीं। पहला Test: SSC CHSL Maths (25 सवाल)।",
+    desc: "Exam practice का असली माहौल! Test mode: negative marking, subject sections, timer और question palette — बिल्कुल असली CBT जैसा। Quiz mode: हर सवाल पर तुरंत result + explanation, कोई negative नहीं। SSC CHSL के सभी subjects — Maths, Reasoning, English, GK (हिंदी में) + Full Mock Test (100 सवाल)।",
     tags: ["Exam", "SSC CHSL", "Mock Test", "Quiz"],
     color: "#e11d48",
     color2: "#991b1b",
