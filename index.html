@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪔 शुभ दीपावली — SP Launcher</title>
+<meta name="description" content="SP Launcher की ओर से दीपावली की हार्दिक शुभकामनाएँ! अपने दोस्तों के लिए दीया जलाएँ।">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { min-height:100vh; font-family:'Segoe UI',system-ui,sans-serif; color:#f5e7c8; text-align:center;
+    background:radial-gradient(ellipse at 50% -10%, #5a1408 0%, #2a0505 55%, #17030a 100%);
+    overflow-x:hidden; padding:26px 16px 40px; }
+  .bokeh { position:fixed; inset:0; pointer-events:none; z-index:0; }
+  #fx { position:fixed; inset:0; pointer-events:none; z-index:0; }
+  .bokeh span { position:absolute; border-radius:50%; background:radial-gradient(circle,#ffcf7a 0%,rgba(255,160,50,0) 70%);
+    animation:float 7s ease-in-out infinite; opacity:.5; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-26px)} }
+  .wrap { position:relative; z-index:1; max-width:520px; margin:0 auto; }
+  .diya { font-size:110px; line-height:1.1; display:inline-block; filter:drop-shadow(0 0 26px rgba(255,160,40,.95));
+    animation:flick 1.6s ease-in-out infinite; }
+  @keyframes flick { 0%,100%{transform:scale(1)} 30%{transform:scale(1.045) rotate(-1deg)} 60%{transform:scale(.985)} }
+  h1 { font-size:34px; color:#ffc93c; margin-top:8px; line-height:1.3;
+    text-shadow:0 0 10px rgba(255,150,0,.9), 0 0 34px rgba(255,80,120,.65), 0 2px 0 #6b2400;
+    animation:glowPulse 3.2s ease-in-out infinite; }
+  @keyframes glowPulse { 0%,100%{ text-shadow:0 0 10px rgba(255,150,0,.9), 0 0 34px rgba(255,80,120,.65), 0 2px 0 #6b2400; }
+    50%{ text-shadow:0 0 16px rgba(255,170,0,1), 0 0 52px rgba(255,80,120,.9), 0 2px 0 #6b2400; } }
+  .from { font-size:20px; color:#ffe9a8; margin-top:14px; line-height:1.55; }
+  .from b { color:#ffd94d; }
+  .wish { margin:18px auto 4px; font-size:16.5px; line-height:1.7; color:#f8ecd2; max-width:420px; }
+  .card { margin:26px auto 0; background:rgba(255,180,60,.07); border:1px solid rgba(255,201,60,.4);
+    border-radius:18px; padding:20px 18px 22px; max-width:440px; }
+  .card h2 { font-size:21px; color:#ffc93c; margin-bottom:6px; }
+  .card p { font-size:14.5px; color:#eeddB0; color:#eeddb0; line-height:1.6; }
+  input { width:100%; margin-top:14px; padding:13px 15px; font-size:17px; border-radius:12px; text-align:center;
+    border:1px solid rgba(255,201,60,.55); background:rgba(20,4,10,.65); color:#fff; outline:none; }
+  input::placeholder { color:#b9a06a; }
+  .btn { display:inline-block; margin-top:14px; font-size:18px; font-weight:800; border:none; cursor:pointer;
+    border-radius:999px; padding:13px 30px; color:#431a00; background:linear-gradient(180deg,#ffe066,#ffb020);
+    box-shadow:0 0 18px rgba(255,160,30,.7), 0 4px 0 #a35b00; text-decoration:none; }
+  .btn:active { transform:translateY(2px); box-shadow:0 0 18px rgba(255,160,30,.7), 0 2px 0 #a35b00; }
+  .btn.wa { background:linear-gradient(180deg,#5fe08a,#22b358); color:#04330f; box-shadow:0 0 18px rgba(50,220,110,.55), 0 4px 0 #0d7031; }
+  .btn.ghost { background:rgba(255,201,60,.12); color:#ffd97a; box-shadow:none; border:1px solid rgba(255,201,60,.5); font-size:15.5px; padding:11px 22px; }
+  #myLink { word-break:break-all; margin-top:14px; font-size:13.5px; color:#ffd97a; background:rgba(0,0,0,.35);
+    border:1px dashed rgba(255,201,60,.45); border-radius:10px; padding:10px; display:none; }
+  .app { margin-top:30px; }
+  .app .btn { font-size:17px; }
+  .app p { font-size:14px; color:#d9c491; margin-top:8px; line-height:1.6; }
+  .diyarow { font-size:24px; letter-spacing:6px; margin-top:30px; opacity:.9; }
+  .diyarow span { display:inline-block; animation:flick 1.8s ease-in-out infinite; }
+  .diyarow span:nth-child(2) { animation-delay:.35s; }
+  .diyarow span:nth-child(3) { animation-delay:.7s; }
+  .diyarow span:nth-child(4) { animation-delay:1.05s; }
+  .diyarow span:nth-child(5) { animation-delay:1.4s; }
+  footer { margin-top:16px; font-size:12.5px; color:rgba(245,231,200,.55); }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<div class="bokeh" id="bokeh"></div>
+<canvas id="fx"></canvas>
+<div class="wrap">
+  <div class="diya">🪔</div>
+  <h1>॥ शुभ दीपावली ॥</h1>
+
+  <div id="personal" class="hidden">
+    <div class="from">✨ <b id="senderName">किसी ख़ास</b> ने<br>आपके लिए यह दीया जलाया है ✨</div>
+    <div class="wish">यह दीया आपके जीवन में सुख, समृद्धि और<br>नई रोशनी लेकर आए। 🪔</div>
+  </div>
+  <div id="generic">
+    <div class="from">✨ दीपों का त्योहार, खुशियों की बहार ✨</div>
+    <div class="wish">आपको व आपके परिवार को<br>दीपावली की हार्दिक शुभकामनाएँ!</div>
+  </div>
+
+  <div class="card">
+    <h2>🪔 आप भी दीया जलाएँ!</h2>
+    <p>अपना नाम लिखो, तुम्हारे नाम का ख़ास link बनेगा।<br>जिसे भेजोगे, उसे दिखेगा — <i>"तुमने उसके लिए दीया जलाया!"</i></p>
+    <input id="nameInput" type="text" maxlength="40" placeholder="अपना नाम लिखो (जैसे: Somdatt Prajapat)">
+    <br>
+    <button class="btn" id="makeBtn">✨ मेरा Link बनाओ</button>
+    <div id="myLink"></div>
+    <div id="shareBtns" class="hidden">
+      <a class="btn wa" id="waBtn" href="#" target="_blank" rel="noopener">📲 WhatsApp पर भेजो</a>
+      <br>
+      <button class="btn ghost" id="copyBtn">🔗 Link Copy करो</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <a class="btn" href="https://github.com/sp-dev-22/sp-launcher" target="_blank" rel="noopener">📥 SP Launcher — Free Download</a>
+    <p>Students के लिए बना free launcher — Study Manager, Goals,<br>Study Popups और बहुत कुछ। No ads, no internet, बिल्कुल free!</p>
+  </div>
+
+  <div class="diyarow"><span>🪔</span><span>🪔</span><span>🪔</span><span>🪔</span><span>🪔</span></div>
+  <footer>SP Launcher की ओर से शुभ दीपावली 🎆</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  // floating bokeh lights
+  var bok=document.getElementById('bokeh'), i, s;
+  for(i=0;i<16;i++){ s=document.createElement('span');
+    var sz=18+Math.random()*46;
+    s.style.width=sz+'px'; s.style.height=sz+'px';
+    s.style.left=(Math.random()*96)+'vw'; s.style.top=(Math.random()*92)+'vh';
+    s.style.animationDelay=(Math.random()*6)+'s'; s.style.opacity=(0.25+Math.random()*0.4);
+    bok.appendChild(s); }
+
+  function enc(name){ return btoa(unescape(encodeURIComponent(name))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+  function dec(code){ try{ code=code.replace(/-/g,'+').replace(/_/g,'/');
+    while(code.length%4) code+='='; return decodeURIComponent(escape(atob(code))); }catch(e){ return ''; } }
+  function getParam(){
+    var q=new URLSearchParams(location.search).get('n');
+    if(q) return dec(q);
+    if(location.hash.length>3) return dec(location.hash.slice(1));
+    return '';
+  }
+  var sender=getParam();
+  if(sender){
+    document.getElementById('senderName').textContent=sender;
+    document.getElementById('personal').classList.remove('hidden');
+    document.getElementById('generic').classList.add('hidden');
+    document.title='🪔 '+sender+' ने आपके लिए दीया जलाया!';
+  }
+  var input=document.getElementById('nameInput'), myLink=document.getElementById('myLink'),
+      shareBtns=document.getElementById('shareBtns'), waBtn=document.getElementById('waBtn');
+  var currentLink='';
+  document.getElementById('makeBtn').addEventListener('click',function(){
+    var name=input.value.trim();
+    if(!name){ input.focus(); input.placeholder='पहले अपना नाम तो लिखो! 😄'; return; }
+    var base=location.origin+location.pathname;
+    currentLink=base+'?n='+enc(name);
+    myLink.textContent=currentLink; myLink.style.display='block';
+    var msg='🪔 '+name+' ने आपके लिए दीया जलाया है ✨\nशुभ दीपावली! 👇\n'+currentLink;
+    waBtn.href='https://wa.me/?text='+encodeURIComponent(msg);
+    shareBtns.classList.remove('hidden');
+    myLink.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    if(!currentLink) return;
+    var done=function(){ document.getElementById('copyBtn').textContent='✅ Copy हो गया!'; };
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(currentLink).then(done,done); }
+    else { var ta=document.createElement('textarea'); ta.value=currentLink; document.body.appendChild(ta);
+      ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
+  });
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  // ---- Festival sky: twinkling stars, falling embers and fireworks (canvas, no libraries) ----
+  var cv=document.getElementById('fx'); if(!cv) return;
+  var ctx=cv.getContext('2d');
+  var W=0,H=0, stars=[], embers=[], rockets=[], sparks=[];
+  var COLORS=['#ffc107','#ff5252','#00e5ff','#69f0ae','#ff4081','#b388ff','#fff59d'];
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function rnd(a,b){ return a+Math.random()*(b-a); }
+  function resize(){
+    var dpr=Math.min(window.devicePixelRatio||1,1.5);
+    W=window.innerWidth; H=window.innerHeight;
+    cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    stars=[]; for(var i=0;i<45;i++) stars.push({x:Math.random()*W,y:Math.random()*H*0.7,r:rnd(0.6,1.7),p:Math.random()*6.28,s:rnd(0.6,2.2)});
+    embers=[]; for(var j=0;j<14;j++) embers.push({x:Math.random()*W,y:Math.random()*H,r:rnd(1,2.4),v:rnd(0.25,0.7),ph:Math.random()*6.28});
+  }
+  window.addEventListener('resize',resize); resize();
+  function burst(x,y){
+    var n=30, base=COLORS[Math.floor(Math.random()*COLORS.length)];
+    for(var i=0;i<n;i++){
+      var a=(i/n)*6.283+Math.random()*0.35, sp=rnd(1.2,4.6);
+      sparks.push({x:x,y:y,px:x,py:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,decay:rnd(0.008,0.02),
+        c:(i%3===0?'#fff59d':base)});
+    }
+  }
+  function launch(){
+    rockets.push({x:rnd(W*0.15,W*0.85),y:H+4,vy:rnd(-11.5,-9),targetY:rnd(H*0.14,H*0.4),trail:0});
+  }
+  var lastLaunch=0, running=true, t0=Date.now();
+  function frame(now){
+    if(!running) return;
+    var t=(now-t0)/1000;
+    ctx.clearRect(0,0,W,H);
+    // twinkling stars
+    for(var i=0;i<stars.length;i++){ var s=stars[i];
+      ctx.globalAlpha=0.25+0.55*(0.5+0.5*Math.sin(t*s.s+s.p));
+      ctx.fillStyle='#ffeec2'; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.283); ctx.fill(); }
+    // falling golden embers
+    ctx.fillStyle='#ffb74d';
+    for(var j=0;j<embers.length;j++){ var e=embers[j];
+      e.y+=e.v; e.x+=Math.sin(t*0.9+e.ph)*0.3; if(e.y>H+4){ e.y=-4; e.x=Math.random()*W; }
+      ctx.globalAlpha=0.5; ctx.beginPath(); ctx.arc(e.x,e.y,e.r,0,6.283); ctx.fill(); }
+    ctx.globalAlpha=1;
+    if(!reduced){
+      if(now-lastLaunch>1500&&rockets.length<3){ launch(); lastLaunch=now; }
+      // rockets climbing
+      for(var k=rockets.length-1;k>=0;k--){ var r=rockets[k];
+        r.y+=r.vy; r.vy+=0.06; r.trail++;
+        ctx.fillStyle='#fff3c4'; ctx.beginPath(); ctx.arc(r.x,r.y,2.1,0,6.283); ctx.fill();
+        if(r.trail%2===0) sparks.push({x:r.x+rnd(-2,2),y:r.y+rnd(2,7),px:r.x,py:r.y,vx:rnd(-0.3,0.3),vy:rnd(0.4,1.1),life:0.7,decay:0.03,c:'#ffb300'});
+        if(r.y<=r.targetY||r.vy>=-1){ burst(r.x,r.y); rockets.splice(k,1); } }
+      // burst sparks with gravity + trails
+      for(var m=sparks.length-1;m>=0;m--){ var p=sparks[m];
+        p.px=p.x; p.py=p.y; p.x+=p.vx; p.y+=p.vy; p.vy+=0.045; p.vx*=0.985; p.vy*=0.99; p.life-=p.decay;
+        if(p.life<=0){ sparks.splice(m,1); continue; }
+        ctx.globalAlpha=Math.max(p.life,0); ctx.strokeStyle=p.c; ctx.lineWidth=1.8;
+        ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y); ctx.stroke(); }
+      ctx.globalAlpha=1;
+    }
+    requestAnimationFrame(frame);
+  }
+  // opening volley
+  if(!reduced){ setTimeout(function(){burst(W*0.3,H*0.3);},350); setTimeout(function(){burst(W*0.7,H*0.22);},800); setTimeout(function(){burst(W*0.5,H*0.38);},1250); }
+  requestAnimationFrame(frame);
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ running=false; } else if(!running){ running=true; requestAnimationFrame(frame); }
+  });
+  document.addEventListener('pointerdown',function(ev){
+    if(reduced) return;
+    var tag=(ev.target&&ev.target.tagName)||'';
+    if(tag==='INPUT'||tag==='BUTTON'||tag==='A') return;
+    burst(ev.clientX,ev.clientY);
+  });
+})();
+</script>
+</body>
+</html>
