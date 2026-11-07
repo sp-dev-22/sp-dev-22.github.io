@@ -21,6 +21,18 @@ const PROJECTS = [
     download: "apps/sp-ai-agent.html"
   },
   {
+    id: "cbt-pro",
+    category: "web-apps",
+    icon: "🎯",
+    name: "CBT PRO — Quiz & Test",
+    desc: "Exam practice का असली माहौल! Test mode: negative marking, subject sections, timer और question palette — बिल्कुल असली CBT जैसा। Quiz mode: हर सवाल पर तुरंत result + explanation, कोई negative नहीं। पहला Test: SSC CHSL Maths (25 सवाल)।",
+    tags: ["Exam", "SSC CHSL", "Mock Test", "Quiz"],
+    color: "#e11d48",
+    color2: "#991b1b",
+    open: "apps/cbt-pro.html",
+    download: "apps/cbt-pro.html"
+  },
+  {
     id: "water-supply-demo",
     category: "web-apps",
     icon: "💧",

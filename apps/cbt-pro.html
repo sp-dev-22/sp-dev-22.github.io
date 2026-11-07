@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBT PRO — Quiz & Test Practice | SP DEV 22</title>
+<meta name="description" content="CBT PRO — असली exam जैसा Test (negative marking, sections, timer) और सीखने के लिए Quiz (हर सवाल पर तुरंत result + explanation). पहला Test: SSC CHSL Maths.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--navy:#172554;--blue:#1d4ed8;--rose:#e11d48;--green:#16a34a;--red:#dc2626;--grey:#94a3b8;--purple:#7c3aed;--ink:#1e293b;--line:#e2e8f0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#eef2ff;color:var(--ink);min-height:100vh}
+  .hidden{display:none!important}
+  button{font-family:inherit;cursor:pointer}
+  /* ---------- Top bar ---------- */
+  .topbar{background:linear-gradient(120deg,var(--navy),var(--blue));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:30;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+  .topbar .row{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:10px}
+  .topbar h1{font-size:21px;letter-spacing:.5px}
+  .topbar .tag{font-size:11.5px;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:999px}
+  .topbar .sp{flex:1}
+  .timer{font-size:17px;font-weight:800;background:rgba(0,0,0,.3);padding:6px 12px;border-radius:10px;font-variant-numeric:tabular-nums}
+  .timer.low{background:var(--rose);animation:blink 1s infinite}
+  @keyframes blink{50%{opacity:.6}}
+  main{max-width:900px;margin:0 auto;padding:18px 14px 44px}
+  /* ---------- Home ---------- */
+  .hero{text-align:center;padding:10px 4px 20px}
+  .hero .big{font-size:46px}
+  .hero h2{font-size:24px;color:var(--navy);margin:4px 0}
+  .hero p{color:#475569;font-size:14.5px;line-height:1.55}
+  .sec-title{font-size:18px;color:var(--navy);margin:20px 2px 10px;display:flex;align-items:center;gap:8px}
+  .tcard{background:#fff;border-radius:16px;padding:18px;box-shadow:0 6px 20px rgba(30,41,59,.10);margin-bottom:14px;border-left:6px solid var(--blue)}
+  .tcard.quiz{border-left-color:var(--rose)}
+  .tcard h3{font-size:18px;margin-bottom:5px}
+  .tcard p{font-size:13.5px;color:#475569;line-height:1.55;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .chip{font-size:11.5px;font-weight:700;background:#eef2ff;color:#3730a3;padding:4px 10px;border-radius:999px}
+  .chip.neg{background:#fff1f2;color:#be123c}
+  .chip.ok{background:#f0fdf4;color:#15803d}
+  .start-btn{border:0;color:#fff;font-weight:800;font-size:15px;padding:12px 22px;border-radius:12px;background:linear-gradient(120deg,var(--blue),#2563eb)}
+  .tcard.quiz .start-btn{background:linear-gradient(120deg,var(--rose),#f43f5e)}
+  .start-btn:active{transform:scale(.97)}
+  .mode-note{background:#fff;border:1px dashed #c7d2fe;border-radius:14px;padding:14px 16px;font-size:13.5px;line-height:1.65;color:#334155;margin-top:8px}
+  /* ---------- Test screen ---------- */
+  .sectabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .sectab{border:2px solid var(--blue);background:#fff;color:var(--blue);font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:999px}
+  .sectab.on{background:var(--blue);color:#fff}
+  .qcard{background:#fff;border-radius:16px;padding:18px;box-shadow:0 6px 20px rgba(30,41,59,.10)}
+  .qmeta{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:#64748b;font-weight:700;margin-bottom:10px;flex-wrap:wrap}
+  .qmeta .marks{color:#15803d}
+  .qmeta .negtag{color:#be123c}
+  .qtext{font-size:17px;line-height:1.6;margin-bottom:16px;font-weight:600}
+  .opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:#f8fafc;border:2px solid var(--line);border-radius:12px;padding:13px 14px;font-size:15.5px;margin-bottom:10px;line-height:1.45}
+  .opt .ol{font-weight:800;color:var(--blue);flex-shrink:0}
+  .opt.sel{border-color:var(--blue);background:#eff6ff}
+  .opt.right{border-color:var(--green);background:#f0fdf4}
+  .opt.wrong{border-color:var(--red);background:#fef2f2}
+  .opt:disabled{cursor:default;opacity:1}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .bbtn{flex:1;min-width:104px;border:0;border-radius:11px;padding:12px 8px;font-size:13.5px;font-weight:800;color:#fff}
+  .bbtn:active{transform:scale(.97)}
+  .b-prev{background:#64748b}.b-clear{background:#f59e0b}.b-mark{background:var(--purple)}.b-next{background:var(--green)}
+  .b-submit{background:var(--rose);width:100%;margin-top:12px;padding:14px;font-size:15.5px}
+  .palette-wrap{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 6px 20px rgba(30,41,59,.10);margin-top:16px}
+  .palette-wrap h4{font-size:14px;margin-bottom:10px;color:var(--navy)}
+  .pal{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:7px}
+  .pal button{position:relative;height:40px;border-radius:9px;border:2px solid #cbd5e1;background:#f1f5f9;font-weight:800;font-size:13.5px;color:#334155}
+  .pal button.cur{outline:3px solid #0ea5e9;outline-offset:1px}
+  .pal button.ans{background:var(--green);border-color:var(--green);color:#fff}
+  .pal button.seen{background:var(--red);border-color:var(--red);color:#fff}
+  .pal button.marked{background:var(--purple);border-color:var(--purple);color:#fff}
+  .pal button.marked.ans{background:var(--purple)}
+  .pal button.marked.ans::after{content:'';position:absolute;right:3px;bottom:3px;width:9px;height:9px;border-radius:50%;background:#22c55e;border:1.5px solid #fff}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:12px;color:#475569}
+  .legend i{display:inline-block;width:13px;height:13px;border-radius:4px;margin-right:5px;vertical-align:-2px}
+  /* ---------- Quiz ---------- */
+  .qz-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .prog{flex:1;min-width:140px;height:10px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--rose),#fb923c);transition:width .3s}
+  .scorechip{background:#fff;border:2px solid var(--line);border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:800;color:var(--navy)}
+  .exp-box{border-radius:12px;padding:14px 16px;font-size:14.5px;line-height:1.65;margin-top:6px;display:none}
+  .exp-box.show{display:block}
+  .exp-box.good{background:#f0fdf4;border:2px solid #bbf7d0}
+  .exp-box.bad{background:#fff7ed;border:2px solid #fed7aa}
+  .exp-box b{display:block;margin-bottom:4px}
+  /* ---------- Result / Review ---------- */
+  .rcard{background:#fff;border-radius:16px;padding:22px 18px;box-shadow:0 6px 20px rgba(30,41,59,.10);text-align:center}
+  .score-big{font-size:44px;font-weight:900;color:var(--navy)}
+  .score-big small{font-size:19px;color:#64748b}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;margin:18px 0}
+  .stat{background:#f8fafc;border:2px solid var(--line);border-radius:13px;padding:12px 6px}
+  .stat b{display:block;font-size:21px}
+  .stat span{font-size:12px;color:#64748b;font-weight:700}
+  table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:8px 6px;text-align:center}
+  th{background:#eef2ff;color:var(--navy)}
+  .rbtn{border:0;border-radius:12px;padding:13px 20px;font-size:15px;font-weight:800;color:#fff;background:var(--blue);margin:6px 4px 0}
+  .rbtn.alt{background:#64748b}
+  .rbtn.rose{background:var(--rose)}
+  .rv-item{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:12px;box-shadow:0 4px 14px rgba(30,41,59,.08);text-align:left}
+  .rv-item .rq{font-weight:700;font-size:15.5px;line-height:1.55;margin-bottom:8px}
+  .rv-item .ra{font-size:14px;line-height:1.6}
+  .ok-t{color:#15803d;font-weight:700}.bad-t{color:#be123c;font-weight:700}.skip-t{color:#64748b;font-weight:700}
+  .rv-exp{background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.6;margin-top:9px}
+  /* ---------- Modal ---------- */
+  .modal{position:fixed;inset:0;background:rgba(15,23,42,.6);display:flex;align-items:center;justify-content:center;z-index:60;padding:16px}
+  .modal .box{background:#fff;border-radius:18px;padding:22px;max-width:400px;width:100%}
+  .modal h3{margin-bottom:10px;color:var(--navy)}
+  .modal p{font-size:14.5px;line-height:1.7;color:#334155}
+  footer{text-align:center;color:#64748b;font-size:12.5px;padding:20px 10px 30px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="row">
+    <div style="font-size:24px">🎯</div>
+    <h1>CBT PRO</h1>
+    <span class="tag">by SP DEV 22</span>
+    <div class="sp"></div>
+    <div class="timer hidden" id="topTimer">00:00</div>
+  </div>
+</div>
+
+<main>
+  <!-- ============ HOME ============ -->
+  <section id="scrHome">
+    <div class="hero">
+      <div class="big">🎯</div>
+      <h2>Quiz &amp; Test Practice</h2>
+      <p>असली परीक्षा जैसा <b>Test</b> और सीखने के लिए <b>Quiz</b> — दोनों एक ही app में।<br>नए Quiz/Test समय-समय पर upload होते रहेंगे।</p>
+    </div>
+    <div class="mode-note">
+      <b>⚡ Quiz</b> — No negative marking • कोई sections नहीं • हर सवाल का <b>तुरंत result + explanation</b><br>
+      <b>📝 Test</b> — Negative marking • Subject-wise sections • कोई explanation नहीं • Result सिर्फ़ <b>अंत में</b> — बिल्कुल असली CBT जैसा
+    </div>
+    <h3 class="sec-title">📝 Tests</h3>
+    <div id="homeTests"></div>
+    <h3 class="sec-title">⚡ Quizzes</h3>
+    <div id="homeQuizzes"></div>
+  </section>
+
+  <!-- ============ TEST ============ -->
+  <section id="scrTest" class="hidden">
+    <div class="sectabs" id="tSections"></div>
+    <div class="qcard">
+      <div class="qmeta"><span id="tQMeta">Question 1</span><span><span class="marks" id="tMarks"></span> &nbsp;<span class="negtag" id="tNeg"></span></span></div>
+      <div class="qtext" id="tQText"></div>
+      <div id="tOpts"></div>
+      <div class="btnrow">
+        <button class="bbtn b-prev" id="btnPrev">⬅ Previous</button>
+        <button class="bbtn b-clear" id="btnClear">Clear Response</button>
+        <button class="bbtn b-mark" id="btnMark">Mark for Review &amp; Next</button>
+        <button class="bbtn b-next" id="btnSaveNext">Save &amp; Next ➡</button>
+      </div>
+    </div>
+    <div class="palette-wrap">
+      <h4>Question Palette — किसी नंबर पर tap करके सीधे उस सवाल पर जाओ</h4>
+      <div class="pal" id="tPal"></div>
+      <div class="legend">
+        <span><i style="background:#16a34a"></i>Answered</span>
+        <span><i style="background:#dc2626"></i>Not Answered</span>
+        <span><i style="background:#f1f5f9;border:1.5px solid #cbd5e1"></i>Not Visited</span>
+        <span><i style="background:#7c3aed"></i>Marked for Review</span>
+      </div>
+      <button class="bbtn b-submit" id="btnSubmit">✅ Submit Test</button>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="scrQuiz" class="hidden">
+    <div class="qz-top">
+      <span class="scorechip" id="qzProgText">Question 1 / 25</span>
+      <div class="prog"><i id="qzBar" style="width:0%"></i></div>
+      <span class="scorechip" id="qzScore">Score: 0</span>
+    </div>
+    <div class="qcard">
+      <div class="qtext" id="qzQText"></div>
+      <div id="qzOpts"></div>
+      <div class="exp-box" id="qzExp"></div>
+      <div class="btnrow">
+        <button class="bbtn b-next hidden" id="btnQzNext" style="flex:1">Next Question ➡</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="scrResult" class="hidden"><div id="rBody"></div></section>
+
+  <!-- ============ REVIEW ============ -->
+  <section id="scrReview" class="hidden">
+    <h3 class="sec-title">🔍 Answer Review</h3>
+    <div id="rvBody"></div>
+    <div style="text-align:center">
+      <button class="rbtn alt" id="btnRvHome">🏠 Home</button>
+    </div>
+  </section>
+</main>
+
+<!-- Submit confirm modal -->
+<div class="modal hidden" id="submitModal">
+  <div class="box">
+    <h3>⚠️ Test Submit करें?</h3>
+    <p id="mCounts"></p>
+    <div class="btnrow" style="margin-top:16px">
+      <button class="bbtn b-prev" id="btnCancelSubmit">वापस जाओ</button>
+      <button class="bbtn b-submit" id="btnFinalSubmit" style="margin-top:0">हाँ, Submit करो</button>
+    </div>
+  </div>
+</div>
+
+<footer>CBT PRO • SP DEV 22 • Practice ही Perfection है 💪</footer>
+
+<script>
+/* ================= DATA ================= */
+const MATH_SET = [
+  {q:"What is the value of 48 ÷ 6 × 4 + 12 − 5 × 3?", o:["27","29","31","25"], a:1, e:"BODMAS: पहले ÷ और × — 48÷6 = 8, 8×4 = 32, 5×3 = 15. फिर 32 + 12 − 15 = 29."},
+  {q:"The smallest 4-digit number which is exactly divisible by 12, 15 and 20 is:", o:["1000","1020","1080","1140"], a:1, e:"12, 15, 20 का LCM = 60. 1000 ÷ 60 ≈ 16.67, तो अगला multiple = 17 × 60 = 1020."},
+  {q:"A number is increased by 20% and then decreased by 20%. The net change is:", o:["No change","4% increase","4% decrease","2% decrease"], a:2, e:"100 → 120 → 96. यानी कुल मिलाकर 4% की कमी."},
+  {q:"If 40% of a number is 240, then the number is:", o:["480","560","600","640"], a:2, e:"संख्या = 240 ÷ 40 × 100 = 600."},
+  {q:"If A : B = 3 : 5 and B : C = 2 : 3, then A : B : C is:", o:["3 : 5 : 3","6 : 10 : 15","6 : 5 : 15","3 : 10 : 15"], a:1, e:"B को दोनों में बराबर करो: A:B = 6:10 और B:C = 10:15, इसलिए A : B : C = 6 : 10 : 15."},
+  {q:"The average of the first 10 even natural numbers is:", o:["10","11","12","9"], a:1, e:"पहली 10 सम संख्याएँ 2 से 20 तक हैं; औसत = (2 + 20) / 2 = 11."},
+  {q:"The average of 5 numbers is 28. If one number is removed, the average of the remaining 4 numbers becomes 26. The removed number is:", o:["30","32","36","40"], a:2, e:"कुल योग = 5 × 28 = 140; बची संख्याओं का योग = 4 × 26 = 104; हटाई गई संख्या = 140 − 104 = 36."},
+  {q:"An article is bought for ₹800 and sold for ₹920. The profit percent is:", o:["12%","15%","18%","20%"], a:1, e:"लाभ = 920 − 800 = ₹120; लाभ% = 120 / 800 × 100 = 15%."},
+  {q:"By selling an article for ₹720, a man loses 10%. The cost price of the article is:", o:["₹780","₹800","₹820","₹792"], a:1, e:"CP = 720 ÷ 90 × 100 = ₹800."},
+  {q:"The simple interest on ₹5,000 at 8% per annum for 3 years is:", o:["₹1,000","₹1,200","₹1,400","₹1,260"], a:1, e:"SI = 5000 × 8 × 3 / 100 = ₹1,200."},
+  {q:"The compound interest on ₹10,000 at 10% per annum for 2 years is:", o:["₹2,000","₹2,050","₹2,100","₹2,200"], a:2, e:"मिश्रधन = 10000 × (1.1)² = ₹12,100; CI = 12100 − 10000 = ₹2,100."},
+  {q:"A can do a piece of work in 12 days and B in 15 days. Working together, they will finish the work in:", o:["6 days","6 2/3 days","7 days","7.5 days"], a:1, e:"दोनों का एक दिन का काम = 1/12 + 1/15 = 9/60 = 3/20; समय = 20/3 = 6 2/3 दिन."},
+  {q:"A train running at a speed of 72 km/h has a speed of:", o:["18 m/s","20 m/s","24 m/s","25 m/s"], a:1, e:"72 × 5/18 = 20 m/s."},
+  {q:"A train 240 m long is running at 20 m/s. In what time will it cross a pole?", o:["10 seconds","12 seconds","14 seconds","15 seconds"], a:1, e:"खंभा पार करने में train अपनी लंबाई के बराबर दूरी तय करती है: समय = 240 / 20 = 12 seconds."},
+  {q:"If x + 1/x = 5, then the value of x² + 1/x² is:", o:["23","25","27","21"], a:0, e:"दोनों तरफ़ वर्ग करने पर: x² + 1/x² = (x + 1/x)² − 2 = 25 − 2 = 23."},
+  {q:"If x + y = 10 and xy = 21, then the value of |x − y| is:", o:["2","3","4","5"], a:2, e:"(x − y)² = (x + y)² − 4xy = 100 − 84 = 16, इसलिए |x − y| = 4."},
+  {q:"The angles of a triangle are in the ratio 2 : 3 : 4. The largest angle is:", o:["60°","70°","80°","90°"], a:2, e:"कुल 9 हिस्से = 180°, एक हिस्सा = 20°; सबसे बड़ा कोण = 4 × 20° = 80°."},
+  {q:"The circumference of a circle is 44 cm. Its radius is (take π = 22/7):", o:["6 cm","7 cm","14 cm","21 cm"], a:1, e:"2πr = 44 → r = 44 × 7 / (2 × 22) = 7 cm."},
+  {q:"The volume of a cuboid of length 10 cm, breadth 8 cm and height 5 cm is:", o:["300 cm³","350 cm³","400 cm³","450 cm³"], a:2, e:"आयतन = लंबाई × चौड़ाई × ऊँचाई = 10 × 8 × 5 = 400 cm³."},
+  {q:"The value of sin²30° + cos²60° is:", o:["1","1/2","3/4","0"], a:1, e:"sin30° = 1/2 और cos60° = 1/2; (1/2)² + (1/2)² = 1/4 + 1/4 = 1/2."},
+  {q:"If tan θ = 3/4, then the value of sin θ is:", o:["3/5","4/5","3/4","5/3"], a:0, e:"tan θ = लम्ब/आधार = 3/4, तो कर्ण = 5 (3-4-5 triplet); sin θ = लम्ब/कर्ण = 3/5."},
+  {q:"In a school of 1200 students, 55% are boys. The number of girls in the school is:", o:["520","540","560","660"], a:1, e:"लड़कियाँ = (100 − 55)% = 45%; 45% × 1200 = 540."},
+  {q:"The marked price of an article is ₹1,500. After a discount of 20%, its selling price is:", o:["₹1,100","₹1,150","₹1,200","₹1,250"], a:2, e:"SP = 1500 का (100 − 20)% = 1500 × 80/100 = ₹1,200."},
+  {q:"A and B invest ₹4,000 and ₹6,000 respectively in a business. At the end of the year, the total profit is ₹5,000. A's share of the profit is:", o:["₹1,500","₹2,000","₹2,500","₹3,000"], a:1, e:"निवेश का अनुपात = 4000 : 6000 = 2 : 3; A का हिस्सा = 2/5 × 5000 = ₹2,000."},
+  {q:"The LCM of 8, 12 and 18 is:", o:["36","48","72","96"], a:2, e:"8 = 2³, 12 = 2²×3, 18 = 2×3²; LCM = 2³ × 3² = 72."}
+];
+
+/* Content list — नया Test/Quiz जोड़ने के लिए यहाँ एक entry और जोड़ो */
+const CONTENT = [
+  { id:"chsl-maths-test-1", type:"test",
+    title:"SSC CHSL Maths — Test 1",
+    exam:"SSC CHSL", subject:"Maths (Quantitative Aptitude)", level:"12th Level",
+    mins:25, marks:2, neg:0.5,
+    sections:[ {name:"Quantitative Aptitude", qs:MATH_SET} ] },
+  { id:"chsl-maths-quiz-1", type:"quiz",
+    title:"SSC CHSL Maths — Quiz 1",
+    exam:"SSC CHSL", subject:"Maths (Quantitative Aptitude)", level:"12th Level",
+    mins:0, marks:2, neg:0,
+    qs:MATH_SET }
+];
+
+/* ================= HELPERS ================= */
+const $ = id => document.getElementById(id);
+const LETTERS = ["A","B","C","D"];
+function show(id){
+  ["scrHome","scrTest","scrQuiz","scrResult","scrReview"].forEach(s => $(s).classList.toggle("hidden", s !== id));
+  window.scrollTo({top:0});
+}
+function testTotalQ(c){ return c.sections.reduce((n,s)=>n+s.qs.length,0); }
+function esc(s){ return s; } /* data अपना है, raw HTML-safe लिखा गया है */
+
+/* ================= HOME ================= */
+function contentCard(c){
+  const n = c.type === "test" ? testTotalQ(c) : c.qs.length;
+  const chips = ['<span class="chip">'+c.exam+'</span>','<span class="chip">'+c.subject+'</span>','<span class="chip">'+c.level+'</span>','<span class="chip">'+n+' Questions</span>'];
+  if(c.type === "test"){
+    chips.push('<span class="chip">'+c.mins+' Minutes</span>');
+    chips.push('<span class="chip neg">Negative: −'+c.neg+'</span>');
+    chips.push('<span class="chip">+'+c.marks+' per correct</span>');
+  } else {
+    chips.push('<span class="chip ok">No Negative Marking</span>');
+    chips.push('<span class="chip ok">Explanation के साथ</span>');
+    chips.push('<span class="chip">+'+c.marks+' per correct</span>');
+  }
+  return '<div class="tcard'+(c.type==="quiz"?" quiz":"")+'"><h3>'+(c.type==="test"?"📝 ":"⚡ ")+c.title+'</h3>'
+    + '<p>'+(c.type==="test"
+        ? "असली CBT जैसा माहौल — timer, sections और question palette के साथ। Result सिर्फ़ अंत में मिलेगा, बीच में कोई explanation नहीं।"
+        : "सीखने के लिए best — हर सवाल पर तुरंत सही/ग़लत पता चलेगा और साथ में explanation भी। ग़लती का कोई minus नहीं!")
+    + '</p><div class="chips">'+chips.join("")+'</div>'
+    + '<button class="start-btn" onclick="startContent(\''+c.id+'\')">'+(c.type==="test"?"▶ Start Test":"▶ Start Quiz")+'</button></div>';
+}
+function renderHome(){
+  $("homeTests").innerHTML  = CONTENT.filter(c=>c.type==="test").map(contentCard).join("")  || '<p style="color:#64748b">अभी कोई Test नहीं है — जल्द आ रहा है!</p>';
+  $("homeQuizzes").innerHTML = CONTENT.filter(c=>c.type==="quiz").map(contentCard).join("") || '<p style="color:#64748b">अभी कोई Quiz नहीं है — जल्द आ रहा है!</p>';
+}
+function startContent(id){
+  const c = CONTENT.find(x=>x.id===id);
+  if(!c) return;
+  if(c.type === "test") startTest(c); else startQuiz(c);
+}
+
+/* ================= TEST ENGINE ================= */
+let T = null, LAST = null;
+function fmt(s){ const m = Math.floor(s/60), ss = s % 60; return (m<10?"0":"")+m+":"+(ss<10?"0":"")+ss; }
+
+function startTest(c){
+  const flat = [];
+  c.sections.forEach((s, si) => s.qs.forEach(q => flat.push({sec: si, q: q})));
+  T = { c: c, flat: flat, cur: 0,
+        ans: flat.map(() => ({sel: null, marked: false, visited: false})),
+        left: c.mins * 60, int: null, done: false };
+  T.ans[0].visited = true;
+  $("tSections").innerHTML = c.sections.map((s, si) =>
+    '<button class="sectab" onclick="jumpSection('+si+')">'+s.name+' ('+s.qs.length+')</button>').join("");
+  $("tMarks").textContent = "+" + c.marks + " marks";
+  $("tNeg").textContent = "−" + c.neg + " negative";
+  $("topTimer").classList.remove("hidden");
+  $("topTimer").textContent = fmt(T.left);
+  show("scrTest");
+  renderTQ();
+  clearInterval(T.int);
+  T.int = setInterval(tick, 1000);
+}
+function tick(){
+  if(!T || T.done) return;
+  if(T.left <= 0){ finishTest(); return; }
+  T.left--;
+  $("topTimer").textContent = fmt(Math.max(0, T.left));
+  $("topTimer").classList.toggle("low", T.left <= 60);
+}
+function jumpSection(si){ const i = T.flat.findIndex(f => f.sec === si); if(i >= 0) gotoQ(i); }
+function gotoQ(i){
+  if(!T || i < 0 || i >= T.flat.length) return;
+  T.cur = i; T.ans[i].visited = true; renderTQ();
+}
+function renderTQ(){
+  const f = T.flat[T.cur], a = T.ans[T.cur], c = T.c;
+  $("tQMeta").textContent = "Question " + (T.cur+1) + " of " + T.flat.length + " • " + c.sections[f.sec].name;
+  $("tQText").textContent = f.q.q;
+  $("tOpts").innerHTML = f.q.o.map((o, oi) =>
+    '<button class="opt'+(a.sel===oi?" sel":"")+'" onclick="pickOpt('+oi+')"><span class="ol">'+LETTERS[oi]+'</span><span>'+o+'</span></button>').join("");
+  document.querySelectorAll("#tSections .sectab").forEach((el, si) => el.classList.toggle("on", si === f.sec));
+  renderPal();
+}
+function pickOpt(oi){ T.ans[T.cur].sel = oi; renderTQ(); }
+function renderPal(){
+  $("tPal").innerHTML = T.flat.map((f, i) => {
+    const a = T.ans[i]; let cls = "";
+    if(a.marked) cls = "marked" + (a.sel !== null ? " ans" : "");
+    else if(a.sel !== null) cls = "ans";
+    else if(a.visited) cls = "seen";
+    return '<button class="'+cls+(i===T.cur?" cur":"")+'" onclick="gotoQ('+i+')">'+(i+1)+'</button>';
+  }).join("");
+}
+$("btnPrev").addEventListener("click", () => gotoQ(T.cur - 1));
+$("btnClear").addEventListener("click", () => { T.ans[T.cur].sel = null; renderTQ(); });
+$("btnMark").addEventListener("click", () => {
+  T.ans[T.cur].marked = true;
+  if(T.cur < T.flat.length - 1) gotoQ(T.cur + 1); else renderTQ();
+});
+$("btnSaveNext").addEventListener("click", () => {
+  if(T.cur < T.flat.length - 1) gotoQ(T.cur + 1); else openSubmit();
+});
+$("btnSubmit").addEventListener("click", openSubmit);
+$("btnCancelSubmit").addEventListener("click", () => $("submitModal").classList.add("hidden"));
+$("btnFinalSubmit").addEventListener("click", () => { $("submitModal").classList.add("hidden"); finishTest(); });
+
+function openSubmit(){
+  const a = T.ans;
+  const answered = a.filter(x => x.sel !== null).length;
+  const marked = a.filter(x => x.marked).length;
+  const seen = a.filter(x => x.visited && x.sel === null).length;
+  const unseen = a.filter(x => !x.visited).length;
+  $("mCounts").innerHTML = "Answered: <b>"+answered+"</b> • Marked for Review: <b>"+marked+"</b><br>"
+    + "देखे पर जवाब नहीं दिए: <b>"+seen+"</b> • बिल्कुल नहीं देखे: <b>"+unseen+"</b><br><br>"
+    + "⚠️ एक बार Submit होने के बाद जवाब <b>नहीं</b> बदल सकेंगे।";
+  $("submitModal").classList.remove("hidden");
+}
+function scoreTest(){
+  const c = T.c; let correct = 0, wrong = 0, skip = 0, score = 0;
+  const per = c.sections.map(() => ({n:0, cr:0, wr:0, sk:0, sc:0}));
+  T.flat.forEach((f, i) => {
+    const a = T.ans[i], p = per[f.sec]; p.n++;
+    if(a.sel === null){ skip++; p.sk++; }
+    else if(a.sel === f.q.a){ correct++; score += c.marks; p.cr++; p.sc += c.marks; }
+    else { wrong++; score -= c.neg; p.wr++; p.sc -= c.neg; }
+  });
+  return { correct: correct, wrong: wrong, skip: skip, score: score, per: per, max: T.flat.length * c.marks };
+}
+function finishTest(){
+  if(!T || T.done) return;
+  T.done = true;
+  clearInterval(T.int);
+  $("topTimer").classList.add("hidden");
+  LAST = { kind: "test", flat: T.flat, ans: T.ans };
+  const r = scoreTest(), c = T.c;
+  const used = c.mins * 60 - Math.max(0, T.left);
+  const att = r.correct + r.wrong;
+  const acc = att ? Math.round(r.correct / att * 100) : 0;
+  const rows = c.sections.map((s, si) => {
+    const p = r.per[si];
+    return '<tr><td>'+s.name+'</td><td>'+p.n+'</td><td>'+p.cr+'</td><td>'+p.wr+'</td><td>'+p.sk+'</td><td><b>'+p.sc+'</b></td></tr>';
+  }).join("");
+  $("rBody").innerHTML =
+    '<div class="rcard"><div style="font-size:34px">🏆</div>'
+    + '<div class="score-big">'+r.score+' <small>/ '+r.max+'</small></div>'
+    + '<p style="color:#475569;font-weight:700">'+c.title+' — Result</p>'
+    + '<div class="stats">'
+    + '<div class="stat"><b style="color:#16a34a">'+r.correct+'</b><span>Correct</span></div>'
+    + '<div class="stat"><b style="color:#dc2626">'+r.wrong+'</b><span>Wrong</span></div>'
+    + '<div class="stat"><b style="color:#64748b">'+r.skip+'</b><span>Skipped</span></div>'
+    + '<div class="stat"><b>'+acc+'%</b><span>Accuracy</span></div>'
+    + '<div class="stat"><b>'+fmt(used)+'</b><span>Time Used</span></div>'
+    + '</div>'
+    + '<table><tr><th>Section</th><th>Ques</th><th>✔</th><th>✘</th><th>Skip</th><th>Score</th></tr>'+rows+'</table>'
+    + '<p style="font-size:12.5px;color:#94a3b8;margin-top:10px">Test mode में explanations नहीं मिलते — सीखने के लिए यही सवाल Quiz mode में खेलो!</p>'
+    + '<button class="rbtn rose" onclick="openReview()">🔍 Review Answers</button>'
+    + '<button class="rbtn alt" onclick="goHome()">🏠 Home</button></div>';
+  show("scrResult");
+}
+
+/* ================= QUIZ ENGINE ================= */
+let Q = null;
+function startQuiz(c){
+  Q = { c: c, i: 0, correct: 0, locked: false, ans: c.qs.map(() => ({sel: null})) };
+  show("scrQuiz");
+  renderQZ();
+}
+function renderQZ(){
+  const c = Q.c, q = c.qs[Q.i];
+  Q.locked = false;
+  $("qzProgText").textContent = "Question " + (Q.i+1) + " / " + c.qs.length;
+  $("qzBar").style.width = (Q.i / c.qs.length * 100) + "%";
+  $("qzScore").textContent = "Score: " + (Q.correct * c.marks);
+  $("qzQText").textContent = q.q;
+  const ex = $("qzExp"); ex.className = "exp-box"; ex.innerHTML = "";
+  $("btnQzNext").classList.add("hidden");
+  $("qzOpts").innerHTML = q.o.map((o, oi) =>
+    '<button class="opt" onclick="pickQZ('+oi+')"><span class="ol">'+LETTERS[oi]+'</span><span>'+o+'</span></button>').join("");
+}
+function pickQZ(oi){
+  if(!Q || Q.locked) return;
+  Q.locked = true;
+  const c = Q.c, q = c.qs[Q.i];
+  Q.ans[Q.i].sel = oi;
+  const right = (oi === q.a);
+  if(right) Q.correct++;
+  $("qzOpts").querySelectorAll(".opt").forEach((b, bi) => {
+    b.disabled = true;
+    if(bi === q.a) b.classList.add("right");
+    else if(bi === oi) b.classList.add("wrong");
+    else b.style.opacity = .5;
+  });
+  const ex = $("qzExp");
+  ex.className = "exp-box show " + (right ? "good" : "bad");
+  ex.innerHTML = "<b>" + (right ? "✅ सही जवाब! +"+c.marks+" marks" : "❌ ग़लत! सही जवाब: " + LETTERS[q.a] + ") " + q.o[q.a]) + "</b>💡 " + q.e;
+  $("qzScore").textContent = "Score: " + (Q.correct * c.marks);
+  $("qzBar").style.width = ((Q.i + 1) / c.qs.length * 100) + "%";
+  const nb = $("btnQzNext");
+  nb.textContent = (Q.i === c.qs.length - 1) ? "🏁 Finish Quiz" : "Next Question ➡";
+  nb.classList.remove("hidden");
+}
+$("btnQzNext").addEventListener("click", () => {
+  if(Q.i < Q.c.qs.length - 1){ Q.i++; renderQZ(); } else finishQuiz();
+});
+function finishQuiz(){
+  const c = Q.c, total = c.qs.length;
+  const wrong = Q.ans.filter((a, i) => a.sel !== null && a.sel !== c.qs[i].a).length;
+  const score = Q.correct * c.marks, max = total * c.marks;
+  const att = Q.correct + wrong;
+  const acc = att ? Math.round(Q.correct / att * 100) : 0;
+  LAST = { kind: "quiz", flat: c.qs.map(q => ({q: q})), ans: Q.ans };
+  $("rBody").innerHTML =
+    '<div class="rcard"><div style="font-size:34px">⚡</div>'
+    + '<div class="score-big">'+score+' <small>/ '+max+'</small></div>'
+    + '<p style="color:#475569;font-weight:700">'+c.title+' — Result</p>'
+    + '<div class="stats">'
+    + '<div class="stat"><b style="color:#16a34a">'+Q.correct+'</b><span>Correct</span></div>'
+    + '<div class="stat"><b style="color:#dc2626">'+wrong+'</b><span>Wrong</span></div>'
+    + '<div class="stat"><b>'+acc+'%</b><span>Accuracy</span></div>'
+    + '</div>'
+    + '<p style="font-size:13px;color:#64748b">हर ग़लती का explanation Review में फिर से देख लो — वही असली सीख है! 📚</p>'
+    + '<button class="rbtn rose" onclick="openReview()">🔍 Review with Explanations</button>'
+    + '<button class="rbtn alt" onclick="goHome()">🏠 Home</button></div>';
+  show("scrResult");
+}
+
+/* ================= REVIEW & NAV ================= */
+function openReview(){
+  if(!LAST) return;
+  $("rvBody").innerHTML = LAST.flat.map((f, i) => {
+    const a = LAST.ans[i], q = f.q;
+    let yours;
+    if(a.sel === null) yours = '<span class="skip-t">Not Answered</span>';
+    else if(a.sel === q.a) yours = '<span class="ok-t">Your Answer: '+LETTERS[a.sel]+') '+q.o[a.sel]+' ✔</span>';
+    else yours = '<span class="bad-t">Your Answer: '+LETTERS[a.sel]+') '+q.o[a.sel]+' ✘</span>';
+    let html = '<div class="rv-item"><div class="rq">Q'+(i+1)+'. '+q.q+'</div><div class="ra">'
+      + yours + '<br><span class="ok-t">Correct Answer: '+LETTERS[q.a]+') '+q.o[q.a]+'</span></div>';
+    if(LAST.kind === "quiz" && q.e) html += '<div class="rv-exp">💡 <b>Explanation:</b> '+q.e+'</div>';
+    return html + '</div>';
+  }).join("");
+  show("scrReview");
+}
+$("btnRvHome").addEventListener("click", goHome);
+function goHome(){
+  if(T){ clearInterval(T.int); T.done = true; }
+  $("topTimer").classList.add("hidden");
+  $("submitModal").classList.add("hidden");
+  renderHome();
+  show("scrHome");
+}
+
+renderHome();
+</script>
+</body>
+</html>
