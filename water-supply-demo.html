@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>सुरोठ जल आपूर्ति — Demo</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:#e8f3fa; color:#12303f; min-height:100vh; }
+  .wrap { max-width:560px; margin:0 auto; padding:0 14px 40px; }
+  header.top { background:linear-gradient(135deg,#0277bd,#01579b); color:#fff; padding:20px 16px 16px; border-radius:0 0 20px 20px; margin:0 -14px; box-shadow:0 4px 14px rgba(1,87,155,.35); }
+  header.top h1 { font-size:23px; }
+  header.top p { font-size:13.5px; opacity:.9; margin-top:3px; }
+  .demo-tag { display:inline-block; background:#ffb300; color:#4e2c00; font-size:11px; font-weight:800; padding:3px 9px; border-radius:99px; margin-top:8px; letter-spacing:.4px; }
+  .card { background:#fff; border-radius:16px; padding:16px; margin-top:14px; box-shadow:0 2px 8px rgba(2,60,100,.08); }
+  .card h2 { font-size:17px; color:#01579b; margin-bottom:8px; }
+  .role-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:6px; }
+  .role { border:2.5px solid #cfd8dc; border-radius:16px; padding:16px 8px; text-align:center; cursor:pointer; background:#fafafa; }
+  .role .ic { font-size:36px; }
+  .role .t { font-weight:700; font-size:16px; margin-top:5px; }
+  .role .s { font-size:12px; color:#607d8b; margin-top:2px; }
+  .role.sel { border-color:#0277bd; background:#e1f2fc; }
+  label.f { display:block; font-size:13px; font-weight:600; color:#37474f; margin:13px 0 5px; }
+  input, select, textarea { width:100%; padding:12px 13px; font-size:16px; border:1.6px solid #b0bec5; border-radius:11px; background:#fff; color:#12303f; outline:none; font-family:inherit; }
+  input:focus, select:focus, textarea:focus { border-color:#0277bd; }
+  textarea { resize:vertical; min-height:64px; }
+  .btn { display:block; width:100%; margin-top:15px; padding:14px; font-size:17px; font-weight:800; color:#fff; background:linear-gradient(180deg,#039be5,#0277bd); border:none; border-radius:12px; cursor:pointer; box-shadow:0 3px 0 #01579b; }
+  .btn:active { transform:translateY(2px); box-shadow:0 1px 0 #01579b; }
+  .btn.green { background:linear-gradient(180deg,#43a047,#2e7d32); box-shadow:0 3px 0 #1b5e20; }
+  .btn.small { width:auto; display:inline-block; padding:8px 15px; font-size:14px; margin-top:0; }
+  .btn.grey { background:#eceff1; color:#37474f; box-shadow:0 3px 0 #b0bec5; }
+  .hint { margin-top:13px; background:#fff8e1; border:1px dashed #ffb300; border-radius:11px; padding:10px 12px; font-size:13.5px; line-height:1.65; color:#5d4037; }
+  .err { display:none; margin-top:10px; color:#c62828; font-size:14px; font-weight:600; }
+  .bar { display:flex; align-items:center; gap:10px; margin-top:14px; }
+  .bar .who { flex:1; }
+  .bar .who .n { font-weight:800; font-size:16.5px; }
+  .bar .who .r { font-size:12.5px; color:#0277bd; font-weight:700; }
+  .logout { background:#fff; border:1.6px solid #ef9a9a; color:#c62828; font-weight:700; font-size:13.5px; padding:8px 13px; border-radius:10px; cursor:pointer; }
+  .bill { border-radius:14px; padding:15px; margin-top:6px; }
+  .bill.due { background:#fff3e0; border:1.6px solid #ffb74d; }
+  .bill.paid { background:#e8f5e9; border:1.6px solid #81c784; }
+  .bill .amt { font-size:27px; font-weight:900; }
+  .badge { display:inline-block; font-size:12px; font-weight:800; padding:3.5px 10px; border-radius:99px; color:#fff; vertical-align:middle; }
+  .badge.due { background:#ef6c00; } .badge.paid { background:#2e7d32; } .badge.open { background:#c62828; } .badge.done { background:#2e7d32; }
+  .row { display:flex; align-items:center; gap:10px; padding:11px 2px; border-bottom:1px solid #eceff1; }
+  .row:last-child { border-bottom:none; }
+  .row .grow { flex:1; min-width:0; }
+  .row .nm { font-weight:700; font-size:15px; }
+  .row .sub { font-size:12.5px; color:#607d8b; margin-top:1px; }
+  .stats { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-top:14px; }
+  .stat { background:#fff; border-radius:15px; padding:14px; box-shadow:0 2px 8px rgba(2,60,100,.08); }
+  .stat .v { font-size:24px; font-weight:900; color:#01579b; }
+  .stat .l { font-size:12.5px; color:#607d8b; margin-top:2px; }
+  .tabs { display:flex; gap:8px; margin-top:15px; overflow-x:auto; padding-bottom:2px; }
+  .tab { flex:1; white-space:nowrap; text-align:center; padding:10px 6px; border-radius:11px; background:#fff; border:1.6px solid #cfd8dc; font-weight:700; font-size:13.5px; cursor:pointer; color:#37474f; }
+  .tab.sel { background:#0277bd; border-color:#0277bd; color:#fff; }
+  .notice { background:#e3f2fd; border-left:4.5px solid #0277bd; border-radius:10px; padding:11px 13px; margin-top:10px; }
+  .notice .tt { font-weight:800; font-size:14.5px; }
+  .notice .tx { font-size:13.5px; margin-top:2px; line-height:1.55; }
+  .notice .dt { font-size:11.5px; color:#607d8b; margin-top:4px; }
+  #toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(80px); background:#12303f; color:#fff; padding:12px 20px; border-radius:99px; font-size:14.5px; font-weight:600; opacity:0; transition:all .3s; z-index:50; max-width:92vw; text-align:center; }
+  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .hidden { display:none !important; }
+  footer { text-align:center; font-size:12px; color:#78909c; margin-top:22px; line-height:1.7; }
+  .linkish { color:#0277bd; font-weight:700; cursor:pointer; text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= LOGIN ================= -->
+  <div id="loginView">
+    <header class="top">
+      <h1>🚰 सुरोठ जल आपूर्ति</h1>
+      <p>Suroth Water Supply — पानी का हिसाब, अब phone पर</p>
+      <span class="demo-tag">DEMO — नमूना संस्करण</span>
+    </header>
+
+    <div class="card">
+      <h2>Login करो</h2>
+      <div class="role-grid">
+        <div class="role sel" id="roleUser" onclick="pickRole('user')">
+          <div class="ic">🏠</div><div class="t">User</div><div class="s">घर का connection</div>
+        </div>
+        <div class="role" id="roleAdmin" onclick="pickRole('admin')">
+          <div class="ic">🔐</div><div class="t">Admin</div><div class="s">कार्यालय / संचालक</div>
+        </div>
+      </div>
+
+      <div id="userLoginFields">
+        <label class="f">अपना connection चुनो</label>
+        <select id="loginConn"></select>
+      </div>
+      <div id="adminLoginFields" class="hidden">
+        <label class="f">Admin ID</label>
+        <input id="loginAdminId" type="text" placeholder="admin">
+      </div>
+      <label class="f">PIN</label>
+      <input id="loginPin" type="password" inputmode="numeric" maxlength="6" placeholder="••••">
+      <div class="err" id="loginErr">❌ ग़लत PIN! फिर से कोशिश करो।</div>
+      <button class="btn" onclick="doLogin()">Login →</button>
+
+      <div class="hint">
+        🧪 <b>Demo PIN सबके लिए: 1234</b><br>
+        User बनकर देखो — कोई भी connection चुनो + PIN 1234<br>
+        Admin बनकर देखो — Admin चुनो + PIN 1234
+      </div>
+    </div>
+    <footer>यह एक demo है — असली data नहीं है।<br>पसंद आए तो पूरा system इसी design पर बनेगा।</footer>
+  </div>
+
+  <!-- ================= USER ================= -->
+  <div id="userView" class="hidden">
+    <header class="top">
+      <h1>🚰 सुरोठ जल आपूर्ति</h1>
+      <p id="userHeadSub">मेरा connection</p>
+      <span class="demo-tag">DEMO</span>
+    </header>
+    <div class="bar">
+      <div class="who"><div class="n" id="userName"></div><div class="r" id="userMeta"></div></div>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="card">
+      <h2>💧 इस महीने का बिल — नवंबर 2026</h2>
+      <div id="userBill"></div>
+      <p style="font-size:12.5px;color:#78909c;margin-top:9px;">पिछला महीना (अक्टूबर 2026): <b style="color:#2e7d32;">Paid ✅</b> — भुगतान की पूरी history कार्यालय में सुरक्षित है।</p>
+    </div>
+
+    <div class="card">
+      <h2>📢 सूचना (Notice Board)</h2>
+      <div id="userNotices"></div>
+    </div>
+
+    <div class="card">
+      <h2>🛠️ शिकायत दर्ज करो</h2>
+      <label class="f">शिकायत का प्रकार</label>
+      <select id="cmpType">
+        <option>पानी नहीं आ रहा</option>
+        <option>पानी का pressure कम है</option>
+        <option>पाइप / लीकेज</option>
+        <option>बिल में गड़बड़ी</option>
+        <option>अन्य</option>
+      </select>
+      <label class="f">थोड़ा विस्तार से लिखो</label>
+      <textarea id="cmpText" placeholder="जैसे: सुबह से नल में पानी नहीं आया..."></textarea>
+      <button class="btn green" onclick="fileComplaint()">शिकायत भेजो</button>
+      <div id="myComplaints" style="margin-top:8px;"></div>
+    </div>
+    <footer>सुरोठ जल आपूर्ति — demo</footer>
+  </div>
+
+  <!-- ================= ADMIN ================= -->
+  <div id="adminView" class="hidden">
+    <header class="top">
+      <h1>🔐 Admin Panel</h1>
+      <p>सुरोठ जल आपूर्ति — कार्यालय</p>
+      <span class="demo-tag">DEMO</span>
+    </header>
+    <div class="bar">
+      <div class="who"><div class="n">संचालक (Admin)</div><div class="r">सभी connection, बिल व शिकायतों का हिसाब</div></div>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="stats" id="adminStats"></div>
+
+    <div class="tabs">
+      <div class="tab sel" id="tabBtn-conn" onclick="adminTab('conn')">🏠 Connections</div>
+      <div class="tab" id="tabBtn-cmp" onclick="adminTab('cmp')">🛠️ शिकायतें</div>
+      <div class="tab" id="tabBtn-add" onclick="adminTab('add')">➕ नया</div>
+      <div class="tab" id="tabBtn-ntc" onclick="adminTab('ntc')">📢 सूचना</div>
+    </div>
+
+    <div class="card" id="tab-conn">
+      <h2>सभी Connections — नवंबर 2026</h2>
+      <input id="connSearch" type="text" placeholder="🔍 नाम या connection no. खोजो..." oninput="renderAdminConns()">
+      <div id="adminConns" style="margin-top:6px;"></div>
+    </div>
+
+    <div class="card hidden" id="tab-cmp">
+      <h2>शिकायतें</h2>
+      <div id="adminComplaints"></div>
+    </div>
+
+    <div class="card hidden" id="tab-add">
+      <h2>➕ नया Connection जोड़ो</h2>
+      <label class="f">नाम</label>
+      <input id="ncName" type="text" placeholder="जैसे: सुरेश कुमार">
+      <label class="f">Mobile नंबर</label>
+      <input id="ncMobile" type="tel" maxlength="10" placeholder="10 अंक का नंबर">
+      <label class="f">प्रकार</label>
+      <select id="ncType"><option>घरेलू</option><option>दुकान</option></select>
+      <button class="btn green" onclick="addConnection()">Connection जोड़ो</button>
+      <p style="font-size:12.5px;color:#78909c;margin-top:9px;">मासिक शुल्क: घरेलू ₹150/माह, दुकान ₹300/माह (demo दरें)।</p>
+    </div>
+
+    <div class="card hidden" id="tab-ntc">
+      <h2>📢 नई सूचना डालो</h2>
+      <label class="f">शीर्षक</label>
+      <input id="ntTitle" type="text" placeholder="जैसे: कल supply देर से आएगा">
+      <label class="f">विवरण</label>
+      <textarea id="ntText" placeholder="सभी users को यह सूचना उनके page पर दिखेगी..."></textarea>
+      <button class="btn" onclick="postNotice()">सूचना डालो</button>
+      <div id="adminNotices" style="margin-top:10px;"></div>
+    </div>
+
+    <footer>Demo data इसी phone में save होता है।<br><span class="linkish" onclick="resetDemo()">🔄 Demo reset करो (असली जैसा data वापस)</span></footer>
+  </div>
+
+</div>
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY='ws_demo_suroth_v1';
+  var MONTH='नवंबर 2026';
+  var CHARGES={'घरेलू':150,'दुकान':300};
+
+  function seed(){
+    return {
+      conns:[
+        {id:'SUR-001', name:'रामकिशोर गुर्जर', mobile:'9829011101', type:'घरेलू', status:'paid'},
+        {id:'SUR-002', name:'सुनीता देवी', mobile:'9829011102', type:'घरेलू', status:'due'},
+        {id:'SUR-003', name:'मोहन लाल मीणा', mobile:'9829011103', type:'घरेलू', status:'due'},
+        {id:'SUR-004', name:'अब्दुल करीम', mobile:'9829011104', type:'दुकान', status:'paid'},
+        {id:'SUR-005', name:'कमला देवी', mobile:'9829011105', type:'घरेलू', status:'paid'},
+        {id:'SUR-006', name:'दिनेश कुमार सैनी', mobile:'9829011106', type:'घरेलू', status:'due'},
+        {id:'SUR-007', name:'गीता शर्मा', mobile:'9829011107', type:'घरेलू', status:'paid'},
+        {id:'SUR-008', name:'प्रकाश चंद जैन (किराना)', mobile:'9829011108', type:'दुकान', status:'due'},
+        {id:'SUR-009', name:'विक्रम सिंह', mobile:'9829011109', type:'घरेलू', status:'paid'},
+        {id:'SUR-010', name:'रेखा कुमारी', mobile:'9829011110', type:'घरेलू', status:'due'}
+      ],
+      complaints:[
+        {id:1, connId:'SUR-003', name:'मोहन लाल मीणा', type:'पानी नहीं आ रहा', text:'वार्ड 3 में सुबह से पानी नहीं आया।', status:'open', date:'6 Nov 2026'},
+        {id:2, connId:'SUR-008', name:'प्रकाश चंद जैन (किराना)', type:'पाइप / लीकेज', text:'मुख्य बाज़ार वाली लाइन में लीकेज है, पानी बह रहा है।', status:'open', date:'7 Nov 2026'},
+        {id:3, connId:'SUR-005', name:'कमला देवी', type:'पानी का pressure कम है', text:'pressure बहुत कम था — अब ठीक है।', status:'done', date:'4 Nov 2026'}
+      ],
+      notices:[
+        {title:'टैंक सफ़ाई — supply समय बदलेगा', text:'कल, 8 नवंबर को टैंक सफ़ाई के कारण सुबह की supply 7 बजे की जगह 9 बजे आएगी। कृपया पानी भरकर रखें।', date:'7 Nov 2026'},
+        {title:'बकाया बिल — अंतिम तिथि', text:'नवंबर का बिल 25 नवंबर तक जमा करें। देरी पर ₹50 अतिरिक्त शुल्क (demo) लगेगा।', date:'5 Nov 2026'}
+      ],
+      nextConn:11, nextCmp:4
+    };
+  }
+
+  var db;
+  try { db = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch(e){ db = seed(); }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e){} }
+  save();
+
+  var role='user', session=null; // session = conn object for user, 'admin' for admin
+  var $=function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function charge(c){ return CHARGES[c.type]||150; }
+  function toast(msg){ var t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); },2300); }
+  function connById(id){ for(var i=0;i<db.conns.length;i++) if(db.conns[i].id===id) return db.conns[i]; return null; }
+
+  /* ---------- login ---------- */
+  window.pickRole=function(r){
+    role=r;
+    $('roleUser').classList.toggle('sel', r==='user');
+    $('roleAdmin').classList.toggle('sel', r==='admin');
+    $('userLoginFields').classList.toggle('hidden', r!=='user');
+    $('adminLoginFields').classList.toggle('hidden', r!=='admin');
+    $('loginErr').style.display='none';
+  };
+  function fillLoginConns(){
+    $('loginConn').innerHTML = db.conns.map(function(c){
+      return '<option value="'+c.id+'">'+esc(c.id)+' — '+esc(c.name)+'</option>';
+    }).join('');
+  }
+  window.doLogin=function(){
+    var pin=$('loginPin').value.trim();
+    if(pin!=='1234'){ $('loginErr').style.display='block'; return; }
+    $('loginErr').style.display='none';
+    $('loginView').classList.add('hidden');
+    if(role==='admin'){ session='admin'; $('adminView').classList.remove('hidden'); renderAdmin(); }
+    else { session=connById($('loginConn').value); $('userView').classList.remove('hidden'); renderUser(); }
+    window.scrollTo(0,0);
+  };
+  window.logout=function(){
+    session=null; $('loginPin').value='';
+    $('userView').classList.add('hidden'); $('adminView').classList.add('hidden');
+    $('loginView').classList.remove('hidden'); fillLoginConns(); window.scrollTo(0,0);
+  };
+
+  /* ---------- user side ---------- */
+  function renderUser(){
+    var c=session; if(!c) return;
+    $('userName').textContent=c.name;
+    $('userMeta').textContent='Connection: '+c.id+' • '+c.type+' • 📱 '+c.mobile;
+    $('userHeadSub').textContent='मेरा connection — '+c.id;
+    var amt=charge(c);
+    $('userBill').innerHTML =
+      '<div class="bill '+(c.status==='paid'?'paid':'due')+'">'+
+      '<span class="amt">₹'+amt+'</span>  '+
+      (c.status==='paid' ? '<span class="badge paid">PAID ✅</span>' : '<span class="badge due">बकाया (DUE)</span>')+
+      '<div style="font-size:13.5px;margin-top:6px;">मासिक शुल्क ('+esc(c.type)+') • अंतिम तिथि: 25 नवंबर 2026</div>'+
+      (c.status==='due' ? '<div style="font-size:13px;margin-top:4px;">भुगतान कार्यालय में या Admin से संपर्क करके करें। (Demo में Admin इस बिल को Paid कर सकता है।)</div>' : '<div style="font-size:13px;margin-top:4px;">धन्यवाद! आपका भुगतान मिल गया है। 🙏</div>')+
+      '</div>';
+    $('userNotices').innerHTML = db.notices.map(function(n){
+      return '<div class="notice"><div class="tt">'+esc(n.title)+'</div><div class="tx">'+esc(n.text)+'</div><div class="dt">'+esc(n.date)+'</div></div>';
+    }).join('') || '<p style="font-size:13.5px;color:#78909c;">कोई सूचना नहीं है।</p>';
+    renderMyComplaints();
+  }
+  function renderMyComplaints(){
+    var mine=db.complaints.filter(function(x){ return session && x.connId===session.id; });
+    $('myComplaints').innerHTML = mine.length ? '<h2 style="font-size:15px;margin-top:14px;">मेरी शिकायतें</h2>'+ mine.map(function(x){
+      return '<div class="row"><div class="grow"><div class="nm">'+esc(x.type)+'</div><div class="sub">'+esc(x.text)+' • '+esc(x.date)+'</div></div>'+
+        (x.status==='open' ? '<span class="badge open">चालू</span>' : '<span class="badge done">हल ✅</span>')+'</div>';
+    }).join('') : '';
+  }
+  window.fileComplaint=function(){
+    var text=$('cmpText').value.trim();
+    if(!text){ toast('पहले शिकायत लिखो ✍️'); return; }
+    db.complaints.unshift({id:db.nextCmp++, connId:session.id, name:session.name, type:$('cmpType').value, text:text, status:'open', date:'7 Nov 2026'});
+    save(); $('cmpText').value=''; renderMyComplaints();
+    toast('✅ शिकायत दर्ज हो गई! Admin को दिख जाएगी।');
+  };
+
+  /* ---------- admin side ---------- */
+  window.adminTab=function(which){
+    ['conn','cmp','add','ntc'].forEach(function(k){
+      $('tab-'+k).classList.toggle('hidden', k!==which);
+      $('tabBtn-'+k).classList.toggle('sel', k===which);
+    });
+  };
+  function renderAdmin(){ renderStats(); renderAdminConns(); renderAdminComplaints(); renderAdminNotices(); }
+  function renderStats(){
+    var total=db.conns.length;
+    var collected=db.conns.filter(function(c){return c.status==='paid';}).reduce(function(s,c){return s+charge(c);},0);
+    var due=db.conns.filter(function(c){return c.status==='due';}).length;
+    var open=db.complaints.filter(function(x){return x.status==='open';}).length;
+    $('adminStats').innerHTML =
+      '<div class="stat"><div class="v">'+total+'</div><div class="l">कुल Connections</div></div>'+
+      '<div class="stat"><div class="v">₹'+collected+'</div><div class="l">'+MONTH+' की वसूली</div></div>'+
+      '<div class="stat"><div class="v">'+due+'</div><div class="l">बकाया बिल (Due)</div></div>'+
+      '<div class="stat"><div class="v">'+open+'</div><div class="l">खुली शिकायतें</div></div>';
+  }
+  window.renderAdminConns=function(){
+    var q=($('connSearch').value||'').toLowerCase();
+    var list=db.conns.filter(function(c){ return c.name.toLowerCase().indexOf(q)>=0 || c.id.toLowerCase().indexOf(q)>=0; });
+    $('adminConns').innerHTML = list.map(function(c){
+      return '<div class="row"><div class="grow"><div class="nm">'+esc(c.name)+' <span style="color:#90a4ae;font-size:12px;">'+c.id+'</span></div>'+
+        '<div class="sub">'+esc(c.type)+' • ₹'+charge(c)+'/माह • 📱 '+esc(c.mobile)+'</div></div>'+
+        (c.status==='paid' ? '<span class="badge paid">PAID ✅</span>'
+          : '<span class="badge due">DUE ₹'+charge(c)+'</span> <button class="btn small green" onclick="markPaid(\''+c.id+'\')">भुगतान लो</button>')+
+        '</div>';
+    }).join('') || '<p style="font-size:13.5px;color:#78909c;padding:8px 2px;">कोई connection नहीं मिला।</p>';
+  };
+  window.markPaid=function(id){
+    var c=connById(id); if(!c) return;
+    c.status='paid'; save(); renderStats(); renderAdminConns();
+    toast('✅ '+c.name+' का ₹'+charge(c)+' भुगतान दर्ज!');
+  };
+  function renderAdminComplaints(){
+    $('adminComplaints').innerHTML = db.complaints.map(function(x){
+      return '<div class="row"><div class="grow"><div class="nm">'+esc(x.type)+' — '+esc(x.name)+' <span style="color:#90a4ae;font-size:12px;">'+x.connId+'</span></div>'+
+        '<div class="sub">'+esc(x.text)+' • '+esc(x.date)+'</div></div>'+
+        (x.status==='open' ? '<button class="btn small green" onclick="resolveCmp('+x.id+')">हल करो</button>' : '<span class="badge done">हल ✅</span>')+
+        '</div>';
+    }).join('') || '<p style="font-size:13.5px;color:#78909c;">कोई शिकायत नहीं है। 🎉</p>';
+  }
+  window.resolveCmp=function(id){
+    for(var i=0;i<db.complaints.length;i++) if(db.complaints[i].id===id) db.complaints[i].status='done';
+    save(); renderStats(); renderAdminComplaints(); toast('✅ शिकायत हल की गई');
+  };
+  window.addConnection=function(){
+    var name=$('ncName').value.trim(), mobile=$('ncMobile').value.trim(), type=$('ncType').value;
+    if(!name){ toast('पहले नाम लिखो ✍️'); return; }
+    if(!/^[0-9]{10}$/.test(mobile)){ toast('सही 10-अंक mobile नंबर डालो 📱'); return; }
+    var id='SUR-'+('00'+db.nextConn++).slice(-3);
+    db.conns.push({id:id, name:name, mobile:mobile, type:type, status:'due'});
+    save(); $('ncName').value=''; $('ncMobile').value='';
+    renderStats(); renderAdminConns(); fillLoginConns(); adminTab('conn');
+    toast('✅ नया connection '+id+' जुड़ गया!');
+  };
+  function renderAdminNotices(){
+    $('adminNotices').innerHTML = db.notices.map(function(n){
+      return '<div class="notice"><div class="tt">'+esc(n.title)+'</div><div class="tx">'+esc(n.text)+'</div><div class="dt">'+esc(n.date)+'</div></div>';
+    }).join('');
+  }
+  window.postNotice=function(){
+    var title=$('ntTitle').value.trim(), text=$('ntText').value.trim();
+    if(!title||!text){ toast('शीर्षक और विवरण दोनों लिखो ✍️'); return; }
+    db.notices.unshift({title:title, text:text, date:'7 Nov 2026'});
+    save(); $('ntTitle').value=''; $('ntText').value=''; renderAdminNotices();
+    toast('📢 सूचना डाल दी गई — सभी users को दिखेगी');
+  };
+  window.resetDemo=function(){
+    try { localStorage.removeItem(KEY); } catch(e){}
+    db=seed(); save(); fillLoginConns(); renderAdmin();
+    toast('🔄 Demo reset हो गया');
+  };
+
+  fillLoginConns();
+})();
+</script>
+</body>
+</html>
