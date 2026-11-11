@@ -312,10 +312,152 @@ var CHAPTERS=[
     explain:"<b>Data (कच्चे तथ्य) → Processing → Information (उपयोगी परिणाम)</b>। जैसे: तुम्हारे marks = Data, Report Card = Information! 🎓"}
   ]
  }
+,
+{ id:"ch2", icon:"🔩", color:"#dcfce7",
+  title:"Chapter 2 — Computer के भाग: Hardware",
+  sub:"Hardware — Parts of Computer",
+  desc:"Hardware क्या है, Motherboard, System Unit के अंदर के भाग, Ports, SMPS और UPS — पूरा theory, बीच-बीच में practice!",
+  recap:"<b>Motherboard</b> = सारे भागों को जोड़ने वाला मुख्य board · <b>SMPS</b> = AC बिजली को DC में बदलकर भागों को देता है · <b>UPS</b> = बिजली जाने पर backup · <b>Ports</b>: USB (data), HDMI (display), LAN (internet cable) · <b>Hardware</b> = छू सकने वाले भौतिक भाग",
+  steps:[
+   {t:"fact",icon:"🔩",title:"Theory 1 — Hardware क्या है?",
+    html:"<p><b>परिभाषा:</b> Computer के वे सभी <b>भौतिक भाग (Physical Parts)</b> जिन्हें हम <b>देख और छू सकते हैं</b>, <span class='eng'>Hardware</span> कहलाते हैं। जैसे — Keyboard, Mouse, Monitor, CPU chip, Hard Disk, Printer।</p><p style='margin-top:6px'>📌 <b>याद रखो:</b> Hardware बिना <b>Software</b> (programs) के कुछ नहीं कर सकता, और Software बिना Hardware के चल नहीं सकता। जैसे — शरीर Hardware है, और उसमें चलने वाले विचार/जान Software!</p>"},
+   {t:"parts",title:"Theory 2 — Hardware के 4 बड़े समूह (हर block दबाओ)",
+    parts:[
+      {icon:"⌨️",name:"Input Hardware",text:"Data <b>अंदर भेजने</b> वाले भाग — Keyboard, Mouse, Scanner, Microphone। इनका विस्तृत chapter आगे <b>Chapter 3</b> में है।"},
+      {icon:"🧠",name:"Processing Hardware",text:"Data को <b>process करने</b> वाले भाग — <b>CPU chip</b> और उसे बाकी सबसे जोड़ने वाला <b>Motherboard</b>। यही इस chapter का मुख्य topic है।"},
+      {icon:"🖥️",name:"Output Hardware",text:"Result <b>बाहर दिखाने</b> वाले भाग — Monitor, Printer, Speaker। विस्तार से Chapter 3 में।"},
+      {icon:"💾",name:"Storage Hardware",text:"Data को <b>सहेजकर रखने</b> वाले भाग — Hard Disk (HDD), SSD, Pen Drive, Memory Card। इनका पूरा chapter <b>Chapter 4</b> में है।"}
+    ],
+    explain:"Hardware = <b>Input + Processing + Output + Storage</b>। IPO Cycle याद है? Storage उसका चौथा साथी है!"},
+   {t:"fact",icon:"🟩",title:"Theory 3 — Motherboard (मदरबोर्ड)",
+    html:"<p><span class='eng'><b>Motherboard</b></span> computer का <b>सबसे बड़ा और मुख्य Circuit Board</b> है। CPU, RAM, Hard Disk — <b>सारे भाग इसी से जुड़े</b> होते हैं और आपस में data का आना-जाना इसी के through होता है।</p><p style='margin-top:6px'>इसे <b>System Board</b> या <b>Main Board</b> भी कहते हैं। शहर की मिसाल से समझो — Motherboard शहर की <b>सड़कों का जाल</b> है, जिस पर सारे भागों की गाड़ियाँ (data) दौड़ती हैं! 🚗</p><p style='margin-top:6px'>इसमें बने <b>Slots</b> में RAM और अन्य cards लगते हैं, और किनारे पर बने <b>Ports</b> से बाहर के devices जुड़ते हैं।</p>"},
+   {t:"quiz",q:"Practice: Computer के सारे भागों को आपस में जोड़ने वाला मुख्य board कौन-सा है?",
+    options:["Keyboard","Motherboard","Monitor","SMPS"],correct:1,
+    explain:"<b>Motherboard (System Board)</b> — CPU, RAM, Storage सब इसी से जुड़ते हैं और data का आदान-प्रदान इसी से होता है।"},
+   {t:"parts",title:"Theory 4 — System Unit (डिब्बे) के अंदर क्या-क्या होता है?",
+    parts:[
+      {icon:"🧠",name:"CPU Chip",text:"Motherboard पर लगी छोटी-सी <b>चौकोर chip</b> ही असली CPU है! इसके प्रमुख निर्माता: <b>Intel</b> (Core i3/i5/i7) और <b>AMD</b> (Ryzen)। इसकी गति <b>GHz (Gigahertz)</b> में मापी जाती है — ज़्यादा GHz = तेज़ processing।"},
+      {icon:"📏",name:"RAM Sticks",text:"Motherboard के slots में लगी लंबी पतली पट्टियाँ — <b>RAM</b>। चालू काम का data अस्थायी रूप से यहाँ रहता है। बिजली बंद = RAM खाली! (विस्तार Chapter 4 में)"},
+      {icon:"🔌",name:"SMPS",text:"<b>SMPS = Switched Mode Power Supply</b> — दीवार की <b>AC बिजली को DC में बदलकर</b> हर भाग को उसकी ज़रूरत की power देना इसका काम है। बिना इसके कोई भाग चलेगा ही नहीं!"},
+      {icon:"🌀",name:"Fan / Cooling",text:"CPU काम करते समय <b>गर्म</b> होता है। उसके ऊपर लगा <b>Heat Sink + छोटा पंखा (Fan)</b> उसे ठंडा रखता है — वरना computer गर्म होकर बंद हो जाएगा या chip जल जाएगी!"}
+    ],
+    explain:"जिस डिब्बे को लोग आम भाषा में 'CPU' कहते हैं, वह असल में <b>System Unit / Cabinet</b> है — CPU chip उसके अंदर Motherboard पर होती है!"},
+   {t:"reveal",q:"One-Liner: जिस box (डिब्बे) में Motherboard, CPU chip, RAM आदि होते हैं, उसका सही नाम क्या है?",
+    a:"<b>System Unit (Cabinet)</b> — आम बोलचाल में लोग इसे ही गलतफ़हमी में 'CPU' कह देते हैं। असली CPU उसके अंदर लगी एक छोटी chip है!"},
+   {t:"fact",icon:"🔌",title:"Theory 5 — Ports: बाहर की दुनिया से जुड़ने के दरवाज़े",
+    html:"<p>System Unit और Laptop के किनारों पर बने छोटे-छोटे <b>खाँचे/सॉकेट</b> ही <span class='eng'><b>Ports</b></span> हैं — इन्हीं से Pen Drive, Monitor, Internet cable आदि जुड़ते हैं। प्रमुख ports:</p>",
+    list:["<b>USB Port</b> — Pen Drive, Mouse, Keyboard, Printer, चार्जिंग — आज का सबसे आम port","<b>HDMI Port</b> — Monitor/TV/ Projector से जोड़ने के लिए — तस्वीर + आवाज़ दोनों एक ही cable में","<b>VGA Port</b> — पुराना monitor port (नीले रंग का, पिनों वाला) — अब धीरे-धीरे खत्म हो रहा है","<b>LAN / Ethernet Port</b> — Internet की cable (LAN wire) लगाने का port","<b>Audio Jack (3.5mm)</b> — Headphone/Speaker के लिए गोल port"]},
+   {t:"flip",title:"शब्दावली — Flip cards पलटकर सीखो",
+    cards:[
+      {front:"SMPS 🔌",back:"Switched Mode Power Supply — AC बिजली को DC में बदलकर भागों को power देता है"},
+      {front:"USB 🔑",back:"Universal Serial Bus — Pen Drive आदि जोड़ने का सबसे आम port"},
+      {front:"HDMI 📺",back:"High Definition Multimedia Interface — एक cable में Video + Audio, TV/Monitor के लिए"},
+      {front:"Port 🚪",back:"Computer के किनारे का सॉकेट, जहाँ बाहरी device की cable जुड़ती है"},
+      {front:"Peripheral 🖱️",back:"बाहर से जुड़ने वाले devices — Keyboard, Mouse, Printer आदि"}
+    ],
+    explain:"USB और HDMI के full form exam में बार-बार आते हैं — <b>USB = Universal Serial Bus</b>, <b>HDMI = High Definition Multimedia Interface</b>।"},
+   {t:"input",q:"Practice — खुद लिखो: SMPS का Full Form क्या है?",
+    accept:["switched mode power supply"],ph:"English में 4 शब्द लिखो…",
+    hint:"💡 Hint: S = Switched, M = Mode, P = Power, S = …?",
+    explain:"<b>SMPS = Switched Mode Power Supply</b> — ये AC को DC में बदलता है, क्योंकि computer के भाग DC power पर चलते हैं।"},
+   {t:"scratch",title:"🪙 ख़ज़ाना Block — Scratch करो!",
+    prompt:"एक बहुत ही exam-पसंद full form छिपा है — scratch करके निकालो!",
+    hidden:"<span class='big'>🔑 USB</span><br><b>Universal Serial Bus</b><br>Pen Drive, Mouse, Keyboard — सब इसी port से जुड़ते हैं",
+    explain:"USB आज हर जगह है — phone charger से लेकर Pen Drive तक। इसका एक और फायदा: device लगाते ही computer पहचान लेता है (<b>Plug and Play</b>)।"},
+   {t:"fact",icon:"🔋",title:"Theory 6 — UPS: बिजली का सुरक्षा-कवच",
+    html:"<p><span class='eng'><b>UPS = Uninterruptible Power Supply</b></span> — इसमें एक <b>battery</b> होती है। बिजली चले जाने पर यह computer को <b>कुछ मिनटों तक चलाए रखता</b> है, ताकि तुम अपना काम <b>save करके सही तरीके से बंद</b> कर सको।</p><p style='margin-top:6px'>⚠️ UPS का काम घंटों चलाना नहीं है — काम सिर्फ़ इतना है कि अचानक बिजली कटने से <b>data और Hard Disk खराब न हों</b>। गाँवों में जहाँ बिजली अक्सर जाती है, वहाँ UPS बहुत काम का है!</p>"},
+   {t:"match",title:"Practice — Match करो: Port और उसका काम",
+    pairs:[["USB Port","Pen Drive लगाना"],["HDMI Port","TV / Monitor जोड़ना"],["LAN Port","Internet cable लगाना"],["Audio Jack","Headphone लगाना"]],
+    explain:"Port पहचानना सीख गए तो कोई भी computer पीछे से देखकर बता दोगे कि कौन-सी cable कहाँ लगेगी!"},
+   {t:"quiz",q:"Practice: इनमें से कौन-सा Hardware नहीं है?",
+    options:["Monitor","Keyboard","Windows (Operating System)","Printer"],correct:2,
+    explain:"<b>Windows एक Software है</b> — उसे छू नहीं सकते! बाकी तीनों Hardware हैं, जिन्हें देख-छू सकते हैं।"},
+   {t:"fact",icon:"🧾",title:"Chapter 2 — एक नज़र में (सारांश)",
+    html:"<p>पूरे chapter का सार — exam से पहले बस यही दोहराना:</p>",
+    list:["<b>Hardware</b> = छू सकने वाले भौतिक भाग — Input, Processing, Output, Storage","<b>Motherboard</b> = मुख्य board (System Board); सब भाग इसी से जुड़े","<b>System Unit</b> = वह डिब्बा जिसमें Motherboard, CPU chip, RAM, SMPS रहते हैं","<b>SMPS</b> = AC → DC power supply · <b>UPS</b> = बिजली backup","<b>Ports</b> — USB (data), HDMI (display+sound), VGA (पुराना display), LAN (internet), Audio Jack (headphone)","<b>CPU निर्माता</b> — Intel, AMD · CPU गति — <b>GHz</b>"]},
+   {t:"quiz",q:"Final Practice: SMPS का मुख्य काम क्या है?",
+    options:["Data store करना","AC बिजली को DC में बदलकर भागों को देना","Screen पर तस्वीर दिखाना","Internet चलाना"],correct:1,
+    explain:"<b>SMPS</b> दीवार की AC बिजली को computer के भागों लायक DC में बदलता है। Store का काम Hard Disk का, display Monitor का और internet LAN/modem का है।"}
+  ]
+},
+{ id:"ch3", icon:"🖱️", color:"#fef3c7",
+  title:"Chapter 3 — Input और Output Devices",
+  sub:"Input & Output Devices",
+  desc:"Keyboard, Mouse, Scanner, OCR-OMR-MICR, Monitor, Printer — हर device का पूरा theory और exam वाले तथ्य!",
+  recap:"<b>Input</b>: Keyboard (104 keys), Mouse (आविष्कारक Engelbart), Scanner · <b>Exam Trio</b>: OCR (छपा text), OMR (answer sheet), MICR (bank cheque) · <b>Output</b>: Monitor (सबसे छोटी इकाई Pixel), Printer (गति PPM, गुणवत्ता DPI) · Laser Printer = Non-Impact",
+  steps:[
+   {t:"fact",icon:"🚪",title:"Theory 1 — Devices क्यों ज़रूरी हैं?",
+    html:"<p>CPU खुद बाहर की दुनिया से बात नहीं कर सकता। उसे <b>दो तरह के दरवाज़े</b> चाहिए:</p><p style='margin-top:6px'><b>Input Devices</b> — जिनसे हम computer को <b>data/निर्देश भेजते</b> हैं (Keyboard से लिखना, Mouse से click करना)।</p><p style='margin-top:6px'><b>Output Devices</b> — जिनसे computer हमें <b>result दिखाता/सुनाता</b> है (Monitor की screen, Printer का paper)।</p><p style='margin-top:6px'>इस chapter में दोनों का पूरा theory पढ़ेंगे — exam में devices पर हर साल सवाल आते हैं!</p>"},
+   {t:"parts",title:"Theory 2 — प्रमुख Input Devices (हर block दबाओ)",
+    parts:[
+      {icon:"⌨️",name:"Keyboard",text:"सबसे मुख्य input device। एक standard keyboard में <b>104 या 105 keys</b> होती हैं। अक्षरों का क्रम <b>QWERTY</b> layout कहलाता है (ऊपर की पहली पंक्ति Q-W-E-R-T-Y से नाम पड़ा!)।"},
+      {icon:"🖱️",name:"Mouse",text:"Screen पर <b>pointer (cursor)</b> घुमाकर click करने वाला device। इसे <b>Pointing Device</b> कहते हैं। इसके आविष्कारक हैं <b>Douglas Engelbart (1964)</b> — ये नाम exam में आता है!"},
+      {icon:"📷",name:"Scanner",text:"काग़ज़ पर बने <b>photo/document को digital रूप</b> में बदलकर computer में डालता है। जैसे पुरानी photo scan करके phone में सहेजना। यह Printer का उल्टा काम करता है!"},
+      {icon:"🎤",name:"Microphone (Mic)",text:"<b>आवाज़ को input</b> करके digital बनाता है — recording, online class, voice typing के लिए। Webcam भी input device है — वह <b>video</b> input करता है।"}
+    ],
+    explain:"Input devices की पहचान का आसान नियम — जो device computer को कुछ <b>देता</b> है, वह Input है!"},
+   {t:"fact",icon:"⌨️",title:"Theory 3 — Keyboard की Keys का परिवार",
+    html:"<p>Keyboard की keys के समूह भी exam में पूछे जाते हैं:</p>",
+    list:["<b>Function Keys (F1–F12)</b> — सबसे ऊपर की पंक्ति; हर program में इनके अलग काम (F1 = Help लगभग हर जगह!)","<b>Alphanumeric Keys</b> — अक्षर (A–Z) और अंक (0–9) वाली मुख्य keys","<b>Numeric Keypad</b> — दाईं ओर का calculator-जैसा हिस्सा, तेज़ number डालने के लिए","<b>Special Keys</b> — Enter, Spacebar (keyboard की सबसे लंबी key!), Backspace, Delete, Shift, Ctrl, Alt, Esc","<b>Navigation Keys</b> — तीर वाली keys (↑↓←→), Home, End, Page Up/Down"]},
+   {t:"quiz",q:"Practice: Keyboard की सबसे ऊपर वाली Function Keys की range क्या है?",
+    options:["F1 – F10","F1 – F12","F0 – F9","F1 – F15"],correct:1,
+    explain:"<b>F1 से F12 तक</b> कुल 12 Function Keys होती हैं। F1 आमतौर पर Help खोलता है।"},
+   {t:"scratch",title:"🪙 ख़ज़ाना Block — Scratch करो!",
+    prompt:"Mouse के बारे में एक exam-पसंद तथ्य छिपा है — scratch करके निकालो!",
+    hidden:"<span class='big'>🖱️ Douglas Engelbart</span><br>Mouse के आविष्कारक (1964)<br>पहला mouse <b>लकड़ी</b> का बना था!",
+    explain:"Engelbart ने 1964 में पहला mouse बनाया और 1968 में उसे दुनिया को दिखाया। आज के optical/wireless mouse उसी की संतान हैं!"},
+   {t:"fact",icon:"🏆",title:"Theory 4 — Exam Trio: OCR, OMR, MICR (सबसे ज़रूरी!)",
+    html:"<p>ये तीनों विशेष input तकनीकें हैं — competitive exams में इन पर <b>पक्का सवाल</b> आता है। तीनों को अलग-अलग याद करो:</p>",
+    list:["<b>OCR (Optical Character Recognition)</b> — छपे/लिखे हुए <b>अक्षरों को पढ़कर</b> editable text में बदलना। जैसे किताब का page scan करके उसका text निकालना","<b>OMR (Optical Mark Recognition)</b> — <b>गोला भरने वाली answer sheets</b> जांचना! तुम्हारी SSC/Railway की OMR sheet यही मशीन जांचती है","<b>MICR (Magnetic Ink Character Recognition)</b> — <b>Bank के cheques</b> पर चुंबकीय स्याही से छपे code पढ़ना — bank की सबसे पुरानी भरोसेमंद तकनीक"]},
+   {t:"match",title:"Practice — Match करो: तकनीक और उसका काम",
+    pairs:[["OCR","छपा हुआ text पढ़ना"],["OMR","Answer sheet जांचना"],["MICR","Bank cheque पढ़ना"],["Barcode Reader","सामान का दाम पढ़ना"]],
+    explain:"Trick से याद रखो: <b>C</b>haracter = OCR, <b>M</b>ark = OMR, <b>M</b>agnetic = MICR!"},
+   {t:"input",q:"Practice — खुद लिखो: OMR का Full Form क्या है?",
+    accept:["optical mark recognition","optical mark reader"],ph:"English में लिखो…",
+    hint:"💡 Hint: O = Optical, M = Mark (गोला/निशान), R = Recognition…",
+    explain:"<b>OMR = Optical Mark Recognition</b> — तुम्हारी exam की answer sheet के गोले यही पढ़ता है, इसलिए गोले अच्छी तरह भरना!"},
+   {t:"parts",title:"Theory 5 — प्रमुख Output Devices (हर block दबाओ)",
+    parts:[
+      {icon:"🖥️",name:"Monitor",text:"मुख्य output device — result <b>screen पर दिखाता</b> है (Soft Copy)। पुराने <b>CRT</b> monitor भारी डिब्बे जैसे थे; आज के <b>LCD/LED</b> पतले और हल्के हैं। इसे <b>VDU (Visual Display Unit)</b> भी कहते हैं।"},
+      {icon:"🖨️",name:"Printer",text:"Result को <b>काग़ज़ पर छापकर</b> देता है — यह <b>Hard Copy</b> है। घर के Inkjet से लेकर दफ़्तर के तेज़ Laser printer तक — अगले block में इनके प्रकार पढ़ेंगे।"},
+      {icon:"🔊",name:"Speaker / Headphone",text:"<b>आवाज़</b> के रूप में output — गाने, video की आवाज़, online class। Headphone भी यही काम अकेले के लिए करता है।"},
+      {icon:"📽️",name:"Projector",text:"Screen की तस्वीर को <b>बड़ी दीवार/पर्दे</b> पर दिखाता है — class और cinema hall में। Laptop से HDMI cable से जुड़ता है (Chapter 2 के ports याद आए?)।"}
+    ],
+    explain:"Output की पहचान — जो computer से कुछ <b>दिलवाता</b> है (दिखाता, छापता, सुनाता), वह Output device है।"},
+   {t:"fact",icon:"🖨️",title:"Theory 6 — Printer के प्रकार",
+    html:"<p>Printer दो बड़े परिवारों में बँटे हैं — ये वर्गीकरण exam की जान है:</p>",
+    list:["<b>Impact Printer</b> — स्याही वाले ribbon पर <b>चोट मारकर</b> छापते हैं (आवाज़ करते हैं)। उदाहरण: <b>Dot Matrix Printer</b> — पुराने bank/railway counter पर टिक-टिक वाला!","<b>Non-Impact Printer</b> — बिना चोट के, <b>शांत</b> छपाई। उदाहरण: <b>Inkjet</b> (स्याही की बूँदें फेंकता है — घरों में आम) और <b>Laser</b> (सबसे तेज़ और साफ़ — दफ़्तरों में आम)","<b>गति</b> मापी जाती है <b>PPM (Pages Per Minute)</b> में, और <b>छपाई की गुणवत्ता DPI (Dots Per Inch)</b> में — DPI ज़्यादा = छपाई ज़्यादा साफ़"]},
+   {t:"quiz",q:"Practice: Laser Printer किस श्रेणी में आता है?",
+    options:["Impact Printer","Non-Impact Printer","Plotter","Scanner"],correct:1,
+    explain:"<b>Non-Impact</b> — Laser और Inkjet दोनों बिना चोट मारे शांत छपाई करते हैं। Dot Matrix ही Impact का प्रसिद्ध उदाहरण है।"},
+   {t:"flip",title:"शब्दावली — Flip cards पलटकर सीखो",
+    cards:[
+      {front:"Pixel 🔲",back:"Screen की सबसे छोटी इकाई — लाखों pixels मिलकर तस्वीर बनाते हैं"},
+      {front:"DPI 📐",back:"Dots Per Inch — छपाई/तस्वीर की गुणवत्ता की इकाई; ज़्यादा = साफ़"},
+      {front:"PPM 📄",back:"Pages Per Minute — printer की गति की इकाई"},
+      {front:"VDU 🖥️",back:"Visual Display Unit — Monitor का दूसरा नाम"},
+      {front:"Plotter 🗺️",back:"बहुत बड़े नक्शे, banner और design छापने वाला विशेष printer"}
+    ],
+    explain:"तीन इकाइयाँ पक्की कर लो — <b>Pixel</b> (screen), <b>DPI</b> (गुणवत्ता), <b>PPM</b> (printer गति)।"},
+   {t:"reveal",q:"One-Liner: Monitor की screen पर तस्वीर बनाने वाली सबसे छोटी इकाई क्या कहलाती है?",
+    a:"<b>Pixel (Picture Element)</b> — screen पर लाखों छोटे-छोटे रंगीन बिंदु (pixels) मिलकर पूरी तस्वीर बनाते हैं। Resolution का मतलब है — कितने pixels हैं!"},
+   {t:"input",q:"Practice — खुद लिखो: DPI का Full Form क्या है?",
+    accept:["dots per inch"],ph:"English में 3 शब्द…",
+    hint:"💡 Hint: D = Dots, P = Per, I = … (लंबाई की इकाई)",
+    explain:"<b>DPI = Dots Per Inch</b> — एक inch में जितने ज़्यादा dots, छपाई उतनी साफ़। 300 DPI अच्छी छपाई मानी जाती है।"},
+   {t:"quiz",q:"Final Practice: Bank के cheques पढ़ने में कौन-सी तकनीक उपयोग होती है?",
+    options:["OCR","OMR","MICR","Barcode"],correct:2,
+    explain:"<b>MICR</b> — cheque पर चुंबकीय स्याही से छपा code पढ़ती है। OCR text के लिए, OMR answer sheets के लिए होता है।"},
+   {t:"fact",icon:"🕹️",title:"Theory 7 — कुछ और महत्वपूर्ण Devices",
+    html:"<p>ऊपर पढ़े devices के अलावा ये भी exam में आते हैं:</p>",
+    list:["<b>Joystick</b> — डंडी जैसा device, games खेलने के लिए (Input)","<b>Light Pen</b> — screen पर सीधे लिखने/चुनने वाला pen (Input)","<b>Touch Screen</b> — यह <b>Input + Output दोनों</b> है! उंगली से छूना = Input, तस्वीर दिखना = Output — तुम्हारे phone की screen इसका सबसे बड़ा उदाहरण है","<b>Touchpad</b> — Laptop में mouse की जगह बना चपटा हिस्सा (Input)","<b>Digital Camera/Webcam</b> — photo/video को input करना (Input)","<b>Graphics Tablet</b> — pen से drawing बनाने के लिए (Input) — designers का साथी"]},
+   {t:"fact",icon:"🧾",title:"Chapter 3 — एक नज़र में (सारांश)",
+    html:"<p>पूरे chapter का सार:</p>",
+    list:["<b>Input Devices:</b> Keyboard (104 keys, QWERTY), Mouse (Engelbart, 1964), Scanner, Mic, Webcam","<b>Exam Trio:</b> OCR = छपा text · OMR = answer sheet · MICR = bank cheque","<b>Output Devices:</b> Monitor/VDU (Soft Copy), Printer (Hard Copy), Speaker, Projector","<b>Printer:</b> Impact = Dot Matrix · Non-Impact = Inkjet, Laser","<b>इकाइयाँ:</b> Pixel (screen), DPI (गुणवत्ता), PPM (गति)"]}
+  ]
+}
 ];
 var LOCKED=[
- {icon:"🧩",title:"Chapter 2 — Computer के भाग: Hardware",sub:"Parts of Computer"},
- {icon:"🖱️",title:"Chapter 3 — Input और Output Devices",sub:"Input & Output Devices"},
  {icon:"💾",title:"Chapter 4 — Memory और Storage",sub:"RAM, ROM, HDD, SSD"},
  {icon:"🪟",title:"Chapter 5 — Software और Operating System",sub:"Software & OS"},
  {icon:"🌐",title:"Chapter 6 — Internet और Networking",sub:"Internet Basics"},
@@ -470,7 +612,7 @@ function finishChapter(restored){
   card.innerHTML="<div class='center'><div style='font-size:52px'>🏆</div><h3>Chapter पूरा! बधाई हो! 🎉</h3>"+
    "<div class='bigStars'>"+starStr+"</div>"+
    "<p>तुमने कमाए <b>⭐ "+p.score+" / "+maxScore(ch)+"</b> points"+(p.best>p.score?"":" — ये तुम्हारा <b>सबसे best score</b> है!")+"</p>"+
-   "<p style='margin-top:7px'>याद रखने वाली बातें: <b>Charles Babbage</b> = Father of Computer · <b>IPO Cycle</b> = Input→Process→Output · <b>CPU</b> = दिमाग (ALU+CU+Memory) · पीढ़ियाँ = Tube→Transistor→IC→Microprocessor→AI · प्रकार = Micro<Mini<Mainframe<Super · <b>TIFRAC</b> = भारत का पहला computer</p>"+
+   "<p style='margin-top:7px'>याद रखने वाली बातें: "+(ch.recap||"<b>Charles Babbage</b> = Father of Computer · <b>IPO Cycle</b> = Input→Process→Output · <b>CPU</b> = दिमाग (ALU+CU+Memory) · पीढ़ियाँ = Tube→Transistor→IC→Microprocessor→AI · प्रकार = Micro<Mini<Mainframe<Super · <b>TIFRAC</b> = भारत का पहला computer")+"</p>"+
    "<div style='margin-top:14px;display:flex;gap:9px;justify-content:center;flex-wrap:wrap'><button class='actBtn green' id='finHome'>📚 Chapters पर वापस</button><button class='actBtn' id='finReplay'>↻ फिर से खेलो</button></div></div>";
   feed.appendChild(card);
   nextBar.classList.add("hidden");
