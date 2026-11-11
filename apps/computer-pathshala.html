@@ -164,7 +164,7 @@ html.night .partBtn.opened{background:#14532d;color:#dcfce7}
     </div>
     <p class="secTitle">📚 Chapters</p>
     <div id="chapterList"></div>
-    <p class="secTitle">🔒 आने वाले Chapters (जल्द!)</p>
+    <p class="secTitle" id="lockedTitle">🔒 आने वाले Chapters (जल्द!)</p>
     <div id="lockedList"></div>
     <p class="tagline" style="margin-top:16px">बनाया गया ❤️ के साथ — SP DEV 22</p>
   </div>
@@ -595,10 +595,123 @@ var CHAPTERS=[
     list:["<b>Software</b> = Programs का समूह · छू नहीं सकते · 3 प्रकार: System, Application, Utility","<b>OS</b> = सबसे मुख्य System Software · उपयोगकर्ता और Hardware के बीच पुल · File/Memory/Device/सुरक्षा का प्रबंधक","<b>Booting:</b> Power → BIOS/POST → OS लोड → Desktop","<b>GUI</b> = Graphical User Interface · <b>CUI</b> = Character (लिखकर command)","<b>जोड़ियाँ:</b> Windows–Microsoft · Linux–Torvalds · Android–Google · भारत का OS = BOSS (C-DAC)"]}
   ]
 }
+,
+{ id:"ch6", icon:"🌐", color:"#cffafe",
+  title:"Chapter 6 — Internet और Networking",
+  sub:"Internet & Networking Basics",
+  desc:"Internet क्या है, LAN-MAN-WAN, Modem-Router-ISP, WWW, Browser, Email और online सुरक्षा — पूरा theory!",
+  recap:"<b>Internet</b> = networks का network · शुरुआत <b>ARPANET (1969)</b> · <b>WWW</b> = Tim Berners-Lee · आकार: <b>LAN < MAN < WAN</b> · <b>Modem</b> = signal बदलना · <b>ISP</b> = internet देने वाली company · <b>HTTPS</b> का S = Secure · OTP कभी किसी को नहीं!",
+  steps:[
+   {t:"fact",icon:"🌐",title:"Theory 1 — Internet क्या है?",
+    html:"<p><b>परिभाषा:</b> <span class='eng'>Internet</span> दुनिया भर के <b>करोड़ों computers का आपस में जुड़ा हुआ विशाल जाल</b> है — इसीलिए इसे <b>'Networks का Network'</b> कहते हैं। इसके through हम जानकारी भेज-पा सकते हैं, बात कर सकते हैं, video देख सकते हैं।</p><p style='margin-top:6px'>📜 <b>इतिहास:</b> इसकी शुरुआत अमेरिका के रक्षा विभाग के network <b>ARPANET (1969)</b> से हुई। बाद में <b>Tim Berners-Lee</b> ने <b>WWW (World Wide Web)</b> बनाया, जिससे आम लोगों के लिए internet आसान हो गया। <b>भारत में आम जनता के लिए internet 15 अगस्त 1995</b> को VSNL द्वारा शुरू हुआ — ये तारीख exam में आती है!</p>"},
+   {t:"parts",title:"Theory 2 — Network के प्रकार: LAN, MAN, WAN (हर block दबाओ)",
+    parts:[
+      {icon:"🏠",name:"LAN",text:"<b>LAN = Local Area Network</b> — एक <b>इमारत या छोटे क्षेत्र</b> का network: घर का WiFi, school/office के जुड़े computers। क्षेत्र सबसे छोटा, गति सबसे तेज़।"},
+      {icon:"🏙️",name:"MAN",text:"<b>MAN = Metropolitan Area Network</b> — पूरे <b>शहर (Metropolitan)</b> तक फैला network। उदाहरण: शहर का cable TV network, किसी bank की शहर भर की शाखाएँ।"},
+      {icon:"🌍",name:"WAN",text:"<b>WAN = Wide Area Network</b> — <b>देश-दुनिया</b> तक फैला सबसे बड़ा network। कई LAN/MAN को जोड़कर बनता है। <b>Internet स्वयं सबसे बड़ा WAN है!</b>"}
+    ],
+    explain:"आकार का क्रम: <b>LAN < MAN < WAN</b>। इनके अलावा घर के कुछ मीटर के लिए PAN (Personal Area Network — जैसे Bluetooth) भी होता है।"},
+   {t:"quiz",q:"Practice: दुनिया का सबसे बड़ा WAN (Wide Area Network) कौन-सा है?",
+    options:["LAN","MAN","Internet","Bluetooth"],correct:2,
+    explain:"<b>Internet</b> ही सबसे बड़ा WAN है — यह लाखों छोटे-बड़े networks को जोड़कर बना है। Bluetooth तो PAN (कुछ मीटर) है।"},
+   {t:"parts",title:"Theory 3 — Internet चलाने वाले 3 साथी (हर block दबाओ)",
+    parts:[
+      {icon:"🔄",name:"Modem",text:"<b>Modem = Modulator + Demodulator</b> — यह computer के digital signals को line पर जाने लायक signals में <b>बदलता</b> है और आते signals को वापस। नाम में ही काम छिपा है!"},
+      {icon:"📡",name:"Router",text:"Network में data को <b>सही रास्ता दिखाकर सही जगह पहुँचाना</b> router का काम है। घर का WiFi router ही internet को घर के सारे devices में <b>बाँटता</b> है।"},
+      {icon:"🏢",name:"ISP",text:"<b>ISP = Internet Service Provider</b> — internet की सेवा देने वाली company, जिससे हम connection खरीदते हैं। उदाहरण: <b>Jio, Airtel, BSNL, Vi</b>। बिना ISP के internet घर तक आएगा ही नहीं!"}
+    ],
+    explain:"क्रम समझो: <b>ISP</b> internet लाता है → <b>Modem</b> signal बदलता है → <b>Router</b> सब devices में बाँटता है।"},
+   {t:"flip",title:"शब्दावली — Flip cards पलटकर सीखो",
+    cards:[
+      {front:"WWW 🌍",back:"World Wide Web — Tim Berners-Lee द्वारा बनाया गया web pages का संसार"},
+      {front:"URL 🔗",back:"Uniform Resource Locator — किसी website/page का पूरा पता (जैसे sp-dev-22.github.io)"},
+      {front:"HTTPS 🔒",back:"HyperText Transfer Protocol Secure — सुरक्षित website का नियम; S = Secure"},
+      {front:"Browser 🧭",back:"Website खोलने वाला software — Chrome, Firefox, Edge"},
+      {front:"Search Engine 🔍",back:"जानकारी खोजने वाली website — Google, Bing, Yahoo"}
+    ],
+    explain:"ध्यान दो: <b>Browser software है</b> (तुम्हारे phone में लगा), <b>Search Engine website है</b> (browser में खुलती है) — ये अंतर exam में पूछा जाता है!"},
+   {t:"input",q:"Practice — खुद लिखो: WWW का Full Form क्या है?",
+    accept:["world wide web"],ph:"English में 3 शब्द…",
+    hint:"💡 Hint: W = World, W = Wide, W = … (जाल)",
+    explain:"<b>WWW = World Wide Web</b> — Tim Berners-Lee (1989) की देन। याद रहे: WWW internet का ही एक हिस्सा है, पूरा internet नहीं!"},
+   {t:"fact",icon:"🧭",title:"Theory 4 — Website, Webpage और Browser",
+    html:"<p>Internet की बुनियादी शब्दावली — इनमें भ्रम सबसे ज़्यादा होता है:</p>",
+    list:["<b>Website</b> — कई webpages का संग्रह, एक पते (domain) पर। जैसे पूरी किताब","<b>Webpage</b> — website का एक पन्ना। जैसे किताब का एक पृष्ठ","<b>Homepage</b> — website का सबसे पहला/मुख्य पन्ना","<b>Browser</b> — webpage खोलने का software (Chrome, Firefox)","<b>Hyperlink</b> — page पर बना वह नीला/दबाने योग्य शब्द या तस्वीर, जो दूसरे page पर ले जाती है"]},
+   {t:"scratch",title:"🪙 ख़ज़ाना Block — Scratch करो!",
+    prompt:"'Internet के पिता' के बारे में तथ्य छिपा है — scratch करो!",
+    hidden:"<span class='big'>👨‍💻 Vint Cerf</span><br>इन्हें <b>'Father of Internet'</b> कहा जाता है<br>TCP/IP नियम बनाने में इनकी मुख्य भूमिका थी",
+    explain:"Vint Cerf और Bob Kahn ने <b>TCP/IP</b> protocol बनाया — वही नियम, जिन पर आज का पूरा internet चलता है।"},
+   {t:"fact",icon:"📧",title:"Theory 5 — E-mail और Internet की सेवाएँ",
+    html:"<p><b>E-mail (Electronic Mail)</b> — internet से पत्र भेजने का सबसे पुराना और विश्वसनीय तरीका। Email पते की बनावट: <b>username@domain.com</b> — जैसे तुम्हारा पता somdatt2023<b>@</b>gmail.com। बीच वाला <b>@</b> चिह्न हर email में अनिवार्य है!</p><p style='margin-top:6px'><b>Internet की प्रमुख सेवाएँ:</b></p>",
+    list:["<b>WWW</b> — websites देखना-पढ़ना","<b>E-mail</b> — पत्र/दस्तावेज़ भेजना (Gmail, Yahoo Mail)","<b>Social Media व Chatting</b> — WhatsApp, Instagram, YouTube","<b>Online Banking व Shopping</b> — पैसे का लेन-देन, सामान खरीदना (E-commerce)","<b>Cloud Storage</b> — अपनी files internet पर सहेजना (Google Drive) — कहीं से भी खोल सकते हो"]},
+   {t:"match",title:"Practice — Match करो: कौन क्या करता है?",
+    pairs:[["Modem","Signal बदलना"],["Router","Internet बाँटना"],["ISP","Internet सेवा देना"],["Browser","Website खोलना"]],
+    explain:"चारों की भूमिका अलग-अलग है — Modem अनुवादक, Router बाँटने वाला, ISP देने वाला, Browser खोलने वाला!"},
+   {t:"fact",icon:"🛡️",title:"Theory 6 — Online सुरक्षा: हर परीक्षार्थी को पता हो",
+    html:"<p>Exam में अब <b>Cyber Safety</b> पर भी सवाल आते हैं — ये नियम याद रखो:</p>",
+    list:["<b>OTP और Password कभी किसी को न बताएँ</b> — bank/company कभी नहीं माँगती","अनजान link पर click न करें — ये <b>Phishing</b> (धोखे से जानकारी चुराना) हो सकता है","<b>HTTPS</b> और ताले (🔒) वाली website ही भरोसेमंद — वहाँ ही पैसे का काम करें","मज़बूत password रखें — अक्षर + अंक + चिह्न मिलाकर; हर जगह एक ही password न रखें","सार्वजनिक (free) WiFi पर banking जैसे काम न करें"]},
+   {t:"quiz",q:"Final Practice: किसी website के पते में HTTPS का 'S' क्या दर्शाता है?",
+    options:["Speed","Secure (सुरक्षित)","Server","Search"],correct:1,
+    explain:"<b>S = Secure</b> — HTTPS वाली website पर तुम्हारी जानकारी गुप्त (encrypted) रूप में जाती है। पैसे/बैंक के काम सिर्फ़ HTTPS पर ही करो!"},
+   {t:"fact",icon:"🧾",title:"Chapter 6 — एक नज़र में (सारांश)",
+    html:"<p>पूरे chapter का सार:</p>",
+    list:["<b>Internet</b> = Networks का Network · शुरुआत ARPANET (1969) · भारत में जनता के लिए 1995","<b>प्रकार:</b> LAN (इमारत) < MAN (शहर) < WAN (दुनिया) · Internet = सबसे बड़ा WAN","<b>त्रिकोण:</b> ISP देता है → Modem signal बदलता है → Router बाँटता है","<b>WWW</b> = World Wide Web (Tim Berners-Lee) · <b>URL</b> = website का पता","<b>Browser</b> = software · <b>Search Engine</b> = website · <b>Email</b> में @ अनिवार्य · <b>HTTPS</b> = Secure"]}
+  ]
+},
+{ id:"ch7", icon:"⌨️", color:"#fef9c3",
+  title:"Chapter 7 — Shortcut Keys और Full Forms",
+  sub:"Exam Special — Shortcuts & Abbreviations",
+  desc:"Ctrl वाले सारे प्रसिद्ध shortcuts, Function keys और exam में आने वाले Full Forms — रटने का सबसे मज़ेदार तरीका!",
+  recap:"<b>Ctrl+C/X/V</b> = Copy/Cut/Paste · <b>Ctrl+Z</b> Undo, <b>Ctrl+Y</b> Redo · <b>Ctrl+S</b> Save · <b>Ctrl+P</b> Print · <b>Ctrl+A</b> Select All · <b>F1</b> Help · <b>F2</b> Rename · <b>F5</b> Refresh · <b>Alt+F4</b> = प्रोग्राम बंद · <b>PDF</b> = Portable Document Format",
+  steps:[
+   {t:"fact",icon:"⚡",title:"Theory 1 — Shortcut Keys क्या हैं और क्यों ज़रूरी?",
+    html:"<p><span class='eng'><b>Shortcut Keys</b></span> keyboard के वे <b>संयोजन (Combinations)</b> हैं जिनसे mouse घुमाए बिना, पल भर में काम हो जाता है। जैसे लिखे हुए को copy करना mouse से menu में ढूँढने के बजाय सिर्फ़ <b>Ctrl + C</b>!</p><p style='margin-top:6px'>📌 <b>Exam में दोहरा फायदा:</b> (1) Computer के paper में इन पर <b>सीधे MCQ</b> आते हैं, (2) SSC CHSL के <b>Typing/Skill Test</b> में तेज़ काम करने वाले ही आगे निकलते हैं। ज़्यादातर shortcuts <b>Ctrl</b> या <b>Alt</b> के साथ बनते हैं।</p>"},
+   {t:"parts",title:"Theory 2 — Shortcuts के 4 परिवार (हर block दबाकर पढ़ो)",
+    parts:[
+      {icon:"✂️",name:"संपादन (Editing)",text:"<b>Ctrl+C</b> = Copy (नक़ल बनाना) · <b>Ctrl+X</b> = Cut (काटकर हटाना) · <b>Ctrl+V</b> = Paste (चिपकाना) · <b>Ctrl+Z</b> = Undo (गलती वापस लेना) · <b>Ctrl+Y</b> = Redo (Undo को फिर लागू करना)। Trick: X कैंची ✂️ जैसी, C = Copy, V से चिपकता है!"},
+      {icon:"📁",name:"File के काम",text:"<b>Ctrl+N</b> = New (नई file) · <b>Ctrl+O</b> = Open (पुरानी file खोलना) · <b>Ctrl+S</b> = Save (सहेजना) · <b>Ctrl+P</b> = Print (छापना) · <b>Ctrl+W</b> = Close (खुला पन्ना/tab बंद करना)।"},
+      {icon:"✍️",name:"Text सजावट",text:"<b>Ctrl+A</b> = Select All (सब चुनना) · <b>Ctrl+B</b> = Bold (मोटा) · <b>Ctrl+I</b> = Italic (तिरछा) · <b>Ctrl+U</b> = Underline (नीचे रेखा)। B-I-U तीनों भाई साथ याद रखो!"},
+      {icon:"🪟",name:"System वाले",text:"<b>Alt+Tab</b> = खुले programs में अदला-बदली · <b>Alt+F4</b> = चलता program बंद करना · <b>F5</b> = Refresh/पेज दोबारा लोड · <b>Esc</b> = काम रोकना/रद्द करना · <b>Windows Key</b> = Start Menu खोलना।"}
+    ],
+    explain:"चार परिवार — <b>Editing, File, Text, System</b>। परिवार के हिसाब से याद करोगे तो कभी नहीं भूलोगे!"},
+   {t:"fact",icon:"🏃",title:"Theory 3 — Speed का रहस्य: हाथ की आदत",
+    html:"<p>Shortcut याद करना काफी नहीं — <b>उंगलियों को उनकी आदत</b> पड़नी चाहिए। जैसे-जैसे तुम <b>typing का अभ्यास</b> करोगे, Ctrl+C जैसे संयोजन बिना सोचे उंगलियों से होने लगेंगे।</p><p style='margin-top:6px'>🎯 याद करो: SSC CHSL के Skill Test में <b>35 WPM</b> की गति माँगी जाती है। सही finger placement + shortcuts की आदत ही वहाँ काम आएगी। रोज़ का छोटा अभ्यास ही असली shortcut है!</p>"},
+   {t:"quiz",q:"Practice: चुने हुए text को चिपकाने (Paste) की shortcut key कौन-सी है?",
+    options:["Ctrl+P","Ctrl+V","Ctrl+B","Ctrl+S"],correct:1,
+    explain:"<b>Ctrl+V = Paste</b>। ध्यान दो — Ctrl+P Print है, Paste नहीं! Exam में यही भ्रम पैदा किया जाता है।"},
+   {t:"input",q:"Practice — खुद लिखो: Copy करने की shortcut key कौन-सी है? (जैसे: Ctrl + ?)",
+    accept:["ctrlc","ctrl c"],ansDisp:"Ctrl + C",ph:"Ctrl + … लिखो",
+    hint:"💡 Hint: C से Copy… बस संयोजन लिख दो!",
+    explain:"<b>Ctrl + C = Copy</b>। इसकी जोड़ी याद रखो: X = Cut, V = Paste — तीनों keyboard पर पास-पास हैं (Z-X-C-V वाली पंक्ति)!"},
+   {t:"fact",icon:"🔢",title:"Theory 4 — Function Keys (F1–F12) के काम",
+    html:"<p>ऊपर वाली पंक्ति की keys — इनमें से कुछ के काम तय हैं और exam में आते हैं:</p>",
+    list:["<b>F1</b> — Help (लगभग हर program में मदद)","<b>F2</b> — Rename (चुनी file/folder का नाम बदलना)","<b>F5</b> — Refresh (browser में page दोबारा लोड)","<b>F11</b> — Full Screen (browser को पूरी screen पर)","<b>F12</b> — MS Word में 'Save As' खोलना"]},
+   {t:"flip",title:"Full Forms — Flip cards पलटकर सीखो",
+    cards:[
+      {front:"PDF 📄",back:"Portable Document Format — हर जगह एक-जैसी दिखने वाली file का प्रारूप"},
+      {front:"HTTP 🌐",back:"HyperText Transfer Protocol — web pages के आदान-प्रदान का नियम"},
+      {front:"GPS 🛰️",back:"Global Positioning System — satellite से स्थान बताने वाली प्रणाली"},
+      {front:"WiFi 📶",back:"Wireless Fidelity (लोकप्रिय नाम) — बिना तार के internet जोड़ने की तकनीक"},
+      {front:"RAM 🧠",back:"Random Access Memory — revision! Chapter 4 में पढ़ा था"}
+    ],
+    explain:"Full Forms की लिस्ट लंबी है, पर exam में घूम-फिरकर यही प्रसिद्ध वाले आते हैं — <b>PDF, HTTP, GPS, CPU, USB, RAM, ROM</b>।"},
+   {t:"match",title:"Practice — Match करो: Shortcut और काम",
+    pairs:[["Ctrl+Z","Undo (वापस लेना)"],["Ctrl+S","Save (सहेजना)"],["Ctrl+P","Print (छापना)"],["Ctrl+A","Select All (सब चुनना)"]],
+    explain:"ये चार exam के सबसे पसंदीदा हैं — ख़ासकर Ctrl+P वाला भ्रम (Print, Paste नहीं!)।"},
+   {t:"scratch",title:"🪙 ख़ज़ाना Block — Scratch करो!",
+    prompt:"Keyboard की सबसे ख़ास key के बारे में तथ्य छिपा है — scratch करो!",
+    hidden:"<span class='big'>␣ SPACEBAR</span><br>Keyboard की <b>सबसे लंबी key</b><br>शब्दों के बीच जगह (space) बनाने के काम आती है",
+    explain:"Spacebar दोनों अंगूठों के नीचे रहती है — typing सीखने में इसकी जगह सबसे महत्वपूर्ण है!"},
+   {t:"quiz",q:"Final Practice: चलते हुए program को बंद करने का प्रसिद्ध संयोजन कौन-सा है?",
+    options:["Ctrl+S","Alt+F4","Ctrl+P","F5"],correct:1,
+    explain:"<b>Alt+F4</b> — खुला program/window बंद कर देता है। Desktop पर दबाओ तो computer बंद (Shut Down) करने का विकल्प भी आता है!"},
+   {t:"fact",icon:"🧾",title:"Chapter 7 — एक नज़र में (Top 15 Shortcuts)",
+    html:"<p>पूरे chapter का सार — ये 15 रट लो, exam तैयार:</p>",
+    list:["<b>Ctrl+C</b> Copy · <b>Ctrl+X</b> Cut · <b>Ctrl+V</b> Paste · <b>Ctrl+Z</b> Undo · <b>Ctrl+Y</b> Redo","<b>Ctrl+A</b> Select All · <b>Ctrl+S</b> Save · <b>Ctrl+P</b> Print · <b>Ctrl+N</b> New · <b>Ctrl+O</b> Open","<b>Ctrl+B</b> Bold · <b>Ctrl+I</b> Italic · <b>Ctrl+U</b> Underline","<b>F1</b> Help · <b>F2</b> Rename · <b>F5</b> Refresh · <b>Alt+F4</b> Close · <b>Alt+Tab</b> Switch"]}
+  ]
+}
 ];
 var LOCKED=[
- {icon:"🌐",title:"Chapter 6 — Internet और Networking",sub:"Internet Basics"},
- {icon:"⌨️",title:"Chapter 7 — Shortcut Keys और Full Forms",sub:"Exam Special"}
 ];
 </script>
 <script>
@@ -654,6 +767,7 @@ function renderHome(){
     list.appendChild(b);
   });
   var lk=document.getElementById("lockedList"); lk.innerHTML="";
+  document.getElementById("lockedTitle").style.display=LOCKED.length?"":"none";
   LOCKED.forEach(function(ch){
     var d=document.createElement("div"); d.className="chCard locked";
     d.innerHTML="<span class='ic'>"+ch.icon+"</span><span><span class='tt'>"+ch.title+"</span><span class='ds' style='display:block'>"+ch.sub+"</span></span><span class='st'>🔒<br>जल्द आ<br>रहा है</span>";
@@ -814,7 +928,7 @@ function buildStep(step,i,mode){
     var chk=document.createElement("button"); chk.className="actBtn green"; chk.textContent="✅ Check करो";
     var hnt=document.createElement("button"); hnt.className="actBtn"; hnt.style.marginLeft="8px"; hnt.style.background="linear-gradient(90deg,#64748b,#94a3b8)"; hnt.textContent="💡 Hint";
     var hTxt=document.createElement("div"); hTxt.className="hintTxt hidden"; hTxt.innerHTML=step.hint||"";
-    function dispAns(){ var a=step.accept[0]; return a.length<=7?a.toUpperCase():a.replace(/\b\w/g,function(c){return c.toUpperCase();}); }
+    function dispAns(){ if(step.ansDisp) return step.ansDisp; var a=step.accept[0]; return a.length<=7?a.toUpperCase():a.replace(/\b\w/g,function(c){return c.toUpperCase();}); }
     if(done){ inp.value=dispAns(); inp.disabled=true; inp.classList.add("right"); chk.remove(); hnt.remove(); expZ2.innerHTML="<div class='explain'>✅ "+step.explain+"</div>"; }
     else{
       chk.onclick=function(){
