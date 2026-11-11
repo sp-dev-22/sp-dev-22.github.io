@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Colours Crush — मैच-3 गेम</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg1:#2a1060;--bg2:#4b1a8a;--card:rgba(255,255,255,.14);--pink:#ff2e63;--txt:#fff}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2) 60%,#3a1470);color:var(--txt);min-height:100vh;display:flex;justify-content:center}
+.wrap{width:100%;max-width:470px;padding:14px 12px 28px}
+h1{font-size:32px;text-align:center;font-weight:800;letter-spacing:.3px}
+.sub{text-align:center;color:#e6ccff;font-size:15px;margin:2px 0 12px}
+.hidden{display:none!important}
+/* ---------- Profile screen ---------- */
+.pcard{background:var(--card);border:2px solid transparent;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:10px;cursor:pointer;width:100%;text-align:left;color:#fff;font-size:16px}
+.pcard:active{transform:scale(.98)}
+.pcard .av{font-size:30px;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pcard .nm{font-weight:700;font-size:18px}
+.pcard .dt{font-size:12.5px;color:#e6ccff;margin-top:2px;line-height:1.45}
+.pcard .del{margin-left:auto;background:rgba(0,0,0,.25);border:none;color:#ffb3c2;font-size:17px;width:36px;height:36px;border-radius:50%;cursor:pointer;flex-shrink:0}
+.contBadge{background:#22c55e;color:#fff;font-size:11px;font-weight:700;border-radius:20px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.newBox{background:rgba(0,0,0,.22);border-radius:16px;padding:14px;margin-top:14px}
+.newBox h3{font-size:17px;margin-bottom:10px}
+.newBox input{width:100%;padding:12px;border-radius:10px;border:none;font-size:16px;margin-bottom:10px;outline:none}
+.emojiRow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.emojiRow button{font-size:22px;width:44px;height:44px;border-radius:12px;border:2px solid transparent;background:rgba(255,255,255,.15);cursor:pointer}
+.emojiRow button.sel{border-color:#ffd93c;background:rgba(255,217,60,.25)}
+.btn{border:none;border-radius:30px;padding:13px 22px;font-size:16.5px;font-weight:700;cursor:pointer;color:#fff}
+.btn:active{transform:scale(.97)}
+.btnPink{background:linear-gradient(90deg,#ff2e63,#ff5a3c);width:100%}
+.btnGreen{background:linear-gradient(90deg,#16a34a,#22c55e);width:100%}
+.btnGhost{background:transparent;border:2px solid rgba(255,255,255,.45);color:#fff}
+.btnSmall{padding:9px 16px;font-size:14px}
+/* ---------- Game screen ---------- */
+.stats{display:flex;gap:9px;margin-bottom:10px}
+.stat{flex:1;background:var(--card);border-radius:14px;padding:9px 4px;text-align:center}
+.stat b{display:block;font-size:23px}
+.stat span{font-size:13px;color:#e6ccff}
+.barBg{height:9px;background:rgba(255,255,255,.18);border-radius:10px;overflow:hidden;margin-bottom:9px}
+.barFill{height:100%;background:linear-gradient(90deg,#ffd93c,#ff9f2e);border-radius:10px;transition:width .4s;width:0%}
+.metaRow{display:flex;justify-content:space-between;align-items:center;font-size:15px;margin-bottom:4px}
+.metaRow .best{color:#ffd93c;font-weight:700}
+.levelLine{text-align:center;color:#efe3ff;font-size:15px;margin-bottom:12px}
+.profBar{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.22);border-radius:30px;padding:5px 6px 5px 12px;margin-bottom:12px;font-size:14.5px}
+.profBar .av{font-size:19px}
+.profBar button{margin-left:auto;background:rgba(255,255,255,.16);border:none;color:#fff;border-radius:20px;padding:6px 13px;font-size:13px;cursor:pointer}
+.profBar .snd{margin-left:0}
+#board{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;background:rgba(0,0,0,.18);padding:7px;border-radius:16px;touch-action:none;user-select:none}
+.tile{aspect-ratio:1;border:none;border-radius:22%;font-size:clamp(17px,5.6vw,27px);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;text-shadow:0 1px 3px rgba(0,0,0,.35);transition:transform .15s,opacity .18s;box-shadow:inset 0 -3px 0 rgba(0,0,0,.15)}
+.tile.sel{outline:3px solid #fff;transform:scale(1.1);z-index:2}
+.tile.pop{transform:scale(1.25);opacity:0}
+.tile.hint{animation:hintPulse .5s infinite alternate}
+.tile.shake{animation:shk .25s}
+@keyframes hintPulse{from{outline:3px solid #ffd93c}to{outline:3px solid #fff;transform:scale(1.12)}}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.t0{background:linear-gradient(145deg,#ffd93c,#f5a623)}.t1{background:linear-gradient(145deg,#ff6b6b,#e63946)}
+.t2{background:linear-gradient(145deg,#5db9ff,#2176ff)}.t3{background:linear-gradient(145deg,#7be07b,#2ea44f)}
+.t4{background:linear-gradient(145deg,#c77dff,#8338ec)}.t5{background:linear-gradient(145deg,#ffb35c,#fb8500)}
+.gameBtns{display:flex;gap:10px;margin-top:14px}
+.gameBtns .btn{flex:1}
+.tip{text-align:center;color:#d9bfff;font-size:13px;margin-top:12px;line-height:1.5;padding:0 6px}
+.msg{min-height:22px;text-align:center;font-weight:700;color:#ffd93c;margin-top:8px;font-size:15.5px}
+/* ---------- Modal ---------- */
+.modalBg{position:fixed;inset:0;background:rgba(10,0,30,.72);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px}
+.modal{background:linear-gradient(180deg,#4b1a8a,#2a1060);border-radius:20px;padding:24px 20px;width:100%;max-width:360px;text-align:center;border:1px solid rgba(255,255,255,.25)}
+.modal h2{font-size:25px;margin-bottom:8px}
+.modal p{color:#e6ccff;line-height:1.55;margin-bottom:16px;font-size:15px}
+.modal .btn{margin-bottom:9px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== PROFILE SCREEN ===== -->
+  <div id="profileScreen">
+    <div style="text-align:center;font-size:44px">🍬</div>
+    <h1>Colours Crush</h1>
+    <p class="sub">3 या ज़्यादा same रंग मिलाओ, points कमाओ!</p>
+    <p style="font-size:16px;font-weight:700;margin:14px 0 10px">👤 अपनी Profile चुनो</p>
+    <div id="profileList"></div>
+    <div class="newBox">
+      <h3>➕ नई Profile बनाओ</h3>
+      <input id="newName" type="text" maxlength="16" placeholder="अपना नाम लिखो…">
+      <div class="emojiRow" id="emojiRow"></div>
+      <button class="btn btnPink" id="createProfileBtn">Profile बनाओ और खेलो</button>
+    </div>
+    <p class="tip">हर profile का score, level और saved game अलग-अलग रहता है।<br>Game अपने-आप save होता है — बीच में छोड़कर बाद में <b>Continue</b> कर सकते हो।</p>
+  </div>
+
+  <!-- ===== GAME SCREEN ===== -->
+  <div id="gameScreen" class="hidden">
+    <h1 style="font-size:27px">🍬 Colours Crush</h1>
+    <p class="sub" style="margin-bottom:10px">3 या ज़्यादा same रंग मिलाओ, points कमाओ!</p>
+    <div class="profBar">
+      <span class="av" id="pAv">😀</span><span id="pName">Player</span>
+      <button class="snd" id="soundBtn">🔊</button>
+      <button id="switchBtn">🔄 Profile बदलो</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="scoreVal">0</b><span>स्कोर</span></div>
+      <div class="stat"><b id="movesVal">25</b><span>चालें बचीं</span></div>
+      <div class="stat"><b id="targetVal">1500</b><span>लक्ष्य</span></div>
+    </div>
+    <div class="barBg"><div class="barFill" id="barFill"></div></div>
+    <div class="metaRow"><span id="levelVal">Level 1</span><span class="best">🏆 Best: <span id="bestVal">0</span></span></div>
+    <p class="levelLine" id="levelLine"></p>
+    <div id="board"></div>
+    <div class="msg" id="msgLine"></div>
+    <div class="gameBtns">
+      <button class="btn btnGhost" id="hintBtn">💡 Hint</button>
+      <button class="btn btnPink" id="newGameBtn" style="width:auto">🔀 नया Game</button>
+    </div>
+    <p class="tip">Tip: 4 candies मिलाने पर bonus, 5 पर super bonus — और लगातार cascades पर Chain multiplier!<br>खेल अपने-आप save हो जाता है, page बंद करके बाद में भी वहीं से शुरू कर सकते हो।</p>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+"use strict";
+/* ================= DATA ================= */
+var TYPES=[
+ {cls:'t0',sym:'★'}, {cls:'t1',sym:'♥'}, {cls:'t2',sym:'◆'},
+ {cls:'t3',sym:'▲'}, {cls:'t4',sym:'✿'}, {cls:'t5',sym:'●'}
+];
+var EMOJIS=['😀','😎','🦁','🐯','🦊','🐼','🚀','⚡','👑','🎮','🌟','🔥'];
+var STORE_KEY='coloursCrush_v1';
+var SIZE=8;
+
+function loadStore(){
+  try{var s=JSON.parse(localStorage.getItem(STORE_KEY)); if(s&&s.profiles) return s;}catch(e){}
+  return {profiles:[],activeId:null,sound:true};
+}
+function saveStore(){ try{localStorage.setItem(STORE_KEY,JSON.stringify(store));}catch(e){} }
+var store=loadStore();
+
+function levelConfig(lv){ return {target:1500+(lv-1)*700, moves:25}; }
+function activeProfile(){ for(var i=0;i<store.profiles.length;i++) if(store.profiles[i].id===store.activeId) return store.profiles[i]; return null; }
+
+/* ================= SOUND ================= */
+var audioCtx=null;
+function beep(freq,dur){
+  if(!store.sound) return;
+  try{
+    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.frequency.value=freq;o.type='sine';g.gain.value=0.07;
+    o.connect(g);g.connect(audioCtx.destination);o.start();
+    g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);
+    o.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+
+/* ================= PROFILE UI ================= */
+var chosenEmoji=EMOJIS[0];
+var emojiRow=document.getElementById('emojiRow');
+EMOJIS.forEach(function(em,i){
+  var b=document.createElement('button'); b.textContent=em; if(i===0)b.className='sel';
+  b.onclick=function(){ chosenEmoji=em; var kids=emojiRow.children; for(var k=0;k<kids.length;k++) kids[k].className=''; b.className='sel'; };
+  emojiRow.appendChild(b);
+});
+
+function renderProfiles(){
+  var list=document.getElementById('profileList'); list.innerHTML='';
+  if(store.profiles.length===0){
+    list.innerHTML='<p style="color:#e6ccff;font-size:14px">अभी कोई profile नहीं है — नीचे पहली profile बनाओ।</p>';
+    return;
+  }
+  store.profiles.forEach(function(p){
+    var card=document.createElement('button'); card.className='pcard';
+    var cont=p.save?'<span class="contBadge">▶ SAVED GAME</span>':'';
+    var saveLine=p.save?('<br>रुका हुआ game: Level '+p.save.level+' • स्कोर '+p.save.score+' • '+p.save.movesLeft+' चालें बचीं'):'';
+    card.innerHTML='<span class="av" style="background:'+p.color+'">'+p.emoji+'</span>'+
+      '<span><span class="nm">'+escapeHtml(p.name)+'</span>'+cont+
+      '<span class="dt" style="display:block">🏆 Best: '+p.best+' • सबसे ऊँचा Level: '+p.highestLevel+saveLine+'</span></span>';
+    var del=document.createElement('span'); del.className='del'; del.textContent='🗑️'; del.title='Profile हटाओ';
+    del.onclick=function(e){ e.stopPropagation(); confirmModal('Profile हटाएँ?','"'+escapeHtml(p.name)+'" की profile, उसका best score और saved game — सब हट जाएगा।',function(){
+      store.profiles=store.profiles.filter(function(x){return x.id!==p.id;});
+      if(store.activeId===p.id) store.activeId=null;
+      saveStore(); renderProfiles();
+    });};
+    card.appendChild(del);
+    card.onclick=function(){ store.activeId=p.id; saveStore(); enterGame(); };
+    list.appendChild(card);
+  });
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+var COLORS=['#ff5a3c','#2176ff','#2ea44f','#8338ec','#fb8500','#e63946','#0891b2','#ca8a04'];
+document.getElementById('createProfileBtn').onclick=function(){
+  var name=document.getElementById('newName').value.trim();
+  if(!name){ alert('पहले अपना नाम लिखो 🙂'); return; }
+  if(store.profiles.length>=8){ alert('ज़्यादा से ज़्यादा 8 profiles बन सकती हैं।'); return; }
+  var p={ id:'p'+Date.now(), name:name, emoji:chosenEmoji,
+    color:COLORS[store.profiles.length%COLORS.length],
+    best:0, highestLevel:1, games:0, wins:0, save:null };
+  store.profiles.push(p); store.activeId=p.id; saveStore();
+  document.getElementById('newName').value='';
+  enterGame(); startNewGame(1);
+};
+
+/* ================= GAME STATE ================= */
+var G=null; // {level,score,movesLeft,target,board:[]}
+var busy=false, selected=-1;
+
+function saveGame(){
+  var p=activeProfile(); if(!p||!G) return;
+  p.save={level:G.level,score:G.score,movesLeft:G.movesLeft,target:G.target,board:G.board.slice()};
+  if(G.score>p.best) p.best=G.score;
+  saveStore();
+}
+function clearSave(){ var p=activeProfile(); if(p){ p.save=null; saveStore(); } }
+
+function randType(){ return Math.floor(Math.random()*TYPES.length); }
+
+function genBoard(){
+  var b=new Array(SIZE*SIZE);
+  for(var r=0;r<SIZE;r++) for(var c=0;c<SIZE;c++){
+    var t;
+    do{ t=randType(); }
+    while((c>=2&&b[r*SIZE+c-1]===t&&b[r*SIZE+c-2]===t)||(r>=2&&b[(r-1)*SIZE+c]===t&&b[(r-2)*SIZE+c]===t));
+    b[r*SIZE+c]=t;
+  }
+  if(!findPossibleMove(b)){ return genBoard(); }
+  return b;
+}
+
+function findMatches(b){
+  var hit={}, groups=[];
+  var r,c,i,len,start;
+  for(r=0;r<SIZE;r++){ // rows
+    c=0;
+    while(c<SIZE){
+      len=1; while(c+len<SIZE&&b[r*SIZE+c+len]===b[r*SIZE+c]) len++;
+      if(len>=3){ var g=[]; for(i=0;i<len;i++){ hit[r*SIZE+c+i]=1; g.push(r*SIZE+c+i);} groups.push(g); }
+      c+=len;
+    }
+  }
+  for(c=0;c<SIZE;c++){ // cols
+    r=0;
+    while(r<SIZE){
+      len=1; while(r+len<SIZE&&b[(r+len)*SIZE+c]===b[r*SIZE+c]) len++;
+      if(len>=3){ var g2=[]; for(i=0;i<len;i++){ hit[(r+i)*SIZE+c]=1; g2.push((r+i)*SIZE+c);} groups.push(g2); }
+      r+=len;
+    }
+  }
+  return {hit:hit,groups:groups};
+}
+function hasMatches(b){ var m=findMatches(b); return Object.keys(m.hit).length>0; }
+
+function findPossibleMove(b){
+  function swapped(i,j){ var t=b[i]; b[i]=b[j]; b[j]=t; var ok=hasMatches(b); t=b[i]; b[i]=b[j]; b[j]=t; return ok; }
+  for(var idx=0;idx<SIZE*SIZE;idx++){
+    var r=Math.floor(idx/SIZE), c=idx%SIZE;
+    if(c<SIZE-1&&swapped(idx,idx+1)) return [idx,idx+1];
+    if(r<SIZE-1&&swapped(idx,idx+SIZE)) return [idx,idx+SIZE];
+  }
+  return null;
+}
+
+/* ================= RENDER ================= */
+var boardEl=document.getElementById('board');
+function render(){
+  var p=activeProfile(); if(!p||!G) return;
+  document.getElementById('scoreVal').textContent=G.score;
+  document.getElementById('movesVal').textContent=G.movesLeft;
+  document.getElementById('targetVal').textContent=G.target;
+  document.getElementById('bestVal').textContent=Math.max(p.best,G.score);
+  document.getElementById('levelVal').textContent='Level '+G.level;
+  document.getElementById('levelLine').textContent='Level '+G.level+' — लक्ष्य है '+G.target+' points, '+levelConfig(G.level).moves+' चालों में!';
+  document.getElementById('barFill').style.width=Math.min(100,Math.round(G.score/G.target*100))+'%';
+  document.getElementById('pAv').textContent=p.emoji;
+  document.getElementById('pName').textContent=p.name;
+  document.getElementById('soundBtn').textContent=store.sound?'🔊':'🔇';
+  boardEl.innerHTML='';
+  G.board.forEach(function(t,i){
+    var d=document.createElement('button');
+    d.className='tile '+TYPES[t].cls+(i===selected?' sel':'');
+    d.textContent=TYPES[t].sym; d.setAttribute('data-i',i);
+    boardEl.appendChild(d);
+  });
+}
+function setMsg(t){ document.getElementById('msgLine').textContent=t||''; }
+
+/* ================= GAME FLOW ================= */
+function startNewGame(level){
+  var cfg=levelConfig(level);
+  G={level:level,score:0,movesLeft:cfg.moves,target:cfg.target,board:genBoard()};
+  selected=-1; busy=false;
+  var p=activeProfile(); if(p){ p.games++; if(level>p.highestLevel)p.highestLevel=level; }
+  setMsg(''); saveGame(); render();
+}
+function resumeSaved(){
+  var p=activeProfile(); if(!p||!p.save) return;
+  var s=p.save;
+  G={level:s.level,score:s.score,movesLeft:s.movesLeft,target:s.target,board:s.board.slice()};
+  selected=-1; busy=false; setMsg('▶ वहीं से जारी है जहाँ छोड़ा था!'); render();
+}
+function enterGame(){
+  document.getElementById('profileScreen').classList.add('hidden');
+  document.getElementById('gameScreen').classList.remove('hidden');
+  var p=activeProfile();
+  if(p&&p.save){ resumeSaved(); }
+  else{ startNewGame(p?p.highestLevel:1); }
+}
+function exitToProfiles(){
+  if(G&&G.movesLeft>0&&G.score<G.target) saveGame();
+  G=null;
+  document.getElementById('gameScreen').classList.add('hidden');
+  document.getElementById('profileScreen').classList.remove('hidden');
+  renderProfiles();
+}
+document.getElementById('switchBtn').onclick=exitToProfiles;
+document.getElementById('soundBtn').onclick=function(){ store.sound=!store.sound; saveStore(); render(); };
+document.getElementById('newGameBtn').onclick=function(){
+  confirmModal('नया Game?','मौजूदा game का progress हट जाएगा और Level '+(G?G.level:1)+' से फिर शुरू होगा।',function(){ if(G) startNewGame(G.level); });
+};
+document.getElementById('hintBtn').onclick=function(){
+  if(!G||busy) return;
+  var mv=findPossibleMove(G.board);
+  if(!mv){ setMsg('कोई चाल नहीं बची — board shuffle हो रहा है…'); shuffleBoard(); return; }
+  render();
+  mv.forEach(function(i){ boardEl.children[i].classList.add('hint'); });
+  beep(660,0.12);
+  setTimeout(function(){ if(boardEl.children[mv[0]]) { boardEl.children[mv[0]].classList.remove('hint'); boardEl.children[mv[1]].classList.remove('hint'); } },2200);
+};
+
+function shuffleBoard(){
+  var tries=0;
+  do{ // Fisher-Yates shuffle of existing tiles
+    for(var i=G.board.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=G.board[i]; G.board[i]=G.board[j]; G.board[j]=t; }
+    tries++;
+  }while((hasMatches(G.board)||!findPossibleMove(G.board))&&tries<60);
+  if(hasMatches(G.board)||!findPossibleMove(G.board)) G.board=genBoard();
+  saveGame(); render();
+}
+
+/* ---- swap & resolve ---- */
+function areAdjacent(a,b){
+  var ar=Math.floor(a/SIZE),ac=a%SIZE,br=Math.floor(b/SIZE),bc=b%SIZE;
+  return Math.abs(ar-br)+Math.abs(ac-bc)===1;
+}
+function trySwap(a,b){
+  if(busy||!G) return;
+  var t=G.board[a]; G.board[a]=G.board[b]; G.board[b]=t;
+  if(!hasMatches(G.board)){
+    render();
+    boardEl.children[a].classList.add('shake'); boardEl.children[b].classList.add('shake');
+    beep(160,0.15);
+    setTimeout(function(){ var t2=G.board[a]; G.board[a]=G.board[b]; G.board[b]=t2; selected=-1; render(); },260);
+    setMsg('ये चाल नहीं बनेगी — कोई match नहीं बना');
+    return;
+  }
+  G.movesLeft--; selected=-1; busy=true; render();
+  resolveBoard(1);
+}
+function resolveBoard(chain){
+  var m=findMatches(G.board);
+  var hitIdx=Object.keys(m.hit).map(Number);
+  if(hitIdx.length===0){
+    busy=false;
+    if(!findPossibleMove(G.board)){ setMsg('कोई चाल नहीं बची — board shuffle!'); shuffleBoard(); }
+    saveGame(); render(); checkEnd(); return;
+  }
+  // score: 100 per tile x chain, group bonus 4=+100, 5+=+300 (per group, x chain)
+  var gained=hitIdx.length*100*chain;
+  m.groups.forEach(function(g){ if(g.length===4)gained+=100*chain; if(g.length>=5)gained+=300*chain; });
+  G.score+=gained;
+  setMsg(chain>1?('🔥 Chain x'+chain+' — +'+gained+' points!'):('+'+gained+' points!'));
+  beep(440+chain*110,0.14);
+  render();
+  hitIdx.forEach(function(i){ boardEl.children[i].classList.add('pop'); });
+  setTimeout(function(){
+    hitIdx.forEach(function(i){ G.board[i]=-1; });
+    // gravity per column
+    for(var c=0;c<SIZE;c++){
+      var stack=[];
+      for(var r=SIZE-1;r>=0;r--){ if(G.board[r*SIZE+c]!==-1) stack.push(G.board[r*SIZE+c]); }
+      var k=0;
+      for(var r2=SIZE-1;r2>=0;r2--){ G.board[r2*SIZE+c]=(k<stack.length)?stack[k++]:randType(); }
+    }
+    render();
+    resolveBoard(chain+1);
+  },240);
+}
+function checkEnd(){
+  var p=activeProfile(); if(!p||!G) return;
+  if(G.score>=G.target){
+    p.wins++; if(G.score>p.best)p.best=G.score;
+    var nextLv=G.level+1; if(nextLv>p.highestLevel)p.highestLevel=nextLv;
+    clearSave(); saveStore(); beep(880,0.3);
+    showModal('🎉 Level '+G.level+' पूरा!','वाह! स्कोर '+G.score+' — लक्ष्य '+G.target+' पार हो गया।<br>🏆 Best: '+p.best,
+      [{label:'▶️ अगला Level '+nextLv,cls:'btnGreen',fn:function(){ startNewGame(nextLv); }},
+       {label:'👤 Profiles',cls:'btnGhost',fn:exitToProfiles}]);
+  } else if(G.movesLeft<=0){
+    if(G.score>p.best)p.best=G.score;
+    clearSave(); saveStore(); beep(200,0.3);
+    var lv=G.level;
+    showModal('😢 चालें खत्म!','Level '+lv+' में स्कोर '+G.score+' / लक्ष्य '+G.target+' रह गया।<br>थोड़ा और ध्यान से — Hint का इस्तेमाल करो!',
+      [{label:'🔀 फिर से खेलो — Level '+lv,cls:'btnPink',fn:function(){ startNewGame(lv); }},
+       {label:'👤 Profiles',cls:'btnGhost',fn:exitToProfiles}]);
+  }
+}
+
+/* ---- input: tap + swipe ---- */
+var touchStart=null;
+boardEl.addEventListener('pointerdown',function(e){
+  var el=e.target.closest('.tile'); if(!el) return;
+  touchStart={i:parseInt(el.getAttribute('data-i'),10),x:e.clientX,y:e.clientY};
+});
+boardEl.addEventListener('pointerup',function(e){
+  if(!touchStart||!G||busy) { touchStart=null; return; }
+  var i=touchStart.i, dx=e.clientX-touchStart.x, dy=e.clientY-touchStart.y;
+  var adx=Math.abs(dx), ady=Math.abs(dy);
+  if(Math.max(adx,ady)>24){ // swipe
+    var j=-1;
+    if(adx>ady) j=(dx>0&&i%SIZE<SIZE-1)?i+1:(dx<0&&i%SIZE>0)?i-1:-1;
+    else j=(dy>0&&i<SIZE*(SIZE-1))?i+SIZE:(dy<0&&i>=SIZE)?i-SIZE:-1;
+    touchStart=null;
+    if(j>=0) trySwap(i,j);
+    return;
+  }
+  touchStart=null;
+  // tap
+  if(selected===-1){ selected=i; render(); return; }
+  if(selected===i){ selected=-1; render(); return; }
+  if(areAdjacent(selected,i)){ var a=selected; selected=-1; trySwap(a,i); }
+  else { selected=i; render(); }
+});
+
+/* ---- autosave on hide/close ---- */
+document.addEventListener('visibilitychange',function(){ if(document.hidden&&G) saveGame(); });
+window.addEventListener('beforeunload',function(){ if(G) saveGame(); });
+
+/* ================= MODALS ================= */
+function showModal(title,html,buttons){
+  var root=document.getElementById('modalRoot');
+  var bg=document.createElement('div'); bg.className='modalBg';
+  var box=document.createElement('div'); box.className='modal';
+  box.innerHTML='<h2>'+title+'</h2><p>'+html+'</p>';
+  buttons.forEach(function(b){
+    var btn=document.createElement('button'); btn.className='btn '+b.cls; btn.innerHTML=b.label;
+    btn.onclick=function(){ root.innerHTML=''; b.fn(); };
+    box.appendChild(btn);
+  });
+  bg.appendChild(box); root.appendChild(bg);
+}
+function confirmModal(title,html,onYes){
+  showModal(title,html,[
+    {label:'हाँ, पक्का',cls:'btnPink',fn:onYes},
+    {label:'रहने दो',cls:'btnGhost',fn:function(){}}
+  ]);
+}
+
+/* ================= INIT ================= */
+renderProfiles();
+if(store.activeId&&activeProfile()){
+  // Direct continue: profile screen still shows first so user can pick who is playing.
+}
+</script>
+</body>
+</html>

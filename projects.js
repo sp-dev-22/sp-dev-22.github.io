@@ -69,6 +69,18 @@ const PROJECTS = [
     download: "games/diwali-dhamaka.html"
   },
   {
+    id: "colours-crush",
+    category: "web-games",
+    icon: "🍬",
+    name: "Colours Crush — Match 3",
+    desc: "Candy Crush जैसा match-3 puzzle game — 3 या ज़्यादा same रंग मिलाओ, chain cascades पर multiplier bonus! अब Multi-Profile system के साथ: हर player का अपना score, level और best अलग। Continue Play भी है — game अपने-आप save होता है, बीच में छोड़कर बाद में ठीक वहीं से शुरू करो। Levels, Hint और sound के साथ, पूरी तरह offline।",
+    tags: ["Game", "Puzzle", "Match 3", "Multi Profile"],
+    color: "#9333ea",
+    color2: "#ff2e63",
+    open: "games/colours-crush.html",
+    download: "games/colours-crush.html"
+  },
+  {
     id: "sp-launcher",
     category: "android-apps",
     icon: "🚀",
