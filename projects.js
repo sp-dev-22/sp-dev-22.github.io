@@ -33,6 +33,18 @@ const PROJECTS = [
     download: "apps/cbt-pro.html"
   },
   {
+    id: "computer-pathshala",
+    category: "web-apps",
+    icon: "💻",
+    name: "कंप्यूटर पाठशाला — खेल-खेल में Computer सीखो",
+    desc: "Competitive exams (SSC, Railway, CET) के लिए Hindi में interactive Computer की पढ़ाई — button दबाओ, हर नया block animation के साथ जन्म लेगा! छिपे हुए One-Liner answers, Quiz, खुद लिखकर जवाब और Match-the-pair games के साथ। Chapter 1: कंप्यूटर का परिचय live है, नये chapters जुड़ते रहेंगे। Day-Night mode और progress save के साथ।",
+    tags: ["Computer", "Hindi", "Exam", "Interactive", "Game"],
+    color: "#2563eb",
+    color2: "#06b6d4",
+    open: "apps/computer-pathshala.html",
+    download: "apps/computer-pathshala.html"
+  },
+  {
     id: "water-supply-demo",
     category: "web-apps",
     icon: "💧",

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>कंप्यूटर पाठशाला — खेल-खेल में Computer सीखो</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+ --bg:linear-gradient(180deg,#fef9c3 0%,#dbeafe 55%,#dcfce7 100%);
+ --card:#ffffff; --card2:#f0f9ff; --txt:#1e293b; --sub:#64748b;
+ --line:#e2e8f0; --accent:#2563eb; --accent2:#7c3aed; --green:#16a34a;
+ --shadow:0 4px 16px rgba(30,41,59,.10);
+}
+html.night{
+ --bg:linear-gradient(180deg,#0f172a 0%,#1e1b4b 60%,#111827 100%);
+ --card:#1e293b; --card2:#273449; --txt:#f1f5f9; --sub:#94a3b8;
+ --line:#334155; --accent:#60a5fa; --accent2:#a78bfa; --green:#4ade80;
+ --shadow:0 4px 16px rgba(0,0,0,.4);
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);background-attachment:fixed;color:var(--txt);min-height:100vh;display:flex;justify-content:center;transition:background .4s}
+.wrap{width:100%;max-width:480px;padding:14px 12px 110px}
+.hidden{display:none!important}
+button{font-family:inherit}
+/* header */
+.topBar{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.topBar h1{font-size:23px;font-weight:800;flex:1;line-height:1.2}
+.iconBtn{background:var(--card);border:2px solid var(--line);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:var(--shadow);flex-shrink:0}
+.iconBtn:active{transform:scale(.92)}
+.tagline{text-align:center;color:var(--sub);font-size:14px;margin-bottom:12px}
+.starPill{background:var(--card);border:2px solid #facc15;color:var(--txt);border-radius:22px;padding:7px 14px;font-weight:800;font-size:15px;box-shadow:var(--shadow)}
+/* chapter cards */
+.chCard{background:var(--card);border-radius:18px;padding:15px;box-shadow:var(--shadow);margin-bottom:11px;border:2px solid var(--line);cursor:pointer;width:100%;text-align:left;color:var(--txt);display:flex;gap:12px;align-items:center}
+.chCard:active{transform:scale(.98)}
+.chCard .ic{font-size:32px;width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--card2)}
+.chCard .tt{font-weight:800;font-size:16.5px;line-height:1.3}
+.chCard .ds{font-size:13px;color:var(--sub);margin-top:2px;line-height:1.45}
+.chCard .st{margin-left:auto;text-align:right;font-size:12.5px;font-weight:700;flex-shrink:0}
+.chCard.locked{opacity:.62;cursor:default}
+.howBox{background:var(--card2);border:2px dashed var(--accent);border-radius:16px;padding:13px 15px;font-size:14px;line-height:1.65;margin-bottom:14px;color:var(--txt)}
+.secTitle{font-size:17px;font-weight:800;margin:16px 0 9px}
+/* lesson */
+.lessonHead{position:sticky;top:0;z-index:20;background:transparent;padding:6px 0 8px;backdrop-filter:blur(3px)}
+.lessonHead .row{display:flex;align-items:center;gap:9px}
+.lessonHead .tt{font-weight:800;font-size:16.5px;flex:1;line-height:1.25}
+.barBg{height:10px;background:var(--card);border:2px solid var(--line);border-radius:10px;overflow:hidden;margin-top:8px}
+.barFill{height:100%;background:linear-gradient(90deg,#facc15,#22c55e);width:0%;transition:width .5s}
+.scoreLine{font-size:13px;color:var(--sub);margin-top:5px;display:flex;justify-content:space-between;font-weight:600}
+/* step cards */
+.card{background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--shadow);margin-bottom:13px;border:2px solid var(--line);position:relative;overflow:hidden}
+.card .kind{font-size:11px;font-weight:800;letter-spacing:.6px;color:#fff;border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:9px;text-transform:uppercase}
+.k-fact{background:#2563eb}.k-reveal{background:#db2777}.k-quiz{background:#7c3aed}.k-input{background:#ea580c}.k-match{background:#0891b2}.k-flow{background:#16a34a}
+.card h3{font-size:17.5px;line-height:1.4;margin-bottom:7px}
+.card p,.card li{font-size:15px;line-height:1.65}
+.card ul{padding-left:20px}
+.card li{margin-bottom:3px}
+.card b{color:var(--accent)}
+html.night .card b{color:var(--accent)}
+.eng{font-weight:700}
+.explain{background:var(--card2);border-left:4px solid var(--green);border-radius:10px;padding:9px 12px;font-size:14px;line-height:1.6;margin-top:11px}
+/* birth animation */
+@keyframes born{0%{transform:scale(.25) translateY(46px) rotate(-2deg);opacity:0}55%{transform:scale(1.07) translateY(-5px) rotate(.6deg);opacity:1}75%{transform:scale(.98) translateY(2px)}100%{transform:scale(1) translateY(0) rotate(0);opacity:1}}
+@keyframes glowNew{0%{box-shadow:0 0 0 0 rgba(34,197,94,.75),var(--shadow)}70%{box-shadow:0 0 0 14px rgba(34,197,94,0),var(--shadow)}100%{box-shadow:var(--shadow)}}
+.born{animation:born .6s cubic-bezier(.34,1.4,.64,1) both,glowNew 1.5s ease-out both}
+.bornFast{animation:born .45s cubic-bezier(.34,1.4,.64,1) both}
+@keyframes popIn{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.popIn{animation:popIn .4s both}
+@keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shakeX .35s}
+@keyframes flipIn{0%{transform:rotateX(90deg);opacity:0}100%{transform:rotateX(0);opacity:1}}
+.flipIn{animation:flipIn .5s both;transform-origin:top}
+.stagger>*{animation:born .55s cubic-bezier(.34,1.4,.64,1) both}
+.stagger>*:nth-child(1){animation-delay:.05s}.stagger>*:nth-child(2){animation-delay:.18s}
+.stagger>*:nth-child(3){animation-delay:.31s}.stagger>*:nth-child(4){animation-delay:.44s}
+.stagger>*:nth-child(5){animation-delay:.57s}.stagger>*:nth-child(6){animation-delay:.7s}
+/* interactive elements */
+.optBtn{display:block;width:100%;text-align:left;background:var(--card2);border:2px solid var(--line);color:var(--txt);border-radius:13px;padding:12px 14px;font-size:15.5px;font-weight:600;margin-bottom:8px;cursor:pointer}
+.optBtn:active{transform:scale(.98)}
+.optBtn.right{background:#dcfce7;border-color:#22c55e;color:#14532d}
+html.night .optBtn.right{background:#14532d;color:#dcfce7}
+.optBtn.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+html.night .optBtn.wrong{background:#7f1d1d;color:#fee2e2}
+.optBtn:disabled{cursor:default;opacity:.92}
+.actBtn{border:none;border-radius:26px;padding:11px 20px;font-size:15px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(90deg,#db2777,#f59e0b)}
+.actBtn:active{transform:scale(.96)}
+.actBtn.green{background:linear-gradient(90deg,#16a34a,#22c55e)}
+input.ansIn{width:100%;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card2);color:var(--txt);font-size:16px;outline:none;margin-bottom:9px}
+input.ansIn:focus{border-color:var(--accent)}
+input.ansIn.right{border-color:#22c55e;background:#dcfce7;color:#14532d}
+.hintTxt{font-size:13.5px;color:var(--sub);margin-top:7px;line-height:1.5}
+.matchCols{display:flex;gap:10px}
+.matchCol{flex:1}
+.mBtn{display:block;width:100%;background:var(--card2);border:2px solid var(--line);color:var(--txt);border-radius:12px;padding:11px 8px;font-size:14px;font-weight:700;margin-bottom:8px;cursor:pointer;line-height:1.35}
+.mBtn.sel{border-color:#f59e0b;background:#fef3c7;color:#92400e}
+html.night .mBtn.sel{background:#78350f;color:#fef3c7}
+.mBtn.done{background:#dcfce7;border-color:#22c55e;color:#14532d;cursor:default}
+html.night .mBtn.done{background:#14532d;color:#dcfce7}
+.flowRow{display:flex;align-items:stretch;gap:6px;margin:6px 0 4px}
+.flowBox{flex:1;border-radius:14px;padding:11px 6px;text-align:center;color:#fff}
+.flowBox .fi{font-size:24px;display:block}
+.flowBox .fl{font-weight:800;font-size:13.5px;display:block;margin-top:3px;line-height:1.3}
+.flowBox .fs{font-size:11.5px;opacity:.92;display:block;line-height:1.35}
+.flowArrow{align-self:center;font-size:19px;color:var(--sub);font-weight:900}
+/* bottom next bar */
+.nextBar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,rgba(0,0,0,.10) 30%);z-index:30}
+.nextBtn{width:100%;max-width:456px;border:none;border-radius:32px;padding:16px;font-size:17.5px;font-weight:800;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);box-shadow:0 8px 22px rgba(37,99,235,.4);cursor:pointer}
+.nextBtn:active{transform:scale(.97)}
+.nextBtn:disabled{background:#94a3b8;box-shadow:none;cursor:default}
+.nextBtn.finish{background:linear-gradient(90deg,#16a34a,#f59e0b)}
+/* toast + confetti */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#14532d;color:#dcfce7;font-weight:800;font-size:16px;padding:10px 22px;border-radius:26px;z-index:60;box-shadow:0 8px 20px rgba(0,0,0,.3);animation:popIn .35s both}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:55;overflow:hidden}
+.confetti i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.85}}
+.bigStars{font-size:42px;text-align:center;letter-spacing:6px;margin:8px 0}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HOME ===== -->
+  <div id="homeScreen">
+    <div class="topBar">
+      <h1>💻 कंप्यूटर पाठशाला</h1>
+      <span class="starPill">⭐ <span id="totalStars">0</span></span>
+      <button class="iconBtn" id="themeBtn" title="Day / Night">🌙</button>
+    </div>
+    <p class="tagline">खेल-खेल में Computer सीखो — SSC, Railway, CET व सभी Competitive Exams के लिए!</p>
+    <div class="howBox">
+      🎮 <b>कैसे खेलें?</b> हर chapter एक खेल है — <b>नीचे वाला button दबाते जाओ</b>, हर नया block मज़ेदार animation के साथ जन्म लेगा!
+      बीच-बीच में मिलेंगे — 👀 One-Liner का answer छिपा हुआ, 🧩 Quiz, ⌨️ खुद लिखकर जवाब देना और 🔗 Match करना।
+      सही जवाब पर ⭐ stars मिलेंगे। Progress अपने-आप save होता है।
+    </div>
+    <p class="secTitle">📚 Chapters</p>
+    <div id="chapterList"></div>
+    <p class="secTitle">🔒 आने वाले Chapters (जल्द!)</p>
+    <div id="lockedList"></div>
+    <p class="tagline" style="margin-top:16px">बनाया गया ❤️ के साथ — SP DEV 22</p>
+  </div>
+
+  <!-- ===== LESSON ===== -->
+  <div id="lessonScreen" class="hidden">
+    <div class="lessonHead">
+      <div class="row">
+        <button class="iconBtn" id="backBtn">⬅️</button>
+        <span class="tt" id="lessonTitle"></span>
+        <span class="starPill">⭐ <span id="lessonScore">0</span></span>
+      </div>
+      <div class="barBg"><div class="barFill" id="barFill"></div></div>
+      <div class="scoreLine"><span id="stepCount"></span><span id="scoreNote">सही जवाब = ज़्यादा ⭐</span></div>
+    </div>
+    <div id="feed"></div>
+  </div>
+</div>
+
+<div class="nextBar hidden" id="nextBar">
+  <button class="nextBtn" id="nextBtn">✨ अगला Block खोलो</button>
+</div>
+<div id="fxRoot"></div>
+
+<script>
+"use strict";
+/* ================== CHAPTER DATA ================== */
+var CHAPTERS=[
+{ id:"ch1", icon:"🖥️", color:"#dbeafe",
+  title:"Chapter 1 — कंप्यूटर का परिचय",
+  sub:"Introduction to Computer",
+  desc:"Computer क्या है, उसके भाग, विशेषताएँ, पीढ़ियाँ और इतिहास — exam के सबसे पसंदीदा सवाल यहीं से आते हैं!",
+  steps:[
+   {t:"fact",icon:"👋",title:"स्वागत है, दोस्त!",
+    html:"<p>ये है तुम्हारा पहला Computer chapter! घबराना मत — हम बिल्कुल <b>शून्य से</b> शुरू करेंगे और exam level तक जाएँगे।</p><p style='margin-top:6px'>बस नीचे वाला button दबाते जाओ और देखते जाओ जादू! ✨</p>"},
+   {t:"fact",icon:"🖥️",title:"Computer क्या है?",
+    html:"<p><span class='eng'>Computer</span> एक <b>इलेक्ट्रॉनिक मशीन (Electronic Machine)</b> है जो हमारे दिए गए <b>Data</b> को <span class='eng'>Instructions (Program)</span> के अनुसार <span class='eng'>Process</span> करके उपयोगी <b>Information</b> में बदल देती है।</p><p style='margin-top:6px'>आसान भाषा में — <b>कच्चा Data दो, पकी हुई Information लो!</b> 🍳</p>"},
+   {t:"reveal",q:"One-Liner: कंप्यूटर का जनक (Father of Computer) किसे कहा जाता है?",
+    a:"<b>Charles Babbage (चार्ल्स बैबेज)</b> — इन्होंने 1837 में <span class='eng'>Analytical Engine</span> की रूपरेखा बनाई थी, जिसे पहला mechanical computer माना जाता है।"},
+   {t:"quiz",q:"Computer शब्द किस भाषा के शब्द 'Computare' से बना है, जिसका अर्थ है — गणना करना?",
+    options:["Greek (यूनानी)","Latin (लैटिन)","French (फ्रांसीसी)","Sanskrit (संस्कृत)"],correct:1,
+    explain:"<b>Latin</b> शब्द <span class='eng'>Computare</span> = गणना करना। परीक्षा में लोकप्रिय Full Form भी पूछा जाता है — <span class='eng'>Common Operating Machine Purposely Used for Technological and Educational Research</span> (ये एक लोकप्रिय विस्तार है)।"},
+   {t:"flow",title:"Computer कैसे काम करता है? — IPO Cycle",
+    items:[
+      {icon:"⌨️",label:"INPUT",sub:"Data देना<br>Keyboard, Mouse",bg:"#2563eb"},
+      {icon:"🧠",label:"PROCESS",sub:"गणना / प्रोसेसिंग<br>CPU करता है",bg:"#7c3aed"},
+      {icon:"🖨️",label:"OUTPUT",sub:"Result दिखाना<br>Monitor, Printer",bg:"#16a34a"}],
+    note:"इसे <b>IPO Cycle (Input → Process → Output)</b> कहते हैं — लगभग हर exam में इससे सवाल आता है!"},
+   {t:"input",q:"खुद लिखो: CPU का Full Form क्या है?",
+    accept:["central processing unit"],ph:"यहाँ English में लिखो…",
+    hint:"💡 Hint: C = Central, P = Processing, U = …?",
+    explain:"<b>CPU = Central Processing Unit</b> — इसे computer का <b>दिमाग (Brain of Computer)</b> कहा जाता है, क्योंकि सारी गणना और निर्णय यहीं होते हैं।"},
+   {t:"quiz",q:"इनमें से कौन-सा INPUT device है?",
+    options:["Monitor","Printer","Keyboard","Speaker"],correct:2,
+    explain:"<b>Keyboard</b> से हम computer को data देते हैं = Input। Monitor, Printer, Speaker — ये सब result दिखाते/सुनाते हैं = Output devices।"},
+   {t:"fact",icon:"⚡",title:"Computer की 5 सुपर-पावर्स (विशेषताएँ)",
+    list:["<b>Speed (गति)</b> — पलक झपकते करोड़ों गणनाएँ; गति MIPS में मापी जाती है","<b>Accuracy (शुद्धता)</b> — गलती लगभग शून्य, गलती हो तो इंसान की (GIGO!)","<b>Diligence (लगन)</b> — बिना थके, बिना bore हुए लगातार काम","<b>Storage (भंडारण)</b> — भारी मात्रा में data सुरक्षित रखना","<b>Versatility (बहुमुखी)</b> — पढ़ाई, खेल, हिसाब, design… सब कुछ एक ही मशीन से"],
+    html:"<p>Exam में ये 5 characteristics बार-बार पूछी जाती हैं — इन्हें याद कर लो:</p>"},
+   {t:"reveal",q:"One-Liner: GIGO का Full Form क्या है?",
+    a:"<b>GIGO = Garbage In, Garbage Out</b> — अर्थात गलत data डालोगे तो गलत ही result मिलेगा। Computer खुद गलती नहीं करता, गलती input देने वाले की होती है!"},
+   {t:"match",title:"Match करो: Device कौन-सा है?",
+    pairs:[["Keyboard ⌨️","Typing से Input"],["Mouse 🖱️","Click से Input"],["Monitor 🖥️","Screen पर Output"],["Printer 🖨️","Paper पर Output"]],
+    explain:"Input = जिससे data <b>अंदर</b> जाए (Keyboard, Mouse, Scanner, Mic)। Output = जिससे result <b>बाहर</b> आए (Monitor, Printer, Speaker)।"},
+   {t:"fact",icon:"📜",title:"Computer की 5 पीढ़ियाँ (Generations)",
+    list:["<b>पहली (1942–55)</b> — Vacuum Tube · मशीन: ENIAC","<b>दूसरी (1955–64)</b> — Transistor","<b>तीसरी (1964–75)</b> — IC (Integrated Circuit)","<b>चौथी (1975–89)</b> — Microprocessor (VLSI)","<b>पाँचवीं (1989–आज)</b> — ULSI + Artificial Intelligence (AI)"],
+    html:"<p>हर पीढ़ी में computer छोटा, तेज़ और सस्ता होता गया। क्रम याद रखो — <b>Tube → Transistor → IC → Microprocessor → AI</b>:</p>"},
+   {t:"quiz",q:"तीसरी पीढ़ी (3rd Generation) के computers में कौन-सी technology इस्तेमाल हुई?",
+    options:["Vacuum Tube","Transistor","IC (Integrated Circuit)","Microprocessor"],correct:2,
+    explain:"<b>IC (Integrated Circuit)</b> — तीसरी पीढ़ी (1964–75) की पहचान है। चौथी पीढ़ी में Microprocessor आया, जिससे Personal Computer (PC) संभव हुआ।"},
+   {t:"reveal",q:"One-Liner: दुनिया का पहला Electronic Computer कौन-सा था?",
+    a:"<b>ENIAC (1945)</b> — <span class='eng'>Electronic Numerical Integrator and Computer</span>। अमेरिका में बना ये विशाल computer Vacuum Tubes से चलता था और पूरे कमरे में फैला था!"},
+   {t:"match",title:"Match करो: पीढ़ी और उसकी Technology",
+    pairs:[["पहली पीढ़ी","Vacuum Tube"],["दूसरी पीढ़ी","Transistor"],["तीसरी पीढ़ी","IC"],["चौथी पीढ़ी","Microprocessor"]],
+    explain:"यही 4 जोड़े exam की जान हैं — इन्हें उल्टा-सीधा करके पूछा जाता है!"},
+   {t:"input",q:"खुद लिखो: भारत में बना पहला computer कौन-सा था? (सिर्फ नाम, English में)",
+    accept:["tifrac"],ph:"जैसे: ENIAC की तरह एक नाम…",
+    hint:"💡 Hint: ये Mumbai के Tata Institute (TIFR) में बना था — नाम भी वहीं से आया: TIFR + AC",
+    explain:"<b>TIFRAC (1960)</b> — Tata Institute of Fundamental Research, Mumbai में बनाया गया भारत का पहला स्वदेशी computer।"},
+   {t:"fact",icon:"🚧",title:"Computer की सीमाएँ (Limitations)",
+    list:["<b>No IQ</b> — अपनी बुद्धि शून्य; जितना सिखाओ (Program), उतना ही करेगा","<b>No Feelings</b> — कोई भावना, थकान या स्वाद नहीं","<b>निर्देशों पर निर्भर</b> — बिना सही Program के कुछ नहीं कर सकता"],
+    html:"<p>शक्तियों के साथ सीमाएँ भी पूछी जाती हैं:</p>"},
+   {t:"quiz",q:"अंतिम सवाल: Data और Information में सही संबंध कौन-सा है?",
+    options:["Information को process करने से Data बनता है","Data को process करने से Information बनती है","दोनों एक ही चीज़ हैं","Data सिर्फ numbers को कहते हैं"],correct:1,
+    explain:"<b>Data (कच्चे तथ्य) → Processing → Information (उपयोगी परिणाम)</b>। जैसे: तुम्हारे marks = Data, report card = Information! 🎓"}
+  ]
+ }
+];
+var LOCKED=[
+ {icon:"🧩",title:"Chapter 2 — Computer के भाग: Hardware",sub:"Parts of Computer"},
+ {icon:"🖱️",title:"Chapter 3 — Input और Output Devices",sub:"Input & Output Devices"},
+ {icon:"💾",title:"Chapter 4 — Memory और Storage",sub:"RAM, ROM, HDD, SSD"},
+ {icon:"🪟",title:"Chapter 5 — Software और Operating System",sub:"Software & OS"},
+ {icon:"🌐",title:"Chapter 6 — Internet और Networking",sub:"Internet Basics"},
+ {icon:"⌨️",title:"Chapter 7 — Shortcut Keys और Full Forms",sub:"Exam Special"}
+];
+</script>
+<script>
+"use strict";
+/* ================== STORE ================== */
+var STORE_KEY="cp_store_v1";
+function loadStore(){ try{var s=JSON.parse(localStorage.getItem(STORE_KEY)); if(s&&s.chapters) return s;}catch(e){} return {theme:"day",chapters:{}}; }
+var store=loadStore();
+function saveStore(){ try{localStorage.setItem(STORE_KEY,JSON.stringify(store));}catch(e){} }
+function chProg(id){ if(!store.chapters[id]) store.chapters[id]={next:0,score:0,best:0,done:false}; return store.chapters[id]; }
+function maxScore(ch){ var m=0; ch.steps.forEach(function(s){ if(s.t==="quiz"||s.t==="input")m+=10; else if(s.t==="reveal")m+=3; else if(s.t==="match")m+=15; }); return m; }
+
+/* ================== THEME ================== */
+function applyTheme(){
+  if(store.theme==="night"){ document.documentElement.classList.add("night"); document.getElementById("themeBtn").textContent="☀️"; }
+  else{ document.documentElement.classList.remove("night"); document.getElementById("themeBtn").textContent="🌙"; }
+}
+document.getElementById("themeBtn").onclick=function(){ store.theme=(store.theme==="night")?"day":"night"; saveStore(); applyTheme(); };
+
+/* ================== FX ================== */
+function toast(msg){
+  var old=document.querySelector(".toast"); if(old) old.remove();
+  var t=document.createElement("div"); t.className="toast"; t.textContent=msg;
+  document.getElementById("fxRoot").appendChild(t);
+  setTimeout(function(){ t.remove(); },1700);
+}
+function confetti(){
+  var box=document.createElement("div"); box.className="confetti";
+  var cols=["#ef4444","#f59e0b","#22c55e","#3b82f6","#a855f7","#ec4899"];
+  for(var i=0;i<42;i++){ var p=document.createElement("i");
+    p.style.left=(Math.random()*100)+"%"; p.style.background=cols[i%cols.length];
+    p.style.animationDuration=(2+Math.random()*1.4)+"s"; p.style.animationDelay=(Math.random()*0.5)+"s";
+    p.style.transform="rotate("+(Math.random()*360)+"deg)"; box.appendChild(p); }
+  document.getElementById("fxRoot").appendChild(box);
+  setTimeout(function(){ box.remove(); },4000);
+}
+function beep(f){ try{ var C=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)()); var o=C.createOscillator(),g=C.createGain(); o.frequency.value=f; o.type="sine"; g.gain.value=0.06; o.connect(g); g.connect(C.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.001,C.currentTime+0.18); o.stop(C.currentTime+0.18);}catch(e){} }
+
+/* ================== HOME ================== */
+function renderHome(){
+  var total=0; CHAPTERS.forEach(function(ch){ total+=chProg(ch.id).best; });
+  document.getElementById("totalStars").textContent=total;
+  var list=document.getElementById("chapterList"); list.innerHTML="";
+  CHAPTERS.forEach(function(ch){
+    var p=chProg(ch.id);
+    var status,cls="";
+    if(p.done) status="<span style='color:var(--green)'>✅ पूरा हो गया</span><br>Best: ⭐ "+p.best+" / "+maxScore(ch)+"<br>फिर से खेलो ↻";
+    else if(p.next>0) status="<span style='color:#ea580c'>▶️ जारी रखो</span><br>Step "+(p.next+1)+" से आगे<br>⭐ "+p.score+" कमाए";
+    else status="<span style='color:var(--accent)'>✨ नया Chapter</span><br>"+ch.steps.length+" steps<br>⭐ "+maxScore(ch)+" तक कमा सकते हो";
+    var b=document.createElement("button"); b.className="chCard"+cls;
+    b.innerHTML="<span class='ic' style='background:"+ch.color+"'>"+ch.icon+"</span><span><span class='tt'>"+ch.title+"</span><span class='ds' style='display:block'>"+ch.sub+" — "+ch.desc+"</span></span><span class='st'>"+status+"</span>";
+    b.onclick=function(){ openChapter(ch.id); };
+    list.appendChild(b);
+  });
+  var lk=document.getElementById("lockedList"); lk.innerHTML="";
+  LOCKED.forEach(function(ch){
+    var d=document.createElement("div"); d.className="chCard locked";
+    d.innerHTML="<span class='ic'>"+ch.icon+"</span><span><span class='tt'>"+ch.title+"</span><span class='ds' style='display:block'>"+ch.sub+"</span></span><span class='st'>🔒<br>जल्द आ<br>रहा है</span>";
+    lk.appendChild(d);
+  });
+}
+
+/* ================== LESSON ENGINE ================== */
+var cur=null; // {ch, dispIdx}
+var feed=document.getElementById("feed");
+var nextBtn=document.getElementById("nextBtn");
+var nextBar=document.getElementById("nextBar");
+
+function openChapter(id){
+  var ch=null; CHAPTERS.forEach(function(c){ if(c.id===id) ch=c; });
+  if(!ch) return;
+  var p=chProg(id);
+  if(p.done){ p.next=0; p.score=0; p.done=false; } // replay fresh, best stays
+  cur={ch:ch,dispIdx:-1};
+  document.getElementById("homeScreen").classList.add("hidden");
+  document.getElementById("lessonScreen").classList.remove("hidden");
+  nextBar.classList.remove("hidden");
+  document.getElementById("lessonTitle").textContent=ch.icon+" "+ch.title;
+  feed.innerHTML="";
+  // restore completed steps in done mode
+  var upto=Math.min(p.next,ch.steps.length);
+  for(var i=0;i<upto;i++){ feed.appendChild(buildStep(ch.steps[i],i,"done")); }
+  updateHead();
+  if(upto>=ch.steps.length){ finishChapter(true); return; }
+  showLive(upto);
+  window.scrollTo(0,0);
+}
+function updateHead(){
+  var p=chProg(cur.ch.id);
+  document.getElementById("lessonScore").textContent=p.score;
+  var shown=Math.min(cur.dispIdx+1,cur.ch.steps.length);
+  document.getElementById("stepCount").textContent="Step "+shown+" / "+cur.ch.steps.length;
+  document.getElementById("barFill").style.width=Math.round(shown/cur.ch.steps.length*100)+"%";
+}
+function showLive(i){
+  cur.dispIdx=i;
+  var step=cur.ch.steps[i];
+  var card=buildStep(step,i,"live");
+  feed.appendChild(card);
+  updateHead();
+  setTimeout(function(){ card.scrollIntoView({behavior:"smooth",block:"center"}); },90);
+  if(step.t==="fact"||step.t==="flow"){
+    var p=chProg(cur.ch.id); p.next=i+1; saveStore();
+    setNext(true, i===cur.ch.steps.length-1);
+  } else {
+    var p2=chProg(cur.ch.id); p2.next=i; saveStore();
+    setNext(false,false);
+    nextBtn.textContent="👆 पहले ऊपर वाला खेल पूरा करो";
+  }
+}
+function setNext(enabled,isLast){
+  nextBtn.disabled=!enabled;
+  if(enabled) nextBtn.textContent=isLast?"🎉 Chapter पूरा करो!":"✨ अगला Block खोलो";
+  nextBtn.className="nextBtn"+(enabled&&isLast?" finish":"");
+}
+nextBtn.onclick=function(){
+  if(!cur) return;
+  var n=cur.dispIdx+1;
+  if(n>=cur.ch.steps.length){ finishChapter(false); }
+  else showLive(n);
+};
+document.getElementById("backBtn").onclick=function(){ goHome(); };
+function goHome(){
+  cur=null;
+  document.getElementById("lessonScreen").classList.add("hidden");
+  document.getElementById("homeScreen").classList.remove("hidden");
+  nextBar.classList.add("hidden");
+  renderHome(); window.scrollTo(0,0);
+}
+function onSolved(i,pts){
+  var p=chProg(cur.ch.id);
+  p.score+=pts; p.next=i+1; saveStore();
+  document.getElementById("lessonScore").textContent=p.score;
+  toast("+"+pts+" ⭐ बहुत बढ़िया!");
+  beep(720);
+  setNext(true, i===cur.ch.steps.length-1);
+}
+function finishChapter(restored){
+  var ch=cur.ch, p=chProg(ch.id);
+  p.done=true; p.next=ch.steps.length;
+  if(p.score>p.best) p.best=p.score;
+  saveStore();
+  var pct=Math.round(p.score/maxScore(ch)*100);
+  var stars=pct>=85?3:(pct>=55?2:1);
+  var starStr="⭐".repeat(stars)+"☆".repeat(3-stars);
+  var card=document.createElement("div"); card.className="card born";
+  card.innerHTML="<div class='center'><div style='font-size:52px'>🏆</div><h3>Chapter पूरा! बधाई हो! 🎉</h3>"+
+   "<div class='bigStars'>"+starStr+"</div>"+
+   "<p>तुमने कमाए <b>⭐ "+p.score+" / "+maxScore(ch)+"</b> points"+(p.best>p.score?"":" — ये तुम्हारा <b>सबसे best score</b> है!")+"</p>"+
+   "<p style='margin-top:7px'>याद रखने वाली बातें: <b>Charles Babbage</b> = Father of Computer · <b>IPO Cycle</b> = Input→Process→Output · <b>CPU</b> = दिमाग · पीढ़ियाँ = Tube→Transistor→IC→Microprocessor→AI · <b>TIFRAC</b> = भारत का पहला computer</p>"+
+   "<div style='margin-top:14px;display:flex;gap:9px;justify-content:center;flex-wrap:wrap'><button class='actBtn green' id='finHome'>📚 Chapters पर वापस</button><button class='actBtn' id='finReplay'>↻ फिर से खेलो</button></div></div>";
+  feed.appendChild(card);
+  nextBar.classList.add("hidden");
+  updateHead();
+  setTimeout(function(){ card.scrollIntoView({behavior:"smooth",block:"center"}); },90);
+  if(!restored){ confetti(); beep(880); setTimeout(function(){beep(1175);},180); }
+  document.getElementById("finHome").onclick=goHome;
+  document.getElementById("finReplay").onclick=function(){ var id=ch.id; goHome(); openChapter(id); };
+}
+
+/* ---------- step builders ---------- */
+function kindTag(txt,cls){ return "<span class='kind "+cls+"'>"+txt+"</span>"; }
+function buildStep(step,i,mode){
+  var card=document.createElement("div");
+  card.className="card"+(mode==="live"?" born":"");
+  var done=(mode==="done");
+  if(step.t==="fact"){
+    card.innerHTML=kindTag("📖 सीखो","k-fact")+"<h3>"+(step.icon||"")+" "+step.title+"</h3>"+(step.html||"")+
+      (step.list?"<ul class='stagger' style='margin-top:8px'>"+step.list.map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul>":"");
+  }
+  else if(step.t==="flow"){
+    var boxes=step.items.map(function(it){ return "<div class='flowBox' style='background:"+it.bg+"'><span class='fi'>"+it.icon+"</span><span class='fl'>"+it.label+"</span><span class='fs'>"+it.sub+"</span></div>"; }).join("<span class='flowArrow'>➡️</span>");
+    card.innerHTML=kindTag("🔄 समझो","k-flow")+"<h3>"+step.title+"</h3><div class='flowRow stagger'>"+boxes+"</div><div class='explain'>"+step.note+"</div>";
+  }
+  else if(step.t==="reveal"){
+    card.innerHTML=kindTag("👀 One-Liner","k-reveal")+"<p style='font-weight:700;font-size:16px'>"+step.q+"</p><div class='ansZone'></div>";
+    var zone=card.querySelector(".ansZone");
+    if(done){ zone.innerHTML="<div class='explain'>"+step.a+"</div>"; }
+    else{
+      var btn=document.createElement("button"); btn.className="actBtn"; btn.style.marginTop="11px"; btn.textContent="🙈 Answer छिपा है — देखने के लिए दबाओ";
+      btn.onclick=function(){ zone.innerHTML="<div class='explain flipIn'>"+step.a+"</div>"; btn.remove(); onSolved(i,3); };
+      zone.appendChild(btn);
+    }
+  }
+  else if(step.t==="quiz"){
+    card.innerHTML=kindTag("🧩 Quiz","k-quiz")+"<p style='font-weight:700;font-size:16px'>"+step.q+"</p><div class='opts' style='margin-top:10px'></div><div class='expZone'></div>";
+    var opts=card.querySelector(".opts"), expZ=card.querySelector(".expZone"), att=0;
+    step.options.forEach(function(op,oi){
+      var b=document.createElement("button"); b.className="optBtn"; b.textContent="ABCD"[oi]+". "+op;
+      if(done){ b.disabled=true; if(oi===step.correct) b.classList.add("right"); }
+      else b.onclick=function(){
+        if(oi===step.correct){
+          b.classList.add("right"); beep(760);
+          var all=opts.children; for(var k=0;k<all.length;k++) all[k].disabled=true;
+          expZ.innerHTML="<div class='explain popIn'>✅ "+step.explain+"</div>";
+          onSolved(i, att===0?10:(att===1?6:3));
+        } else {
+          b.classList.add("wrong"); b.disabled=true; att++; beep(170);
+          b.classList.add("shake"); setTimeout(function(){ b.classList.remove("shake"); },380);
+          toast("❌ गलत — फिर सोचो!");
+        }
+      };
+      opts.appendChild(b);
+    });
+    if(done) expZ.innerHTML="<div class='explain'>✅ "+step.explain+"</div>";
+  }
+  else if(step.t==="input"){
+    card.innerHTML=kindTag("⌨️ खुद लिखो","k-input")+"<p style='font-weight:700;font-size:16px'>"+step.q+"</p><div class='inZone' style='margin-top:10px'></div><div class='expZone'></div>";
+    var z=card.querySelector(".inZone"), expZ2=card.querySelector(".expZone"), att2=0, hintUsed=false;
+    var inp=document.createElement("input"); inp.className="ansIn"; inp.type="text"; inp.placeholder=step.ph||"यहाँ लिखो…"; inp.setAttribute("autocomplete","off");
+    var chk=document.createElement("button"); chk.className="actBtn green"; chk.textContent="✅ Check करो";
+    var hnt=document.createElement("button"); hnt.className="actBtn"; hnt.style.marginLeft="8px"; hnt.style.background="linear-gradient(90deg,#64748b,#94a3b8)"; hnt.textContent="💡 Hint";
+    var hTxt=document.createElement("div"); hTxt.className="hintTxt hidden"; hTxt.innerHTML=step.hint||"";
+    function dispAns(){ var a=step.accept[0]; return a.length<=7?a.toUpperCase():a.replace(/\b\w/g,function(c){return c.toUpperCase();}); }
+    if(done){ inp.value=dispAns(); inp.disabled=true; inp.classList.add("right"); chk.remove(); hnt.remove(); expZ2.innerHTML="<div class='explain'>✅ "+step.explain+"</div>"; }
+    else{
+      chk.onclick=function(){
+        var v=inp.value.toLowerCase().replace(/[^a-z0-9 ]/g,"").replace(/\s+/g," ").trim();
+        var ok=step.accept.some(function(a){ return a.toLowerCase().replace(/\s+/g," ").trim()===v; });
+        if(ok){ inp.classList.add("right"); inp.disabled=true; chk.disabled=true; hnt.disabled=true; beep(760);
+          expZ2.innerHTML="<div class='explain popIn'>✅ बिल्कुल सही! "+step.explain+"</div>";
+          onSolved(i, att2===0&&!hintUsed?10:(att2<=1?6:3));
+        } else { att2++; beep(170); inp.classList.add("shake"); setTimeout(function(){ inp.classList.remove("shake"); },380); toast("❌ अभी सही नहीं — Hint देख लो!"); }
+      };
+      hnt.onclick=function(){ hintUsed=true; hTxt.classList.remove("hidden"); hTxt.classList.add("flipIn"); };
+      inp.addEventListener("keydown",function(e){ if(e.key==="Enter") chk.onclick(); });
+    }
+    z.appendChild(inp); z.appendChild(chk); z.appendChild(hnt); z.appendChild(hTxt);
+  }
+  else if(step.t==="match"){
+    card.innerHTML=kindTag("🔗 Match करो","k-match")+"<h3>"+step.title+"</h3><p style='font-size:13.5px;color:var(--sub)'>पहले <b>बाईं ओर</b> का एक item दबाओ, फिर उसके सही साथी को <b>दाईं ओर</b> दबाओ!</p><div class='matchCols' style='margin-top:10px'><div class='matchCol L'></div><div class='matchCol R'></div></div><div class='expZone'></div>";
+    var L=card.querySelector(".L"), R=card.querySelector(".R"), expZ3=card.querySelector(".expZone");
+    var rights=step.pairs.map(function(p){return p[1];});
+    // shuffle rights
+    for(var s=rights.length-1;s>0;s--){ var j=Math.floor(Math.random()*(s+1)); var tmp=rights[s]; rights[s]=rights[j]; rights[j]=tmp; }
+    var selL=null, matched=0, mistakes=0;
+    step.pairs.forEach(function(p){
+      var b=document.createElement("button"); b.className="mBtn"; b.textContent=p[0]; b.setAttribute("data-v",p[0]);
+      if(done) b.classList.add("done");
+      else b.onclick=function(){ if(b.classList.contains("done"))return;
+        var ls=L.children; for(var k=0;k<ls.length;k++) ls[k].classList.remove("sel");
+        b.classList.add("sel"); selL=b; beep(520); };
+      L.appendChild(b);
+    });
+    rights.forEach(function(rv){
+      var b=document.createElement("button"); b.className="mBtn"; b.textContent=rv; b.setAttribute("data-v",rv);
+      if(done) b.classList.add("done");
+      else b.onclick=function(){
+        if(b.classList.contains("done"))return;
+        if(!selL){ toast("👈 पहले बाईं ओर से एक item चुनो!"); return; }
+        var leftVal=selL.getAttribute("data-v");
+        var pair=null; step.pairs.forEach(function(p){ if(p[0]===leftVal) pair=p; });
+        if(pair&&pair[1]===rv){
+          selL.classList.remove("sel"); selL.classList.add("done"); b.classList.add("done"); selL=null; matched++; beep(760);
+          if(matched===step.pairs.length){
+            expZ3.innerHTML="<div class='explain popIn'>✅ सारे match सही! "+step.explain+"</div>";
+            onSolved(i, mistakes===0?15:(mistakes<=2?10:6));
+          } else toast("✅ सही जोड़ी! ("+matched+"/"+step.pairs.length+")");
+        } else {
+          mistakes++; beep(170); b.classList.add("shake"); selL.classList.add("shake");
+          setTimeout(function(){ b.classList.remove("shake"); if(selL) selL.classList.remove("shake"); },380);
+          toast("❌ ये जोड़ी नहीं है — फिर कोशिश करो!");
+        }
+      };
+      R.appendChild(b);
+    });
+    if(done) expZ3.innerHTML="<div class='explain'>✅ "+step.explain+"</div>";
+  }
+  return card;
+}
+
+/* ================== INIT ================== */
+applyTheme();
+renderHome();
+</script>
+</body>
+</html>
