@@ -114,6 +114,36 @@ html.night .mBtn.done{background:#14532d;color:#dcfce7}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.85}}
 .bigStars{font-size:42px;text-align:center;letter-spacing:6px;margin:8px 0}
 .center{text-align:center}
+/* entrance variety */
+@keyframes slideBorn{0%{transform:translateX(80px) scale(.9);opacity:0}55%{transform:translateX(-8px) scale(1.03);opacity:1}100%{transform:translateX(0) scale(1);opacity:1}}
+@keyframes dropBorn{0%{transform:translateY(-64px) scale(.9);opacity:0}55%{transform:translateY(8px) scale(1.03);opacity:1}75%{transform:translateY(-3px)}100%{transform:translateY(0) scale(1);opacity:1}}
+.bornSlide{animation:slideBorn .6s cubic-bezier(.34,1.4,.64,1) both,glowNew 1.5s ease-out both}
+.bornDrop{animation:dropBorn .65s cubic-bezier(.34,1.4,.64,1) both,glowNew 1.5s ease-out both}
+.k-parts{background:#0d9488}.k-flip{background:#d97706}.k-scratch{background:#475569}
+/* parts explorer */
+.partsGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.partBtn{background:var(--card2);border:2px dashed var(--accent);color:var(--txt);border-radius:14px;padding:12px 8px;font-size:14.5px;font-weight:800;cursor:pointer;line-height:1.35}
+.partBtn .pi{font-size:24px;display:block;margin-bottom:3px}
+.partBtn:active{transform:scale(.96)}
+.partBtn.opened{border-style:solid;border-color:#22c55e;background:#dcfce7;color:#14532d}
+html.night .partBtn.opened{background:#14532d;color:#dcfce7}
+.partDetailBox{background:var(--card2);border:2px solid #22c55e;border-radius:14px;padding:12px 14px;margin-top:11px;font-size:14.5px;line-height:1.65}
+.partDetailBox h4{font-size:16px;margin-bottom:4px;color:var(--green)}
+/* flip cards */
+.flipGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.flipCard{perspective:700px;height:118px;cursor:pointer}
+.flipInner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.34,1.3,.64,1);transform-style:preserve-3d}
+.flipCard.flipped .flipInner{transform:rotateY(180deg)}
+.flipFace{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px;text-align:center;line-height:1.4}
+.flipFront{background:linear-gradient(145deg,#f59e0b,#f97316);color:#fff;font-weight:800;font-size:16px}
+.flipFront small{font-weight:600;font-size:11.5px;opacity:.9;margin-top:4px}
+.flipBack{background:var(--card2);border:2px solid #22c55e;color:var(--txt);transform:rotateY(180deg);font-size:12.8px;font-weight:600}
+/* scratch card */
+.scratchBox{position:relative;height:178px;border-radius:14px;overflow:hidden;margin-top:11px;border:2px solid var(--line)}
+.scratchUnder{position:absolute;inset:0;background:linear-gradient(145deg,#14532d,#16a34a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;font-size:15.5px;line-height:1.6}
+.scratchUnder .big{font-size:21px;font-weight:800}
+.scratchCv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:pointer;transition:opacity .7s}
+.scratchDoneTag{position:absolute;top:8px;right:8px;background:#14532d;color:#dcfce7;font-size:11px;font-weight:800;border-radius:16px;padding:3px 9px;z-index:3}
 </style>
 </head>
 <body>
@@ -129,7 +159,7 @@ html.night .mBtn.done{background:#14532d;color:#dcfce7}
     <p class="tagline">खेल-खेल में Computer सीखो — SSC, Railway, CET व सभी Competitive Exams के लिए!</p>
     <div class="howBox">
       🎮 <b>कैसे खेलें?</b> हर chapter एक खेल है — <b>नीचे वाला button दबाते जाओ</b>, हर नया block मज़ेदार animation के साथ जन्म लेगा!
-      बीच-बीच में मिलेंगे — 👀 One-Liner का answer छिपा हुआ, 🧩 Quiz, ⌨️ खुद लिखकर जवाब देना और 🔗 Match करना।
+      पढ़ाई के बीच मिलेंगे — 🧱 भागों के blocks दबाकर theory खोलना, 🔃 Flip cards, 🪙 Scratch करके ख़ज़ाना निकालना, 👀 छिपे One-Liner answers, 🧩 Quiz, ⌨️ खुद लिखकर जवाब और 🔗 Match करना।
       सही जवाब पर ⭐ stars मिलेंगे। Progress अपने-आप save होता है।
     </div>
     <p class="secTitle">📚 Chapters</p>
@@ -166,59 +196,120 @@ var CHAPTERS=[
 { id:"ch1", icon:"🖥️", color:"#dbeafe",
   title:"Chapter 1 — कंप्यूटर का परिचय",
   sub:"Introduction to Computer",
-  desc:"Computer क्या है, उसके भाग, विशेषताएँ, पीढ़ियाँ और इतिहास — exam के सबसे पसंदीदा सवाल यहीं से आते हैं!",
+  desc:"पहले पूरा Theory पढ़ो — Computer क्या है, Data-Information, CPU के भाग, इतिहास, विशेषताएँ, पीढ़ियाँ और प्रकार; बीच-बीच में हल्की practice, flip cards और scratch ख़ज़ाने!",
   steps:[
-   {t:"fact",icon:"👋",title:"स्वागत है, दोस्त!",
-    html:"<p>ये है तुम्हारा पहला Computer chapter! घबराना मत — हम बिल्कुल <b>शून्य से</b> शुरू करेंगे और exam level तक जाएँगे।</p><p style='margin-top:6px'>बस नीचे वाला button दबाते जाओ और देखते जाओ जादू! ✨</p>"},
-   {t:"fact",icon:"🖥️",title:"Computer क्या है?",
-    html:"<p><span class='eng'>Computer</span> एक <b>इलेक्ट्रॉनिक मशीन (Electronic Machine)</b> है जो हमारे दिए गए <b>Data</b> को <span class='eng'>Instructions (Program)</span> के अनुसार <span class='eng'>Process</span> करके उपयोगी <b>Information</b> में बदल देती है।</p><p style='margin-top:6px'>आसान भाषा में — <b>कच्चा Data दो, पकी हुई Information लो!</b> 🍳</p>"},
-   {t:"reveal",q:"One-Liner: कंप्यूटर का जनक (Father of Computer) किसे कहा जाता है?",
-    a:"<b>Charles Babbage (चार्ल्स बैबेज)</b> — इन्होंने 1837 में <span class='eng'>Analytical Engine</span> की रूपरेखा बनाई थी, जिसे पहला mechanical computer माना जाता है।"},
-   {t:"quiz",q:"Computer शब्द किस भाषा के शब्द 'Computare' से बना है, जिसका अर्थ है — गणना करना?",
-    options:["Greek (यूनानी)","Latin (लैटिन)","French (फ्रांसीसी)","Sanskrit (संस्कृत)"],correct:1,
-    explain:"<b>Latin</b> शब्द <span class='eng'>Computare</span> = गणना करना। परीक्षा में लोकप्रिय Full Form भी पूछा जाता है — <span class='eng'>Common Operating Machine Purposely Used for Technological and Educational Research</span> (ये एक लोकप्रिय विस्तार है)।"},
-   {t:"flow",title:"Computer कैसे काम करता है? — IPO Cycle",
+   {t:"fact",icon:"👋",title:"स्वागत है, दोस्त! पहले Theory, फिर Practice",
+    html:"<p>इस बार हम chapter को <b>किताब की तरह पढ़ेंगे</b> — पहले हर topic का पूरा theory, बीच-बीच में हल्की practice।</p><p style='margin-top:6px'>कुछ block <b>दबाकर</b> खुलेंगे, कुछ <b>पलटकर (flip)</b>, और कुछ ख़ज़ाने तो <b>scratch करके</b> निकालने पड़ेंगे! 🪙 बस नीचे वाला button दबाते जाओ।</p>"},
+   {t:"fact",icon:"📖",title:"Theory 1 — Computer क्या है? (परिभाषा)",
+    html:"<p><b>परिभाषा:</b> <span class='eng'>Computer</span> एक <b>इलेक्ट्रॉनिक यंत्र (Electronic Device)</b> है, जो उपयोगकर्ता से <b>Data</b> को <span class='eng'>Input</span> के रूप में ग्रहण करता है, दिए गए <span class='eng'>Program (निर्देशों के समूह)</span> के अनुसार उसे <span class='eng'>Process</span> करता है, और परिणाम को अर्थपूर्ण <b>Information</b> के रूप में देता है — साथ ही उसे भविष्य के लिए <b>Store</b> भी कर सकता है।</p><p style='margin-top:6px'>🍳 आसान उदाहरण: जैसे मिक्सर कच्ची सामग्री को पीसकर चटनी बनाता है, वैसे computer कच्चे <b>Data</b> को प्रोसेस करके उपयोगी <b>Information</b> बनाता है। फ़र्क़ बस इतना है — computer बिजली से चलता है और निर्देश (Program) के बिना एक कदम भी नहीं चलता!</p>"},
+   {t:"fact",icon:"🔤",title:"Theory 2 — 'Computer' शब्द कहाँ से आया?",
+    html:"<p>शब्द <span class='eng'>Computer</span> <b>Latin</b> भाषा के शब्द <span class='eng'><b>Computare</b></span> से बना है, जिसका अर्थ है — <b>गणना करना (To Calculate)</b>। शुरू में computer का मतलब ही था — हिसाब-किताब करने वाली मशीन।</p><p style='margin-top:6px'>📌 <b>Exam Note:</b> परीक्षा में इसका लोकप्रिय Full Form पूछा जाता है — <span class='eng'><b>Common Operating Machine Purposely Used for Technological and Educational Research</b></span>। याद रहे, यह एक <i>लोकप्रिय विस्तार</i> है; असली मूल शब्द Computare ही है।</p>"},
+   {t:"parts",title:"Theory 3 — Computer के 3 मुख्य भाग (हर block दबाकर पढ़ो)",
+    parts:[
+      {icon:"⌨️",name:"1. Input Unit",text:"इस भाग से हम computer को <b>Data और निर्देश देते</b> हैं। उदाहरण: <b>Keyboard, Mouse, Scanner, Microphone, Webcam</b>। ये devices हमारी भाषा के data को computer की भाषा (Binary: 0 और 1) में बदलकर अंदर भेजती हैं।"},
+      {icon:"🧠",name:"2. CPU (Processing Unit)",text:"<b>CPU = Central Processing Unit</b> — computer का <b>दिमाग</b>। सारी गणना, तुलना और निर्णय यहीं होते हैं। Input से आया data यहीं process होकर result बनता है। (CPU के अंदर के भाग आगे Theory 6 में पढ़ेंगे।)"},
+      {icon:"🖥️",name:"3. Output Unit",text:"Process हो चुका result हमें <b>दिखाने/सुनाने</b> वाला भाग। उदाहरण: <b>Monitor (Screen), Printer, Speaker</b>। Monitor पर दिखने वाले result को <b>Soft Copy</b> और Printer से काग़ज़ पर मिले result को <b>Hard Copy</b> कहते हैं — ये शब्द exam में आते हैं!"}
+    ],
+    explain:"तीनों का क्रम याद रखो: <b>Input → CPU (Process) → Output</b>। अगले block में यही प्रक्रिया एक diagram में देखेंगे।"},
+   {t:"flow",title:"Theory 4 — कार्यप्रणाली: IPO Cycle",
     items:[
       {icon:"⌨️",label:"INPUT",sub:"Data देना<br>Keyboard, Mouse",bg:"#2563eb"},
       {icon:"🧠",label:"PROCESS",sub:"गणना / प्रोसेसिंग<br>CPU करता है",bg:"#7c3aed"},
       {icon:"🖨️",label:"OUTPUT",sub:"Result दिखाना<br>Monitor, Printer",bg:"#16a34a"}],
-    note:"इसे <b>IPO Cycle (Input → Process → Output)</b> कहते हैं — लगभग हर exam में इससे सवाल आता है!"},
-   {t:"input",q:"खुद लिखो: CPU का Full Form क्या है?",
+    note:"इसे <b>IPO Cycle (Input → Process → Output)</b> कहते हैं। जैसे: marks Keyboard से डाले (Input) → CPU ने total/average निकाला (Process) → Report Card screen पर दिखा (Output)।"},
+   {t:"quiz",q:"Practice: इनमें से कौन-सा INPUT device है?",
+    options:["Monitor","Printer","Keyboard","Speaker"],correct:2,
+    explain:"<b>Keyboard</b> से data अंदर जाता है = Input। Monitor, Printer, Speaker result बाहर देते हैं = Output devices।"},
+   {t:"fact",icon:"🗂️",title:"Theory 5 — Data और Information में अंतर",
+    html:"<p><b>Data (डेटा)</b> = कच्चे, असंगठित तथ्य — जैसे अकेले numbers, नाम या अक्षर। अकेले इनका कोई स्पष्ट अर्थ नहीं होता। उदाहरण: <i>\"85, 92, 78\"</i> — ये सिर्फ़ अंक हैं, पता नहीं किसके हैं।</p><p style='margin-top:6px'><b>Information (सूचना)</b> = उसी data को process करके बनाया गया संगठित, अर्थपूर्ण परिणाम। उदाहरण: <i>\"Somdatt के Maths में 85, Science में 92… औसत 85 — First Division\"</i> — अब इस पर निर्णय लिया जा सकता है!</p>",
+    list:["<b>Data</b> कच्चा माल है — <b>Information</b> तैयार सामान","<b>Data</b> पर processing होती है — <b>Information</b> processing का परिणाम है","निर्णय (Decision) हमेशा <b>Information</b> के आधार पर लिया जाता है"]},
+   {t:"flip",title:"शब्दावली — Cards पलटकर अर्थ पढ़ो",
+    cards:[
+      {front:"Data 📊",back:"कच्चे असंगठित तथ्य — numbers, text, photo आदि"},
+      {front:"Information 📰",back:"Process किया हुआ, अर्थपूर्ण data — जिस पर निर्णय लिया जा सके"},
+      {front:"Program 💾",back:"किसी काम के लिए लिखे गए निर्देशों (Instructions) का समूह"},
+      {front:"Hardware 🔩",back:"Computer के भौतिक भाग — जिन्हें छू सकते हैं (Keyboard, Monitor…)"},
+      {front:"Software 👻",back:"Programs का समूह — जो काम कराता है, पर छू नहीं सकते (Windows, Games…)"},
+      {front:"Instruction ➡️",back:"Computer को दिया गया एक आदेश/कदम"}
+    ],
+    explain:"<b>Hardware + Software = पूरा Computer System।</b> एक के बिना दूसरा बेकार है — जैसे शरीर (Hardware) बिना आत्मा/दिमाग़ के programs (Software) के नहीं चलता!"},
+   {t:"input",q:"Practice — खुद लिखो: CPU का Full Form क्या है?",
     accept:["central processing unit"],ph:"यहाँ English में लिखो…",
     hint:"💡 Hint: C = Central, P = Processing, U = …?",
-    explain:"<b>CPU = Central Processing Unit</b> — इसे computer का <b>दिमाग (Brain of Computer)</b> कहा जाता है, क्योंकि सारी गणना और निर्णय यहीं होते हैं।"},
-   {t:"quiz",q:"इनमें से कौन-सा INPUT device है?",
-    options:["Monitor","Printer","Keyboard","Speaker"],correct:2,
-    explain:"<b>Keyboard</b> से हम computer को data देते हैं = Input। Monitor, Printer, Speaker — ये सब result दिखाते/सुनाते हैं = Output devices।"},
-   {t:"fact",icon:"⚡",title:"Computer की 5 सुपर-पावर्स (विशेषताएँ)",
-    list:["<b>Speed (गति)</b> — पलक झपकते करोड़ों गणनाएँ; गति MIPS में मापी जाती है","<b>Accuracy (शुद्धता)</b> — गलती लगभग शून्य, गलती हो तो इंसान की (GIGO!)","<b>Diligence (लगन)</b> — बिना थके, बिना bore हुए लगातार काम","<b>Storage (भंडारण)</b> — भारी मात्रा में data सुरक्षित रखना","<b>Versatility (बहुमुखी)</b> — पढ़ाई, खेल, हिसाब, design… सब कुछ एक ही मशीन से"],
-    html:"<p>Exam में ये 5 characteristics बार-बार पूछी जाती हैं — इन्हें याद कर लो:</p>"},
+    explain:"<b>CPU = Central Processing Unit</b> — computer का दिमाग। अब अगले block में इसके अंदर झाँकेंगे!"},
+   {t:"parts",title:"Theory 6 — CPU के 3 भाग (हर block दबाकर पढ़ो)",
+    parts:[
+      {icon:"➕",name:"1. ALU",text:"<b>ALU = Arithmetic Logic Unit</b> — यहाँ सारे <b>गणितीय कार्य</b> (जोड़, घटाव, गुणा, भाग) और <b>तार्किक कार्य</b> (तुलना — बड़ा/छोटा/बराबर, AND/OR जैसे निर्णय) होते हैं। Exam में ALU का full form पक्का पूछा जाता है!"},
+      {icon:"🚦",name:"2. CU (Control Unit)",text:"<b>CU = Control Unit</b> — यह पूरे computer का <b>ट्रैफ़िक पुलिस</b> है! कौन-सा data कहाँ जाएगा, कब process होगा, result कहाँ भेजना है — सबका नियंत्रण यही करता है। यह खुद गणना नहीं करता, <b>सबसे काम करवाता</b> है।"},
+      {icon:"🗄️",name:"3. Memory Unit",text:"CPU के अंदर की <b>तात्कालिक मेमोरी (Registers)</b> — जिस data पर अभी-अभी काम चल रहा है, वह यहीं रखा जाता है ताकि ALU/CU उसे बिजली की गति से उठा सकें। बड़ी storage (Hard Disk) CPU के बाहर होती है — वो Chapter 4 का topic है।"}
+    ],
+    explain:"याद करने की trick: <b>ALU = हिसाब, CU = नियंत्रण, Memory = रखना</b>। तीनों मिलकर CPU!"},
+   {t:"fact",icon:"📜",title:"Theory 7 — Computer का संक्षिप्त इतिहास (Timeline)",
+    html:"<p>Computer एक दिन में नहीं बना — सैकड़ों साल लगे। क्रम से याद करो:</p>",
+    list:["<b>Abacus (प्राचीन काल)</b> — सबसे पहला गणना यंत्र, मोतियों से गिनती","<b>1642 — Pascaline</b> — Blaise Pascal का पहला Mechanical Calculator","<b>1822 — Difference Engine</b> — Charles Babbage का डिज़ाइन","<b>1837 — Analytical Engine</b> — Babbage का 'पहला Computer' माना जाने वाला डिज़ाइन; इसके लिए program लिखने वाली <b>Ada Lovelace</b> = दुनिया की पहली Programmer","<b>1945 — ENIAC</b> — पहला बड़ा Electronic Computer (Vacuum Tubes वाला, पूरे कमरे जितना बड़ा!)","<b>1951 — UNIVAC</b> — बाज़ार में बिकने वाला पहला Commercial Computer"]},
+   {t:"reveal",q:"One-Liner: कंप्यूटर का जनक (Father of Computer) किसे कहा जाता है?",
+    a:"<b>Charles Babbage (चार्ल्स बैबेज)</b> — Analytical Engine के डिज़ाइन के कारण। और पहली Programmer — <b>Ada Lovelace</b>। ये दोनों नाम exam के सबसे पसंदीदा हैं!"},
+   {t:"scratch",title:"🪙 ख़ज़ाना Block — Scratch करके निकालो!",
+    prompt:"नीचे एक exam वाला तथ्य छिपा है — उंगली घुमाकर scratch करो और ख़ज़ाना निकालो!",
+    hidden:"<span class='big'>🎁 TIFRAC</span><br>भारत में बना <b>पहला स्वदेशी Computer (1960)</b><br>Tata Institute (TIFR), Mumbai में बनाया गया था",
+    explain:"TIFRAC = <b>Tata Institute of Fundamental Research Automatic Calculator</b>। नाम में ही पता छिपा है — TIFR + AC!"},
+   {t:"parts",title:"Theory 8 — Computer की 5 विशेषताएँ (हर block दबाओ)",
+    parts:[
+      {icon:"⚡",name:"Speed (गति)",text:"Computer पलक झपकते <b>करोड़ों गणनाएँ</b> कर लेता है। इसकी कार्य-गति <b>MIPS</b> (Million Instructions Per Second) और clock speed <b>Hertz (GHz)</b> में मापी जाती है। जो हिसाब इंसान को साल भर लगे, computer मिनटों में कर दे!"},
+      {icon:"🎯",name:"Accuracy (शुद्धता)",text:"Computer की गणना लगभग <b>100% शुद्ध</b> होती है। अगर result गलत आए तो गलती लगभग हमेशा <b>इंसान की</b> होती है — गलत data या गलत program की। इसी को आगे GIGO में पढ़ेंगे।"},
+      {icon:"🔋",name:"Diligence (लगन)",text:"Computer <b>नहीं थकता, नहीं bore होता</b>, और न ही एकाग्रता खोता है। करोड़वाँ काम भी उतनी ही शुद्धता से करेगा जितना पहला। इंसान के लिए ये असंभव है!"},
+      {icon:"💾",name:"Storage (भंडारण)",text:"भारी मात्रा में data — किताबें, photos, videos — छोटी-सी जगह में <b>सुरक्षित</b> रख सकता है, और ज़रूरत पड़ते ही पल भर में ढूँढकर दे देता है।"},
+      {icon:"🎭",name:"Versatility (बहुमुखी)",text:"एक ही computer से — <b>पढ़ाई, हिसाब-किताब, गाने, design, ticket booking, खेल</b> — हज़ारों तरह के काम। बस सही Program (Software) चाहिए!"}
+    ],
+    explain:"पाँचों एक साथ याद रखो: <b>Speed, Accuracy, Diligence, Storage, Versatility</b> — MCQ में इन्हीं में से 'कौन-सी विशेषता नहीं है' पूछा जाता है!"},
    {t:"reveal",q:"One-Liner: GIGO का Full Form क्या है?",
-    a:"<b>GIGO = Garbage In, Garbage Out</b> — अर्थात गलत data डालोगे तो गलत ही result मिलेगा। Computer खुद गलती नहीं करता, गलती input देने वाले की होती है!"},
-   {t:"match",title:"Match करो: Device कौन-सा है?",
-    pairs:[["Keyboard ⌨️","Typing से Input"],["Mouse 🖱️","Click से Input"],["Monitor 🖥️","Screen पर Output"],["Printer 🖨️","Paper पर Output"]],
-    explain:"Input = जिससे data <b>अंदर</b> जाए (Keyboard, Mouse, Scanner, Mic)। Output = जिससे result <b>बाहर</b> आए (Monitor, Printer, Speaker)।"},
-   {t:"fact",icon:"📜",title:"Computer की 5 पीढ़ियाँ (Generations)",
-    list:["<b>पहली (1942–55)</b> — Vacuum Tube · मशीन: ENIAC","<b>दूसरी (1955–64)</b> — Transistor","<b>तीसरी (1964–75)</b> — IC (Integrated Circuit)","<b>चौथी (1975–89)</b> — Microprocessor (VLSI)","<b>पाँचवीं (1989–आज)</b> — ULSI + Artificial Intelligence (AI)"],
-    html:"<p>हर पीढ़ी में computer छोटा, तेज़ और सस्ता होता गया। क्रम याद रखो — <b>Tube → Transistor → IC → Microprocessor → AI</b>:</p>"},
-   {t:"quiz",q:"तीसरी पीढ़ी (3rd Generation) के computers में कौन-सी technology इस्तेमाल हुई?",
+    a:"<b>GIGO = Garbage In, Garbage Out</b> — गलत data डालोगे तो गलत ही result मिलेगा। Computer अपनी तरफ़ से गलती नहीं करता!"},
+   {t:"parts",title:"Theory 9 — Computer की 5 पीढ़ियाँ (हर block दबाओ)",
+    parts:[
+      {icon:"🔌",name:"पहली (1942–55)",text:"तकनीक: <b>Vacuum Tube</b> · मशीनें: ENIAC, UNIVAC · आकार कमरे जितना बड़ा, बहुत गर्मी, बहुत बिजली · भाषा: Machine Language (0-1) · गति धीमी, कीमत भारी।"},
+      {icon:"🔘",name:"दूसरी (1955–64)",text:"तकनीक: <b>Transistor</b> — Vacuum Tube से छोटा, तेज़ और भरोसेमंद · भाषा: Assembly Language · आकार पहले से छोटा, उपयोग व्यापार/विज्ञान में बढ़ा।"},
+      {icon:"🧩",name:"तीसरी (1964–75)",text:"तकनीक: <b>IC (Integrated Circuit)</b> — एक छोटी chip पर कई transistors · Keyboard-Monitor और Operating System का चलन · भाषाएँ: High-Level Languages (जैसे FORTRAN, COBOL)।"},
+      {icon:"💻",name:"चौथी (1975–89)",text:"तकनीक: <b>Microprocessor (VLSI)</b> — पूरी CPU एक chip पर! इससे <b>Personal Computer (PC)</b> घर-घर पहुँचा · Mouse और GUI (तस्वीरों वाली screen) आए।"},
+      {icon:"🤖",name:"पाँचवीं (1989–आज)",text:"तकनीक: <b>ULSI + Artificial Intelligence</b> · Internet, Smartphone, Cloud और AI का दौर · आज के computer बोलना-सुनना-समझना सीख रहे हैं — यही तुम्हारा phone भी है!"}
+    ],
+    explain:"क्रम trick: <b>Tube → Transistor → IC → Microprocessor → AI</b> — हर पीढ़ी में आकार छोटा, गति तेज़, कीमत कम!"},
+   {t:"quiz",q:"Practice: तीसरी पीढ़ी (3rd Generation) में कौन-सी technology इस्तेमाल हुई?",
     options:["Vacuum Tube","Transistor","IC (Integrated Circuit)","Microprocessor"],correct:2,
-    explain:"<b>IC (Integrated Circuit)</b> — तीसरी पीढ़ी (1964–75) की पहचान है। चौथी पीढ़ी में Microprocessor आया, जिससे Personal Computer (PC) संभव हुआ।"},
-   {t:"reveal",q:"One-Liner: दुनिया का पहला Electronic Computer कौन-सा था?",
-    a:"<b>ENIAC (1945)</b> — <span class='eng'>Electronic Numerical Integrator and Computer</span>। अमेरिका में बना ये विशाल computer Vacuum Tubes से चलता था और पूरे कमरे में फैला था!"},
-   {t:"match",title:"Match करो: पीढ़ी और उसकी Technology",
+    explain:"<b>IC (Integrated Circuit)</b> — तीसरी पीढ़ी (1964–75) की पहचान। Microprocessor चौथी पीढ़ी में आया।"},
+   {t:"match",title:"Practice — Match करो: पीढ़ी और Technology",
     pairs:[["पहली पीढ़ी","Vacuum Tube"],["दूसरी पीढ़ी","Transistor"],["तीसरी पीढ़ी","IC"],["चौथी पीढ़ी","Microprocessor"]],
-    explain:"यही 4 जोड़े exam की जान हैं — इन्हें उल्टा-सीधा करके पूछा जाता है!"},
-   {t:"input",q:"खुद लिखो: भारत में बना पहला computer कौन-सा था? (सिर्फ नाम, English में)",
-    accept:["tifrac"],ph:"जैसे: ENIAC की तरह एक नाम…",
-    hint:"💡 Hint: ये Mumbai के Tata Institute (TIFR) में बना था — नाम भी वहीं से आया: TIFR + AC",
-    explain:"<b>TIFRAC (1960)</b> — Tata Institute of Fundamental Research, Mumbai में बनाया गया भारत का पहला स्वदेशी computer।"},
-   {t:"fact",icon:"🚧",title:"Computer की सीमाएँ (Limitations)",
-    list:["<b>No IQ</b> — अपनी बुद्धि शून्य; जितना सिखाओ (Program), उतना ही करेगा","<b>No Feelings</b> — कोई भावना, थकान या स्वाद नहीं","<b>निर्देशों पर निर्भर</b> — बिना सही Program के कुछ नहीं कर सकता"],
-    html:"<p>शक्तियों के साथ सीमाएँ भी पूछी जाती हैं:</p>"},
-   {t:"quiz",q:"अंतिम सवाल: Data और Information में सही संबंध कौन-सा है?",
-    options:["Information को process करने से Data बनता है","Data को process करने से Information बनती है","दोनों एक ही चीज़ हैं","Data सिर्फ numbers को कहते हैं"],correct:1,
-    explain:"<b>Data (कच्चे तथ्य) → Processing → Information (उपयोगी परिणाम)</b>। जैसे: तुम्हारे marks = Data, report card = Information! 🎓"}
+    explain:"ये 4 जोड़े exam में उल्टे-सीधे घुमाकर पूछे जाते हैं — अब ये तुम्हें रट गए होंगे!"},
+   {t:"parts",title:"Theory 10 — आकार के आधार पर Computer के 4 प्रकार",
+    parts:[
+      {icon:"📱",name:"Micro Computer",text:"सबसे छोटे — <b>एक Microprocessor chip</b> पर बने। एक समय में <b>एक ही उपयोगकर्ता</b>। उदाहरण: तुम्हारा <b>Smartphone, PC, Laptop, Tablet</b>। घरों-दफ़्तरों में यही सबसे आम हैं।"},
+      {icon:"🏢",name:"Mini Computer",text:"Micro से बड़े और शक्तिशाली — एक <b>छोटी company या department</b> के लिए। एक साथ <b>दर्जनों उपयोगकर्ता</b> काम कर सकते हैं। उदाहरण: दफ़्तर के server।"},
+      {icon:"🏦",name:"Mainframe Computer",text:"बहुत बड़े और शक्तिशाली — <b>बैंक, रेलवे, बड़ी कंपनियों</b> में। एक साथ <b>हज़ारों उपयोगकर्ता</b> और भारी data processing — जैसे रेलवे reservation system!"},
+      {icon:"🚀",name:"Super Computer",text:"दुनिया के <b>सबसे तेज़</b> computers! गति <b>FLOPS</b> में मापी जाती है। उपयोग: <b>मौसम की भविष्यवाणी, अंतरिक्ष/रक्षा अनुसंधान, परमाणु शोध</b>। भारत की <b>PARAM</b> श्रृंखला और <b>Airawat</b> इसके उदाहरण हैं।"}
+    ],
+    explain:"आकार-क्रम याद रखो: <b>Micro < Mini < Mainframe < Super</b>। (काम के आधार पर computers Analog, Digital और Hybrid भी होते हैं — हम रोज़ Digital ही उपयोग करते हैं।)"},
+   {t:"quiz",q:"Practice: बैंक और रेलवे जैसे बड़े संगठनों में हज़ारों उपयोगकर्ताओं के लिए कौन-सा computer लगता है?",
+    options:["Micro Computer","Mini Computer","Mainframe Computer","Super Computer"],correct:2,
+    explain:"<b>Mainframe Computer</b> — भारी data और हज़ारों users एक साथ संभालना इसकी पहचान है। Super Computer गति के लिए होता है, संख्या के लिए नहीं।"},
+   {t:"scratch",title:"🪙 एक और ख़ज़ाना — Scratch करो!",
+    prompt:"Super Computer से जुड़ा एक exam तथ्य छिपा है — scratch करके निकालो!",
+    hidden:"<span class='big'>⚡ FLOPS</span><br>Super Computer की गति <b>FLOPS</b> में मापी जाती है<br><b>F</b>loating <b>P</b>oint <b>O</b>perations <b>P</b>er <b>S</b>econd",
+    explain:"साधारण computer की गति MIPS/GHz में, पर Super Computer की — <b>FLOPS</b> में। ये अंतर MCQ में आता है!"},
+   {t:"fact",icon:"🚧",title:"Theory 11 — Computer की सीमाएँ (Limitations)",
+    html:"<p>इतनी शक्तियों के बावजूद computer की कुछ सीमाएँ हैं — और exam में ये भी पूछी जाती हैं:</p>",
+    list:["<b>No IQ (शून्य बुद्धि)</b> — अपनी सोच शून्य है; जितना Program में सिखाया, बस उतना ही करेगा — उससे आगे एक कदम नहीं","<b>No Feelings (भावनाहीन)</b> — कोई भावना, थकान, स्वाद या सहानुभूति नहीं","<b>निर्देशों पर पूर्ण निर्भरता</b> — बिना सही Program/बिजली के यह एक डिब्बा मात्र है","<b>स्वयं निर्णय नहीं</b> — अप्रत्याशित स्थिति में इंसान जैसा निर्णय नहीं ले सकता (AI इस सीमा को धीरे-धीरे तोड़ रहा है)"]},
+   {t:"input",q:"Practice — खुद लिखो: पाँचवीं पीढ़ी की जान किसे कहते हैं? (English short form में लिखो)",
+    accept:["ai","artificial intelligence"],ph:"2 अक्षरों में लिखो…",
+    hint:"💡 Hint: A से शुरू होता है — मशीन का 'दिमाग़' सीखना…",
+    explain:"<b>AI = Artificial Intelligence</b> — पाँचवीं पीढ़ी की पहचान। मशीनों का अनुभव से सीखना ही AI है।"},
+   {t:"match",title:"Practice — Match करो: Device और उसका काम",
+    pairs:[["Keyboard ⌨️","Typing से Input"],["Mouse 🖱️","Click से Input"],["Monitor 🖥️","Screen पर Output"],["Printer 🖨️","Paper पर Output"]],
+    explain:"Input = data अंदर (Keyboard, Mouse, Scanner, Mic) · Output = result बाहर (Monitor, Printer, Speaker)।"},
+   {t:"fact",icon:"🧾",title:"Chapter 1 — एक नज़र में (पूरा सारांश)",
+    html:"<p>पूरा chapter एक ही जगह — exam से पहले बस यही दोहरा लेना:</p>",
+    list:["<b>Computer</b> = Electronic मशीन · Latin 'Computare' = गणना करना","<b>IPO Cycle:</b> Input → Process (CPU) → Output","<b>CPU</b> = दिमाग · भाग: <b>ALU</b> (हिसाब) + <b>CU</b> (नियंत्रण) + <b>Memory</b>","<b>Data</b> → Process → <b>Information</b>","<b>जनक:</b> Charles Babbage · <b>पहली Programmer:</b> Ada Lovelace · <b>पहला Electronic:</b> ENIAC · <b>भारत का पहला:</b> TIFRAC (1960)","<b>पीढ़ियाँ:</b> Tube → Transistor → IC → Microprocessor → ULSI+AI","<b>प्रकार:</b> Micro < Mini < Mainframe < Super · Super की गति = <b>FLOPS</b>","<b>GIGO</b> = Garbage In, Garbage Out"]},
+   {t:"quiz",q:"Final Practice: Data और Information का सही संबंध कौन-सा है?",
+    options:["Information को process करने से Data बनता है","Data को process करने से Information बनती है","दोनों एक ही चीज़ हैं","Data सिर्फ़ numbers को कहते हैं"],correct:1,
+    explain:"<b>Data (कच्चे तथ्य) → Processing → Information (उपयोगी परिणाम)</b>। जैसे: तुम्हारे marks = Data, Report Card = Information! 🎓"}
   ]
  }
 ];
@@ -234,12 +325,12 @@ var LOCKED=[
 <script>
 "use strict";
 /* ================== STORE ================== */
-var STORE_KEY="cp_store_v1";
+var STORE_KEY="cp_store_v2";
 function loadStore(){ try{var s=JSON.parse(localStorage.getItem(STORE_KEY)); if(s&&s.chapters) return s;}catch(e){} return {theme:"day",chapters:{}}; }
 var store=loadStore();
 function saveStore(){ try{localStorage.setItem(STORE_KEY,JSON.stringify(store));}catch(e){} }
 function chProg(id){ if(!store.chapters[id]) store.chapters[id]={next:0,score:0,best:0,done:false}; return store.chapters[id]; }
-function maxScore(ch){ var m=0; ch.steps.forEach(function(s){ if(s.t==="quiz"||s.t==="input")m+=10; else if(s.t==="reveal")m+=3; else if(s.t==="match")m+=15; }); return m; }
+function maxScore(ch){ var m=0; ch.steps.forEach(function(s){ if(s.t==="quiz"||s.t==="input")m+=10; else if(s.t==="reveal")m+=3; else if(s.t==="match")m+=15; else if(s.t==="parts")m+=12; else if(s.t==="scratch")m+=8; else if(s.t==="flip")m+=6; }); return m; }
 
 /* ================== THEME ================== */
 function applyTheme(){
@@ -328,6 +419,7 @@ function showLive(i){
   var step=cur.ch.steps[i];
   var card=buildStep(step,i,"live");
   feed.appendChild(card);
+  if(card._initScratch) card._initScratch();
   updateHead();
   setTimeout(function(){ card.scrollIntoView({behavior:"smooth",block:"center"}); },90);
   if(step.t==="fact"||step.t==="flow"){
@@ -378,7 +470,7 @@ function finishChapter(restored){
   card.innerHTML="<div class='center'><div style='font-size:52px'>🏆</div><h3>Chapter पूरा! बधाई हो! 🎉</h3>"+
    "<div class='bigStars'>"+starStr+"</div>"+
    "<p>तुमने कमाए <b>⭐ "+p.score+" / "+maxScore(ch)+"</b> points"+(p.best>p.score?"":" — ये तुम्हारा <b>सबसे best score</b> है!")+"</p>"+
-   "<p style='margin-top:7px'>याद रखने वाली बातें: <b>Charles Babbage</b> = Father of Computer · <b>IPO Cycle</b> = Input→Process→Output · <b>CPU</b> = दिमाग · पीढ़ियाँ = Tube→Transistor→IC→Microprocessor→AI · <b>TIFRAC</b> = भारत का पहला computer</p>"+
+   "<p style='margin-top:7px'>याद रखने वाली बातें: <b>Charles Babbage</b> = Father of Computer · <b>IPO Cycle</b> = Input→Process→Output · <b>CPU</b> = दिमाग (ALU+CU+Memory) · पीढ़ियाँ = Tube→Transistor→IC→Microprocessor→AI · प्रकार = Micro<Mini<Mainframe<Super · <b>TIFRAC</b> = भारत का पहला computer</p>"+
    "<div style='margin-top:14px;display:flex;gap:9px;justify-content:center;flex-wrap:wrap'><button class='actBtn green' id='finHome'>📚 Chapters पर वापस</button><button class='actBtn' id='finReplay'>↻ फिर से खेलो</button></div></div>";
   feed.appendChild(card);
   nextBar.classList.add("hidden");
@@ -393,7 +485,8 @@ function finishChapter(restored){
 function kindTag(txt,cls){ return "<span class='kind "+cls+"'>"+txt+"</span>"; }
 function buildStep(step,i,mode){
   var card=document.createElement("div");
-  card.className="card"+(mode==="live"?" born":"");
+  var animVar=["born","bornSlide","bornDrop"][i%3];
+  card.className="card"+(mode==="live"?(" "+animVar):"");
   var done=(mode==="done");
   if(step.t==="fact"){
     card.innerHTML=kindTag("📖 सीखो","k-fact")+"<h3>"+(step.icon||"")+" "+step.title+"</h3>"+(step.html||"")+
@@ -457,6 +550,94 @@ function buildStep(step,i,mode){
       inp.addEventListener("keydown",function(e){ if(e.key==="Enter") chk.onclick(); });
     }
     z.appendChild(inp); z.appendChild(chk); z.appendChild(hnt); z.appendChild(hTxt);
+  }
+  else if(step.t==="parts"){
+    card.innerHTML=kindTag("🧱 भाग खोलकर पढ़ो","k-parts")+"<h3>"+step.title+"</h3><p style='font-size:13.5px;color:var(--sub)'>हर भाग के block को दबाओ — उसका पूरा theory खुलेगा। <b>सारे भाग</b> खोलने पर ही आगे बढ़ोगे!</p><div class='partsGrid'></div><div class='partZone'></div><div class='expZone'></div>";
+    var grid=card.querySelector(".partsGrid"), pz=card.querySelector(".partZone"), expP=card.querySelector(".expZone");
+    var opened={};
+    step.parts.forEach(function(pt,pi){
+      var b=document.createElement("button"); b.className="partBtn"+(done?" opened":"");
+      b.innerHTML="<span class='pi'>"+pt.icon+"</span>"+pt.name+(done?" ✓":"");
+      if(!done) b.onclick=function(){
+        if(opened[pi]){ showPart(pt); return; }
+        opened[pi]=1; b.classList.add("opened"); b.innerHTML="<span class='pi'>"+pt.icon+"</span>"+pt.name+" ✓"; beep(600);
+        showPart(pt);
+        var cnt=Object.keys(opened).length;
+        if(cnt===step.parts.length){
+          if(step.explain) expP.innerHTML="<div class='explain popIn'>🎓 "+step.explain+"</div>";
+          onSolved(i,12);
+        } else toast("📖 "+cnt+"/"+step.parts.length+" भाग खुल गए");
+      };
+      grid.appendChild(b);
+    });
+    function showPart(pt){ pz.innerHTML="<div class='partDetailBox flipIn'><h4>"+pt.icon+" "+pt.name+"</h4>"+pt.text+"</div>"; }
+    if(done){
+      pz.innerHTML=step.parts.map(function(pt){ return "<div class='partDetailBox'><h4>"+pt.icon+" "+pt.name+"</h4>"+pt.text+"</div>"; }).join("");
+      if(step.explain) expP.innerHTML="<div class='explain'>🎓 "+step.explain+"</div>";
+    }
+  }
+  else if(step.t==="flip"){
+    card.innerHTML=kindTag("🔃 Flip करके सीखो","k-flip")+"<h3>"+step.title+"</h3><p style='font-size:13.5px;color:var(--sub)'>हर card को दबाकर पलटो और पीछे छिपा अर्थ पढ़ो — सारे cards पलटने हैं!</p><div class='flipGrid'></div><div class='expZone'></div>";
+    var fg=card.querySelector(".flipGrid"), expF=card.querySelector(".expZone"), flipped={};
+    step.cards.forEach(function(cd,ci){
+      var fc=document.createElement("div"); fc.className="flipCard"+(done?" flipped":"");
+      fc.innerHTML="<div class='flipInner'><div class='flipFace flipFront'>"+cd.front+"<small>पलटने के लिए दबाओ 👆</small></div><div class='flipFace flipBack'>"+cd.back+"</div></div>";
+      if(!done) fc.onclick=function(){
+        fc.classList.toggle("flipped");
+        if(fc.classList.contains("flipped")){ flipped[ci]=1; beep(560); } else { delete flipped[ci]; }
+        if(Object.keys(flipped).length===step.cards.length){
+          if(step.explain) expF.innerHTML="<div class='explain popIn'>🎓 "+step.explain+"</div>";
+          onSolved(i,6);
+        }
+      };
+      fg.appendChild(fc);
+    });
+    if(done&&step.explain) expF.innerHTML="<div class='explain'>🎓 "+step.explain+"</div>";
+  }
+  else if(step.t==="scratch"){
+    card.innerHTML=kindTag("🪙 Scratch करो","k-scratch")+"<h3>"+step.title+"</h3><p>"+step.prompt+"</p><div class='scratchBox'><div class='scratchUnder'>"+step.hidden+"</div></div><div class='expZone'></div>";
+    var box=card.querySelector(".scratchBox"), expS=card.querySelector(".expZone");
+    if(done){
+      box.insertAdjacentHTML("beforeend","<span class='scratchDoneTag'>✓ खुल गया</span>");
+      if(step.explain) expS.innerHTML="<div class='explain'>🎓 "+step.explain+"</div>";
+    } else {
+      var cv=document.createElement("canvas"); cv.className="scratchCv"; box.appendChild(cv);
+      card._initScratch=function(){
+        var W=box.clientWidth||320, H=box.clientHeight||178;
+        cv.width=W; cv.height=H;
+        var ctx=cv.getContext("2d");
+        var gr=ctx.createLinearGradient(0,0,W,H);
+        gr.addColorStop(0,"#9ca3af"); gr.addColorStop(.5,"#d1d5db"); gr.addColorStop(1,"#9ca3af");
+        ctx.fillStyle=gr; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle="rgba(75,85,99,.55)"; ctx.font="800 19px sans-serif"; ctx.textAlign="center";
+        ctx.fillText("🪙 यहाँ SCRATCH करो 🪙",W/2,H/2-8);
+        ctx.font="600 13px sans-serif";
+        ctx.fillText("उंगली घुमाओ — नीचे ख़ज़ाना छिपा है!",W/2,H/2+20);
+        var drawing=false, solvedScr=false, moveCnt=0;
+        function pos(e){ var r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)*(cv.width/r.width), y:(e.clientY-r.top)*(cv.height/r.height)}; }
+        function scratchAt(e){
+          var p=pos(e);
+          ctx.globalCompositeOperation="destination-out";
+          ctx.beginPath(); ctx.arc(p.x,p.y,26,0,Math.PI*2); ctx.fill();
+          moveCnt++;
+          if(moveCnt%10===0&&!solvedScr){
+            try{
+              var d=ctx.getImageData(0,0,cv.width,cv.height).data, clear=0, tot=0;
+              for(var k=3;k<d.length;k+=97*4){ tot++; if(d[k]<110) clear++; }
+              if(clear/tot>0.36){ solvedScr=true; cv.style.opacity="0"; cv.style.pointerEvents="none";
+                box.insertAdjacentHTML("beforeend","<span class='scratchDoneTag'>✓ खुल गया</span>");
+                if(step.explain) expS.innerHTML="<div class='explain popIn'>🎓 "+step.explain+"</div>";
+                onSolved(i,8);
+              }
+            }catch(err){}
+          }
+        }
+        cv.addEventListener("pointerdown",function(e){ drawing=true; try{cv.setPointerCapture(e.pointerId);}catch(err){} scratchAt(e); });
+        cv.addEventListener("pointermove",function(e){ if(drawing) scratchAt(e); });
+        cv.addEventListener("pointerup",function(){ drawing=false; });
+        cv.addEventListener("pointercancel",function(){ drawing=false; });
+      };
+    }
   }
   else if(step.t==="match"){
     card.innerHTML=kindTag("🔗 Match करो","k-match")+"<h3>"+step.title+"</h3><p style='font-size:13.5px;color:var(--sub)'>पहले <b>बाईं ओर</b> का एक item दबाओ, फिर उसके सही साथी को <b>दाईं ओर</b> दबाओ!</p><div class='matchCols' style='margin-top:10px'><div class='matchCol L'></div><div class='matchCol R'></div></div><div class='expZone'></div>";
